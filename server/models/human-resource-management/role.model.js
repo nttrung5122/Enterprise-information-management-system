@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config.database');
 
 const Role = sequelize.define('role', {
-    base_salary: DataTypes.INTEGER,
+    baseSalary: DataTypes.INTEGER,
     info: DataTypes.STRING
   });
 

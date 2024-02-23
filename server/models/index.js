@@ -3,7 +3,6 @@ const sequelize = require("./config.database");
 const {
   AccountPermission,
   Account,
-  EmployeeInfo,
   EmployeeStatus,
   Employee,
   Permission,
@@ -34,44 +33,81 @@ const {
   SectionMenu,
 } = require("./business-management");
 
-Employee.belongsTo(Account, { foreignKey: "id_account" });
-Account.hasOne(Employee);
+Employee.hasOne(Account);
+Account.belongsTo(Employee);
 
-EmployeeInfo.belongsTo(Employee, { foreignKey: "id_employee" });
-Employee.hasOne(Employee);
-
-TimeKeeping.belongsTo(Employee, { foreignKey: "id_employee" });
+TimeKeeping.belongsTo(Employee);
 Employee.hasMany(TimeKeeping);
 
-EmployeeStatus.belongsTo(Employee, { foreignKey: "id_employee" });
-EmployeeStatus.belongsTo(Role, { foreignKey: "id_role" });
-AccountPermission.belongsTo(Account, { foreignKey: "id_account" });
-AccountPermission.belongsTo(Permission, { foreignKey: "id_permission" });
-Warehouse.belongsTo(Ingredient, { foreignKey: "id_ingredient" });
-Receipt.belongsTo(Employee, { foreignKey: "creator" });
-Receipt.belongsTo(Supplier, { foreignKey: "id_supplier" });
-ReceiptDetail.belongsTo(Receipt, { foreignKey: "id_receipt" });
-ReceiptDetail.belongsTo(Ingredient, { foreignKey: "id_ingredient" });
-CancellationFormDetail.belongsTo(CancellationForm, {
-  foreignKey: "id_cancellation_form",
-});
-CancellationFormDetail.belongsTo(Ingredient, { foreignKey: "id_ingredient" });
-CancellationForm.belongsTo(ReasonCancellation, { foreignKey: "id_reason" });
-Food.belongsTo(Recipe, { foreignKey: "id_recipe" });
-RecipeDetail.belongsTo(Recipe, { foreignKey: "id_recipe" });
-RecipeDetail.belongsTo(Ingredient, { foreignKey: "id_ingredient" });
-MenuDetail.belongsTo(Menu, { foreignKey: "id_menu" });
-MenuDetail.belongsTo(SectionMenu, { foreignKey: "id_section" });
-SectionDetail.belongsTo(Food, { foreignKey: "id_food" });
-SectionDetail.belongsTo(SectionMenu, { foreignKey: "id_section" });
-BillDetail.belongsTo(Bill, { foreignKey: "id_bill" });
-BillDetail.belongsTo(Food, { foreignKey: "id_food" });
+EmployeeStatus.belongsTo(Employee);
+Employee.hasMany(EmployeeStatus);
+
+EmployeeStatus.belongsTo(Role);
+Role.hasMany(EmployeeStatus);
+
+
+// AccountPermission.belongsTo(Account);
+// AccountPermission.belongsTo(Permission);
+
+Account.belongsToMany(Permission,{through: "account_permission"});
+Permission.belongsToMany(Account,{through: "account_permission"});
+
+Warehouse.belongsTo(Ingredient);
+Ingredient.hasOne(Warehouse)
+
+
+Receipt.belongsTo(Employee);
+Employee.hasMany(Receipt);
+
+Receipt.belongsTo(Supplier);
+Supplier.hasMany(Receipt);
+
+Receipt.belongsToMany(Ingredient,{through: "receipt_detail"})
+Ingredient.belongsToMany(Receipt,{through: "receipt_detail"})
+
+CancellationFormDetail.belongsTo(CancellationForm);
+CancellationFormDetail.belongsTo(Ingredient);
+
+CancellationForm.belongsToMany(Ingredient,{through: "cancellation_form_detail"})
+Ingredient.belongsToMany(CancellationForm,{through: "cancellation_form_detail"})
+
+
+CancellationForm.belongsTo(ReasonCancellation);
+ReasonCancellation.hasMany(CancellationForm)
+
+Food.belongsTo(Recipe);
+Recipe.hasMany(Food)
+
+// RecipeDetail.belongsTo(Recipe);
+// RecipeDetail.belongsTo(Ingredient);
+
+Recipe.belongsToMany(Ingredient,{through:"recipe_detail"})
+Ingredient.belongsToMany(Recipe,{through:"recipe_detail"})
+
+
+// MenuDetail.belongsTo(Menu);
+// MenuDetail.belongsTo(SectionMenu);
+
+Menu.belongsToMany(SectionMenu,{through:"menu_detail"})
+SectionMenu.belongsToMany(Menu,{through:"menu_detail"})
+
+
+// SectionDetail.belongsTo(Food);
+// SectionDetail.belongsTo(SectionMenu);
+
+Food.belongsToMany(SectionMenu,{through:"section_detail"});
+SectionMenu.belongsToMany(Food,{through:"section_detail"});
+
+// BillDetail.belongsTo(Bill);
+// BillDetail.belongsTo(Food);
+
+Bill.belongsToMany(Food,{through:"bill_detail"})
+Food.belongsToMany(Bill,{through:"bill_detail"})
 
 module.exports = {
   sequelize,
   AccountPermission,
   Account,
-  EmployeeInfo,
   EmployeeStatus,
   Employee,
   Permission,

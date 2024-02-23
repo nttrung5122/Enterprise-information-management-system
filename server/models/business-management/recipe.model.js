@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config.database');
 
 const Recipe = sequelize.define('recipe', {
-    name_recipe: DataTypes.STRING
+    nameRecipe: DataTypes.STRING
   });
 
 module.exports = Recipe ;
