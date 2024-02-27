@@ -7,7 +7,10 @@ const Employee = sequelize.define("employee", {
   phoneNumber: DataTypes.STRING,
   address: DataTypes.STRING,
   hireDate: DataTypes.DATE,
-  isWorking: DataTypes.BOOLEAN,
+  isWorking: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+  },
 });
 
 module.exports = Employee;

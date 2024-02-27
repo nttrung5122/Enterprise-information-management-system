@@ -3,7 +3,10 @@ const sequelize = require('../config.database');
 
 const Account = sequelize.define('account', {
     password: DataTypes.STRING,
-    active: DataTypes.BOOLEAN
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    }
   });
   
 
