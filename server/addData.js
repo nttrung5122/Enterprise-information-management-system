@@ -29,8 +29,7 @@ const {
   } = require("./models");
 
   const addData = async ()=>{
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash("admin", salt);
+
     await Employee.create({
       id: 99999,
       fullname: "admin",
@@ -38,7 +37,7 @@ const {
 
     const admin = await Account.create({
         id: 999,
-        password: hash,
+        password: "admin",
         employeeId: 99999
       })
 

@@ -35,8 +35,28 @@ const AccountController = {
   },
   changePassword: async (req, res) => {
     try {
+      
       const id = req.body?.user;
-      const password = req.body?.password;
+      const oldPassword = req.body?.oldPassword;
+      const newPassword = req.body?.newPassword;
+      if (!id || !oldPassword || !newPassword) {
+        return res.status(403).json("error");
+      }
+
+      const account = await Account.findOne({
+        where: {
+          id,
+        },
+        include: [Permission],
+      });
+      if (!account) {
+        return res.status(403).json("Not Found Account");
+      }
+
+      const validPassword = bcrypt.compareSync(password, account.password);
+      if (! validPassword) {
+        return res.status(403).json("wrong password");
+      }
       if (
         req.session?.account &&
         (req.session.account.id == id ||
@@ -49,7 +69,7 @@ const AccountController = {
           ))
       ) {
         const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(password, salt);
+        const hashPassword = await bcrypt.hash(newPassword, salt);
         await Account.update(
           { password: hashPassword },
           {
