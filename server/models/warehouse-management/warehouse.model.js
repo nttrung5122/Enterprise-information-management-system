@@ -7,6 +7,6 @@ const Warehouse = sequelize.define("warehouse", {
     primaryKey: true,
   },
   quantity: DataTypes.INTEGER,
-});
+} );
 
 module.exports = Warehouse;

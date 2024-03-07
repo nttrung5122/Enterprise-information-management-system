@@ -1,8 +1,8 @@
 const { Sequelize } = require("sequelize");
 
-const username = process.env.usernameDB;
+const username = process.env.usernameDB||"root";
 const password = process.env.passwd;
-const database = process.env.database;
+const database = process.env.database||"123";
 console.log({
   username,
   password,

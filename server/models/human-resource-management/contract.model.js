@@ -1,12 +1,13 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config.database");
 
-const EmployeeStatus = sequelize.define("employee_status", {
-  employeeId: {
+const Contract = sequelize.define("contract", {
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: true,
   },
-  roleId: {
+  employeeId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
   },
@@ -14,8 +15,12 @@ const EmployeeStatus = sequelize.define("employee_status", {
     type: DataTypes.DATEONLY,
     primaryKey: true,
   },
-  endDate: DataTypes.DATEONLY,
-  salaryScale: DataTypes.FLOAT,
+  endDate: {
+    type: DataTypes.DATEONLY
+  },
+  content: {
+    type: DataTypes.STRING,
+  },
 },{timestamps:false});
 
-module.exports = EmployeeStatus;
+module.exports = Contract;
