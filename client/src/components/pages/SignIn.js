@@ -3,47 +3,40 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { loginApi } from "../../services/UserService";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+function SignIn() {
+  const [error, setError] = useState("");
+  const navigate = useNavigate(); // useNavigate should be called at the top level
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme();
-
-export default function SignIn() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    try {
+      const res = await loginApi({
+        user: data.get("userId"),
+        password: data.get("password"),
+      });
+
+      if (res && res.id) {
+        console.log("Login success", res.id);
+        navigate("/dashboard"); // Redirect to dashboard page
+      }
+    } catch (error) {
+      setError("Mật khẩu không đúng hoặc tài khoản không tồn tại");
+    }
   };
+
+  const defaultTheme = createTheme();
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -61,7 +54,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Đăng nhập
+            Đăng nhập
           </Typography>
           <Box
             component="form"
@@ -73,10 +66,10 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Địa chỉ email"
-              name="email"
-              autoComplete="email"
+              id="userId"
+              label="UserID"
+              name="userId"
+              autoComplete="userId"
               autoFocus
             />
             <TextField
@@ -84,27 +77,32 @@ export default function SignIn() {
               required
               fullWidth
               name="password"
-              label="Mật khẩu"
+              label="Mật khẩu"
               type="password"
               id="password"
               autoComplete="current-password"
             />
-
+            {error && ( // Display error if it exists
+              <Typography variant="body2" color="error">
+                {error}
+              </Typography>
+            )}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 2.5, mb: 2 }}
             >
-              Đăng nhập:
+              Đăng nhập
             </Button>
           </Box>
           <Link href="#" underline="hover">
-            Quên mật khẩu?
+            Quên mật khẩu?
           </Link>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
 }
+
+export default SignIn;

@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useEffect, useState } from "react"; // Import useEffect and useState
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,49 +8,60 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { fetchAllUsers } from "../../services/UserService";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+const TableUsers = (props) => {
+  const [users, setUsers] = useState([]); // State to store users data
 
-export default function DenseTable() {
+  useEffect(() => {
+    fetchAllUsers()
+      .then((response) => {
+        console.log("Check data >>>>:", response.data);
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []); // Empty dependency array means this effect runs once after the first render
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell align="center">ID</TableCell>
+            <TableCell align="center">Họ và tên</TableCell>
+            <TableCell align="center">Email</TableCell>
+            <TableCell align="center">Số điện thoại</TableCell>
+            <TableCell align="center">Địa chỉ</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
+          {users.map(
+            (
+              user // Iterate over users array
+            ) => (
+              <TableRow
+                key={user.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row" align="center">
+                  {user.id}
+                </TableCell>
+                <TableCell align="center">{user.fullname}</TableCell>
+                <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="center">{user.address}</TableCell>
+              </TableRow>
+            )
+          )}
         </TableBody>
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default TableUsers;
