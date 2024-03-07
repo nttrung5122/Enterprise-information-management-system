@@ -8,6 +8,7 @@ const {
   Permission,
   Role,
   TimeKeeping,
+  Contract
 } = require("./human-resource-management");
 
 const {
@@ -36,6 +37,9 @@ const {
 Employee.hasOne(Account);
 Account.belongsTo(Employee);
 
+Employee.hasMany(Contract);
+Contract.belongsTo(Employee);
+
 TimeKeeping.belongsTo(Employee);
 Employee.hasMany(TimeKeeping);
 
@@ -45,6 +49,14 @@ Employee.hasMany(EmployeeStatus);
 EmployeeStatus.belongsTo(Role);
 Role.hasMany(EmployeeStatus);
 
+// Employee.belongsToMany(Role,{through:{
+//   model:EmployeeStatus,
+//   unique:false,
+// },})
+// Role.belongsToMany(Employee,{through:{
+//   model:EmployeeStatus,
+//   unique:false,
+// }})
 
 // AccountPermission.belongsTo(Account);
 // AccountPermission.belongsTo(Permission);
@@ -130,4 +142,5 @@ module.exports = {
   Recipe,
   SectionDetail,
   SectionMenu,
+  Contract
 };

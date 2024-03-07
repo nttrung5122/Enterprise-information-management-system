@@ -15,7 +15,7 @@ const Account = sequelize.define('account', {
       type: DataTypes.BOOLEAN,
       defaultValue: true
     }
-  });
+  },{timestamps:false});
   
 
 module.exports =  Account;

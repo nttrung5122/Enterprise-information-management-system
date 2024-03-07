@@ -26,17 +26,13 @@ const {
   Recipe,
   SectionDetail,
   SectionMenu,
-} = require("./models");  
+} = require("./models");
 
-const addData = async () => {
-  await Employee.create({
-    id: 99999,
-    fullname: "admin",
-  });
-
+const addMockupData = async ()=>{
   const employeeData = [
     {
-      fullname: "abc456",
+      id:4001,
+      fullname: "Nguyễn Văn A",
       email: "<EMAIL>",
       phoneNumber: "123456789",
       address: "abc",
@@ -55,34 +51,20 @@ const addData = async () => {
     },
   ];
 
-  const employee = await Employee.bulkCreate(employeeData);
-  Account.bulkCreate(
+  await  Account.bulkCreate(
     employee.map((employee) => {
-      return { id: employee.id, password: "123" };
+      return {  ...employee, password: "123" };
     })
   );
-  const admin = await Account.create({
-    id: 999,
-    password: "admin",
-    employeeId: 99999,
-  });
-
-  const adminPermission = await Permission.create({
-    id: 9999,
-    info: "admin",
-  });
-
-  await AccountPermission.create({
-    accountId: 999,
-    permissionId: 9999,
-  });
-};
+}
 
 sequelize
   .authenticate()
   .then(async (response) => {
     console.log("connected to DB");
-    await addData();
+    await addData()
+    
+    await addMockupData();
 
     console.log("add data successfully");
   })

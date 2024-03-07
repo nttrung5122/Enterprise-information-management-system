@@ -2,15 +2,22 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config.database");
 
 const Employee = sequelize.define("employee", {
-  fullname: DataTypes.STRING,
+  fullname: {
+    type:DataTypes.STRING,
+    allowNull: false,
+  },
+  idCode:  {
+    type:DataTypes.STRING,
+    allowNull: false,
+  },
   email: DataTypes.STRING,
   phoneNumber: DataTypes.STRING,
   address: DataTypes.STRING,
-  hireDate: DataTypes.DATE,
+  hireDate: DataTypes.DATEONLY,
   isWorking: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
   },
-});
+},{timestamps:false});
 
 module.exports = Employee;

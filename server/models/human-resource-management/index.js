@@ -5,7 +5,7 @@ const Employee = require('./employee.model');
 const Permission = require('./permission.model');
 const Role = require('./role.model')
 const TimeKeeping = require('./time_keeping.model')
-
+const Contract = require('./contract.model')
 module.exports = {
     AccountPermission,
     Account,
@@ -13,5 +13,6 @@ module.exports = {
     EmployeeStatus,
     Permission,
     Role,
-    TimeKeeping
+    TimeKeeping,
+    Contract
 }
