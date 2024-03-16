@@ -16,7 +16,6 @@ const AccountController = {
         },
         include: [Permission, Employee],
       });
-      console.log(account.permissions[0].info);
       if (!account) {
         return res.status(403).json("wrong password or username");
       }
@@ -30,12 +29,12 @@ const AccountController = {
       }
       return res.status(403).json("wrong password or username");
     } catch (error) {
+      console.log(error);
       return res.status(500).json(error);
     }
   },
   changePassword: async (req, res) => {
     try {
-      
       const id = req.body?.user;
       const oldPassword = req.body?.oldPassword;
       const newPassword = req.body?.newPassword;
@@ -54,7 +53,7 @@ const AccountController = {
       }
 
       const validPassword = bcrypt.compareSync(password, account.password);
-      if (! validPassword) {
+      if (!validPassword) {
         return res.status(403).json("wrong password");
       }
       if (

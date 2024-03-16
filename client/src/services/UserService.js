@@ -17,4 +17,16 @@ const loginApi = ({ user, password }) => {
 const fetchAllUsers = () => {
   return axios.get("/human-resource-management/employee");
 };
-export { loginApi, fetchAllUsers };
+const addNewUser = (userData) => {
+  return axios
+    .post("/human-resource-management/employee/add-employee", userData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ", error);
+      throw error.response.data;
+    });
+};
+
+export { loginApi, fetchAllUsers, addNewUser };

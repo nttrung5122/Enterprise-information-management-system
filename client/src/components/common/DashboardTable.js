@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react"; // Import useEffect and useState
-
+import { Button } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,11 +9,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { fetchAllUsers } from "../../services/UserService";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 const TableUsers = (props) => {
   const [users, setUsers] = useState([]); // State to store users data
 
@@ -55,6 +52,14 @@ const TableUsers = (props) => {
                 <TableCell align="center">{user.fullname}</TableCell>
                 <TableCell align="center">{user.email}</TableCell>
                 <TableCell align="center">{user.address}</TableCell>
+                <TableCell align="center">
+                  <Button>
+                    <BorderColorIcon />
+                  </Button>
+                  <Button color="error">
+                    <PersonRemoveIcon />
+                  </Button>
+                </TableCell>
               </TableRow>
             )
           )}
