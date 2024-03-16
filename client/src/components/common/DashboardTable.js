@@ -32,9 +32,10 @@ const TableUsers = (props) => {
           <TableRow>
             <TableCell align="center">ID</TableCell>
             <TableCell align="center">Họ và tên</TableCell>
+            <TableCell align="center">Địa chỉ</TableCell>
             <TableCell align="center">Email</TableCell>
             <TableCell align="center">Số điện thoại</TableCell>
-            <TableCell align="center">Địa chỉ</TableCell>
+            <TableCell align="center">Điều chỉnh:</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,8 +51,9 @@ const TableUsers = (props) => {
                   {user.id}
                 </TableCell>
                 <TableCell align="center">{user.fullname}</TableCell>
-                <TableCell align="center">{user.email}</TableCell>
                 <TableCell align="center">{user.address}</TableCell>
+                <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="center">{user.phoneNumber}</TableCell>
                 <TableCell align="center">
                   <Button>
                     <BorderColorIcon />
