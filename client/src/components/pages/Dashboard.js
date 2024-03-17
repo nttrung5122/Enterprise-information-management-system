@@ -20,7 +20,8 @@ const FilterGroupContainer = styled("div")({
   display: "flex",
   alignItems: "center",
 });
-export default function Dashboard() {
+
+const Dashboard = () => {
   return (
     <Container>
       <MiniDrawer />
@@ -41,4 +42,5 @@ export default function Dashboard() {
       </ContentContainer>
     </Container>
   );
-}
+};
+export default Dashboard;

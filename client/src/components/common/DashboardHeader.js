@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
+import { AddEmployeeModal } from "./Modal/AddEmployeeModal";
 export default function ButtonAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -13,7 +13,9 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <Button color="inherit">Thêm nhân viên mới</Button>
+          <Button color="inherit">
+            <AddEmployeeModal />
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
