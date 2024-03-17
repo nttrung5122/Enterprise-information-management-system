@@ -83,6 +83,9 @@ CancellationFormDetail.belongsTo(Ingredient);
 CancellationForm.belongsToMany(Ingredient,{through: "cancellation_form_detail"})
 Ingredient.belongsToMany(CancellationForm,{through: "cancellation_form_detail"})
 
+CancellationForm.belongsTo(Employee);
+Employee.hasMany(CancellationForm);
+
 
 CancellationForm.belongsTo(ReasonCancellation);
 ReasonCancellation.hasMany(CancellationForm)
@@ -115,6 +118,9 @@ SectionMenu.belongsToMany(Food,{through:"section_detail"});
 
 Bill.belongsToMany(Food,{through:"bill_detail"})
 Food.belongsToMany(Bill,{through:"bill_detail"})
+
+Bill.belongsTo(Employee);
+Employee.hasMany(Bill);
 
 module.exports = {
   sequelize,

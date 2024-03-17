@@ -5,6 +5,9 @@ const ReceiptDetail = sequelize.define('receipt_detail', {
     quantity: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
     pricePerUnit: DataTypes.INTEGER
+  },
+  {
+    timestamps:false,
   } );
   
 
