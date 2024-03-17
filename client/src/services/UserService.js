@@ -29,4 +29,18 @@ const addNewUser = (userData) => {
     });
 };
 
-export { loginApi, fetchAllUsers, addNewUser };
+const deleteUser = (employeeId, date) => {
+  return axios
+    .delete("/human-resource-management/employee/delete-employee", {
+      data: { employeeId: employeeId, date: date }, // Passing employeeId as data
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ", error);
+      throw error.response.data;
+    });
+};
+
+export { loginApi, fetchAllUsers, addNewUser, deleteUser };

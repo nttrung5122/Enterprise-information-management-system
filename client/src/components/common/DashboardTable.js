@@ -9,10 +9,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { fetchAllUsers } from "../../services/UserService";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import AlertDialog from "./Modal/DeleteUserModal";
 const TableUsers = (props) => {
   const [users, setUsers] = useState([]); // State to store users data
+
+  const handleDelete = (employeeId) => {
+    console.log("Check user id: ", employeeId);
+  };
 
   useEffect(() => {
     fetchAllUsers()
@@ -58,9 +63,7 @@ const TableUsers = (props) => {
                   <Button>
                     <BorderColorIcon />
                   </Button>
-                  <Button color="error">
-                    <PersonRemoveIcon />
-                  </Button>
+                  <AlertDialog userId={user.id} />
                 </TableCell>
               </TableRow>
             )

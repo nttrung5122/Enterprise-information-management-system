@@ -27,8 +27,26 @@ export const AddEmployeeModal = () => {
 
     // //Gather form data
     const formData = new FormData(event.target);
-    const userData = Object.fromEntries(formData.entries());
+    const employeeInfo = {
+      fullname: formData.get("fullname"),
+      email: formData.get("email"),
+      phoneNumber: formData.get("phoneNumber"),
+      address: formData.get("address"),
+      hireDate: formData.get("hireDate"),
+    };
+    const contractInfo = {
+      endDate: formData.get("endDate"),
+    };
+    const employeeRole = {
+      roleId: formData.get("roleId"),
+      salaryScale: parseFloat(formData.get("salaryScale")),
+    };
 
+    const userData = {
+      employeeInfo: employeeInfo,
+      contractInfo: contractInfo,
+      employeeRole: employeeRole,
+    };
     addNewUser(userData);
     console.log("testing");
     console.log(userData);
