@@ -10,7 +10,10 @@ const TimeKeeping = sequelize.define('time_keeping', {
       type: DataTypes.DATEONLY,
       primaryKey: true
     },
-    haveWorking: DataTypes.BOOLEAN
+    haveWorking:{
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   },{timestamps:false});
 
 module.exports = TimeKeeping ;

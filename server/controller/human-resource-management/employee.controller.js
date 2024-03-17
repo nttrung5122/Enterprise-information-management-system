@@ -4,8 +4,15 @@ const {
   Role,
   Contract,
   Account,
+  TimeKeeping,
+  sequelize,
 } = require("../../models");
+const { Op } = require("sequelize");
 const moment = require("moment");
+const bcrypt = require("bcrypt");
+const {
+  BUSINESS_MANAGE_PERMISSION,
+} = require("../../constants/permission.const");
 
 const EmployeeController = {
   getAllEmployee: async (req, res) => {
@@ -19,6 +26,24 @@ const EmployeeController = {
       res.status(200).json(employee);
     } catch (error) {
       res.status(500).json(error);
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      const id =  req.params?.id;
+      const employee = await Employee.findByPk(id,{
+        include:{
+          model: EmployeeStatus,
+          include: Role,
+        }
+      });
+      if(!employee) {
+        return res.status(404).json("id not found");
+      }
+      res.status(200).json(employee);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(error);
     }
   },
   updateRole: async (req, res) => {
@@ -130,7 +155,10 @@ const EmployeeController = {
       }
 
       const employee = await Employee.create(employeeInfo);
-
+      await Account.create({
+        employeeId: employee.id,
+        password:'123456' ,
+      })
       await Contract.create({
         ...contractInfo,
         startDate: employee.hireDate,
@@ -214,25 +242,131 @@ const EmployeeController = {
     }
   },
   // manager check for staff members
-  dailyTimekeeping: async (req, res) => {
+  timekeeping: async (req, res) => {
     try {
       //TODO: foreach employee: check staff create timekeeping,
-    } catch (error) {}
+      const data = req.body?.data;
+      if (!data) {
+        return res.status(401).json("Data is invalid");
+      }
+      const checkDataValid = data.reduce(
+        (previousValue, currentValue, currentIndex, array) => {
+          return (
+            previousValue && currentValue?.employeeId && currentValue?.date
+          );
+        },
+        true
+      );
+      if (!checkDataValid) {
+        return res.status(401).json("Data is invalid");
+      }
+      const timekeeping = await TimeKeeping.bulkCreate(data);
+      res.status(200).json(timekeeping);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json("You have already checked in");
+    }
   },
   // self check in for none normal staff
   checkInDaily: async (req, res) => {
     try {
       //TODO: check user and user are not staff,
-    } catch (error) {}
+      if (!req.session?.account)
+        return res.status(403).json("you dont have permission");
+      const timekeeping = await TimeKeeping.create({
+        employeeId: req.session.account.id,
+        date: moment(),
+        haveWorking: true,
+      });
+
+      return res.status(200).json(timekeeping);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json("You have already checked in");
+    }
   },
-  calculateSalaryAll: async (req, res) => {
+  calculateSalaryAllEmployeeInMonth: async (req, res) => {
     try {
       //TODO: check user is hr,
+      const data = req.query?.month;
+      if (!data) return res.status(401).json("Data is invalid");
+      const date = new Date();
+      const y = date.getFullYear(),
+        m = date.getMonth();
+      const firstDay = new Date(y, m, 0);
+      const lastDay = new Date(y, m + 1, 1);
+      console.log(firstDay, lastDay);
+
+      //todo check role in time
+      const employees = await Employee.findAll({
+        include: [
+          {
+            model: EmployeeStatus,
+            include: Role,
+          },
+        ],
+      });
+      const salaryPerEmp = employees.map((employee) => {
+        const salary = employee.employee_statuses.reduce(
+          (previousValue, currentValue) => {
+            if (currentValue.endDate === null) {
+              return currentValue.role.baseSalary * currentValue.salaryScale;
+            }
+            return previousValue;
+          },
+          0
+        );
+        return {
+          employeeId: employee.id,
+          salary,
+        };
+      });
+      const timekeeping = await TimeKeeping.findAll({
+        where: {
+          date: {
+            [Op.lt]: lastDay,
+            [Op.gt]: firstDay,
+          },
+          haveWorking: true,
+        },
+        attributes: [
+          "employeeId",
+          [sequelize.fn("COUNT", sequelize.col("employeeId")), "count"],
+        ],
+        group: "employeeId",
+      });
+      const timekeepingMap = timekeeping.reduce(
+        (previousValue, currentValue) => {
+          previousValue[currentValue.employeeId] =
+            currentValue.getDataValue("count");
+          return previousValue;
+        },
+        {}
+      );
+      // const timekeepingMap =  new Map(timekeeping.map(i => [i.employeeId, i.count]));
+      console.log(timekeepingMap);
+      const salaryArray = salaryPerEmp.map((employee) => {
+        const countDay = timekeepingMap[employee.employeeId]
+          ? timekeepingMap[employee.employeeId]
+          : 0;
+        const scale = countDay != 0 ? countDay / 26 : 0;
+        const salary = employee.salary * scale;
+        return {
+          employeeId: employee.employeeId,
+          salaryBase: employee.salary,
+          salary: Math.floor(salary),
+          day: countDay,
+        };
+      });
       //TODO: get  all: role, employee status, TimeKeeping
       //TODO: calculate salary
-    } catch (error) {}
+      res.status(200).json(salaryArray);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
   },
-  calculateSalary: async (req, res) => {
+  calculateMySalary: async (req, res) => {
     try {
       //TODO: get role, employee status, TimeKeeping
       //TODO: calculate salary of user

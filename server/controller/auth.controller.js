@@ -1,18 +1,17 @@
 const bcrypt = require("bcrypt");
-const { Account, Permission, Employee } = require("../models");
+const { Account, Permission, Employee, EmployeeStatus } = require("../models");
 const { where } = require("sequelize");
 const AccountController = {
   login: async (req, res) => {
     try {
-      const id = req.body?.user;
+      const employeeId = req.body?.user;
       const password = req.body?.password;
-      console.log(id, password);
-      if (!id || !password) {
+      if (!employeeId || !password) {
         return res.status(403).json("wrong password or username");
       }
       const account = await Account.findOne({
         where: {
-          id,
+          employeeId,
         },
         include: [Permission, Employee],
       });
@@ -22,12 +21,15 @@ const AccountController = {
 
       const validPassword = bcrypt.compareSync(password, account.password);
 
-      if (validPassword) {
-        req.session.account = account;
-        account.password = null;
-        return res.status(200).json(account);
+      if (!validPassword) {
+        return res.status(403).json("wrong password or username");
       }
-      return res.status(403).json("wrong password or username");
+      if(!account.active) {
+        return res.status(403).json("account is disabled");
+      }
+      req.session.account = account;
+      account.password;
+      return res.status(200).json(account);
     } catch (error) {
       console.log(error);
       return res.status(500).json(error);
@@ -35,18 +37,20 @@ const AccountController = {
   },
   changePassword: async (req, res) => {
     try {
-      const id = req.body?.user;
       const oldPassword = req.body?.oldPassword;
       const newPassword = req.body?.newPassword;
-      if (!id || !oldPassword || !newPassword) {
-        return res.status(403).json("error");
+
+      if (!oldPassword || !newPassword) {
+        return res.status(403).json("Data is invalid");
       }
 
+      if (req.session?.account) {
+        return res.status(401).json("you are not allowed to change");
+      }
       const account = await Account.findOne({
         where: {
-          id,
+          id: req.session.account.id,
         },
-        include: [Permission],
       });
       if (!account) {
         return res.status(403).json("Not Found Account");
@@ -56,30 +60,13 @@ const AccountController = {
       if (!validPassword) {
         return res.status(403).json("wrong password");
       }
-      if (
-        req.session?.account &&
-        (req.session.account.id == id ||
-          req.session.account.permissions.reduce(
-            (previousValue, currentValue) => {
-              if (currentValue.info == "admin") return true;
-              return previousValue;
-            },
-            false
-          ))
-      ) {
-        const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(newPassword, salt);
-        await Account.update(
-          { password: hashPassword },
-          {
-            where: {
-              id,
-            },
-          }
-        );
-        return res.status(200).json("success");
-      }
-      return res.status(401).json("you are not allowed to change");
+
+      const salt = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(newPassword, salt);
+      await account.update(
+        { password: hashPassword }
+      );
+      return res.status(200).json("success");
     } catch (error) {
       return res.status(500).json(error);
     }
