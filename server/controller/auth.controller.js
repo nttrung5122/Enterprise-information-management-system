@@ -63,13 +63,8 @@ const AccountController = {
 
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(newPassword, salt);
-      await Account.update(
-        { password: hashPassword },
-        {
-          where: {
-            id,
-          },
-        }
+      await account.update(
+        { password: hashPassword }
       );
       return res.status(200).json("success");
     } catch (error) {
