@@ -1,0 +1,455 @@
+{
+    "info": {
+        "_postman_id": "c33a6fbf-6684-47c1-a1ef-6dcf5a5c5ae9",
+        "name": "api",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "human-resource-management",
+            "item": [
+                {
+                    "name": "employee",
+                    "item": [
+                        {
+                            "name": "get all employee",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/employee",
+                                    "path": [
+                                        "human-resource-management",
+                                        "employee"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                }
+                            }
+                        },
+                        {
+                            "name": "add employee",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/employee/add-employee",
+                                    "path": [
+                                        "human-resource-management",
+                                        "employee",
+                                        "add-employee"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"employeeInfo\": {\n    \"fullname\": \"Nguyễn Thành Trung 1\",\n    \"idCode\":\"3242549043543\",\n    \"email\": \"\",\n    \"phoneNumber\": \"\",\n    \"address\": \"\",\n    \"hireDate\": \"2023-12-28\"\n  },\n  \"contractInfo\": {\n    \"endDate\": \"2026-03-07\"\n  },\n  \"employeeRole\": {\n    \"roleId\": \"203\",\n    \"salaryScale\": 1.1\n  }\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "update role",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/employee/update-role",
+                                    "path": [
+                                        "human-resource-management",
+                                        "employee",
+                                        "update-role"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"employeeId\": 100,\n  \"roleId\": 201,\n  \"salaryScale\": 2,\n  \"date\": \"2024-4-10\"\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "change Info Employee",
+                            "request": {
+                                "method": "PATCH",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/employee/change-info-employee",
+                                    "path": [
+                                        "human-resource-management",
+                                        "employee",
+                                        "change-info-employee"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"employeeId\": 102,\n  \"email\": \"nguyntrung291@gmail.com\",\n  \"phoneNumber\": \"123\",\n  \"address\": \"4534\"\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "delete employee",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/employee/delete-employee",
+                                    "path": [
+                                        "human-resource-management",
+                                        "employee",
+                                        "delete-employee"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"employeeId\": 101,\n  \"date\": \"2024-4-1\"\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "checkin daily",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/employee/check-in-daily",
+                                    "path": [
+                                        "human-resource-management",
+                                        "employee",
+                                        "check-in-daily"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Timekeeping",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/employee/timekeeping",
+                                    "path": [
+                                        "human-resource-management",
+                                        "employee",
+                                        "timekeeping"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"data\": [\n    {\n      \"employeeId\": 101,\n      \"date\": \"2024/3/5\",\n      \"haveWorking\": true\n    },\n    {\n      \"employeeId\": 100,\n      \"date\": \"2024/3/5\",\n      \"haveWorking\":true\n    }\n  ]\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "calculate-salary-all-in-month",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/employee/calculate-salary-all-in-month?month=2024/2/10",
+                                    "query": [
+                                        {
+                                            "key": "month",
+                                            "value": "2024/2/10"
+                                        }
+                                    ],
+                                    "variable": [],
+                                    "path": [
+                                        "human-resource-management",
+                                        "employee",
+                                        "calculate-salary-all-in-month"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                }
+                            }
+                        },
+                        {
+                            "name": "calculate-my-salary-in-month ",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/employee/calculate-salary-all-in-month?month=2024/2/10",
+                                    "query": [
+                                        {
+                                            "key": "month",
+                                            "value": "2024/2/10"
+                                        }
+                                    ],
+                                    "variable": [],
+                                    "path": [
+                                        "human-resource-management",
+                                        "employee",
+                                        "calculate-salary-all-in-month"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "account",
+                    "item": [
+                        {
+                            "name": "get all account",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/account",
+                                    "path": [
+                                        "human-resource-management",
+                                        "account"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                }
+                            }
+                        },
+                        {
+                            "name": "change password for manager",
+                            "request": {
+                                "method": "GET"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "contract",
+                    "item": [
+                        {
+                            "name": "get contract",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/contract/get-contract?employeeId=103",
+                                    "query": [
+                                        {
+                                            "key": "employeeId",
+                                            "value": "103"
+                                        }
+                                    ],
+                                    "variable": [],
+                                    "path": [
+                                        "human-resource-management",
+                                        "contract",
+                                        "get-contract"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                }
+                            }
+                        },
+                        {
+                            "name": "get my contract ",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/contract/get-my-contract",
+                                    "path": [
+                                        "human-resource-management",
+                                        "contract",
+                                        "get-my-contract"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                }
+                            }
+                        },
+                        {
+                            "name": "cancel contract",
+                            "request": {
+                                "method": "PATCH",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/contract/cancel-contract",
+                                    "path": [
+                                        "human-resource-management",
+                                        "contract",
+                                        "cancel-contract"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"contractId\":2\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "add contract ",
+                            "request": {
+                                "method": "PATCH",
+                                "url": {
+                                    "raw": "http://localhost:8000/human-resource-management/contract/cancel-contract",
+                                    "path": [
+                                        "human-resource-management",
+                                        "contract",
+                                        "cancel-contract"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"contractId\":2\n}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "login",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/auth/login",
+                    "path": [
+                        "auth",
+                        "login"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"user\": 102,\n  \"password\": \"admin\"\n}"
+                }
+            }
+        },
+        {
+            "name": "change password",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/auth/change-password",
+                    "path": [
+                        "auth",
+                        "change-password"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"user\": 999,\n  \"password\": \"admi33n\"\n}"
+                }
+            }
+        },
+        {
+            "name": "test",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/test",
+                    "path": [
+                        "test"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        }
+    ]
+}

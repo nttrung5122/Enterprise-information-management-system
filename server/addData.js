@@ -27,43 +27,61 @@ const {
   SectionDetail,
   SectionMenu,
 } = require("./models");
+const employeeData = [
+  {
+    fullname: "Nguyễn Văn A",
+    email: "<EMAIL>",
+    phoneNumber: "123456789",
+    address: "abc",
+  },
+  {
+    fullname: "abc234",
+    email: "<EMAIL>",
+    phoneNumber: "123456789",
+    address: "abc",
+  },
+  {
+    fullname: "abc123",
+    email: "<EMAIL>",
+    phoneNumber: "123456789",
+    address: "abc",
+  },
+];
+const ingredientData = [
+  {
+    nameIngredient: "chicken",
+    unitCal: "kg"
+  },
+  {
+    nameIngredient: "rice",
+    unitCal: "kg"
+  },
+  {
+    nameIngredient: "pork",
+    unitCal: "kg"
+  }
+]
 
-const addMockupData = async ()=>{
-  const employeeData = [
-    {
-      id:4001,
-      fullname: "Nguyễn Văn A",
-      email: "<EMAIL>",
-      phoneNumber: "123456789",
-      address: "abc",
-    },
-    {
-      fullname: "abc234",
-      email: "<EMAIL>",
-      phoneNumber: "123456789",
-      address: "abc",
-    },
-    {
-      fullname: "abc123",
-      email: "<EMAIL>",
-      phoneNumber: "123456789",
-      address: "abc",
-    },
-  ];
-
-  await  Account.bulkCreate(
+const addMockupData = async () => {
+   const employee = await Employee.bulkCreate(employeeData)
+  await Account.bulkCreate(
     employee.map((employee) => {
-      return {  ...employee, password: "123" };
+      return { employeeId:employee.id, password: "123" };
     })
   );
-}
+  const ingredient = await Ingredient.bulkCreate(ingredientData);
+  await Warehouse.bulkCreate(ingredient.map((ingredient) => {
+    return {
+      ingredientId: ingredient.id,
+      quantity: 0,
+    }
+  }))
+};
 
 sequelize
   .authenticate()
   .then(async (response) => {
     console.log("connected to DB");
-    await addData()
-    
     await addMockupData();
 
     console.log("add data successfully");

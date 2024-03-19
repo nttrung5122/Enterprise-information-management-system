@@ -5,6 +5,9 @@ const Bill = sequelize.define('bill', {
     totalPrice: DataTypes.INTEGER,
     isDone: DataTypes.BOOLEAN,
     date: DataTypes.DATE
+  },
+  {
+    timestamps:false,
   });
 
 module.exports = Bill ;
