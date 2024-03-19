@@ -5,11 +5,12 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const RoleSelect = () => {
-  const [age, setAge] = React.useState("");
+const RoleSelect = ({ handleRoleChange }) => {
+  const [selectedRoleId, setSelectedRoleId] = React.useState("");
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setSelectedRoleId(event.target.value);
+    handleRoleChange(event); // Call handleRoleChange from props
   };
 
   return (
@@ -19,11 +20,11 @@ const RoleSelect = () => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={age}
+          value={selectedRoleId}
           label="role"
           onChange={handleChange}
         >
-          <MenuItem value={203}>Quản lý</MenuItem>
+          <MenuItem value={201}>Quản lý</MenuItem>
           <MenuItem value={203}>Nhân viên</MenuItem>
         </Select>
       </FormControl>

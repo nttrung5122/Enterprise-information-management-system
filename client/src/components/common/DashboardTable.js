@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useEffect, useState } from "react"; // Import useEffect and useState
 import { Button } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,27 +7,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { fetchAllUsers } from "../../services/UserService";
-
+import Box from "@mui/material/Box";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AlertDialog from "./Modal/DeleteUserModal";
-const TableUsers = (props) => {
-  const [users, setUsers] = useState([]); // State to store users data
+import EmployeeInfoModal from "./Modal/EmployeeInfoModal";
+import EditEmployeeModal from "./Modal/EditEmployeeModal";
 
+const TableUsers = ({ users }) => {
   const handleDelete = (employeeId) => {
     console.log("Check user id: ", employeeId);
   };
-
-  useEffect(() => {
-    fetchAllUsers()
-      .then((response) => {
-        console.log("Check data >>>>:", response.data);
-        setUsers(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []); // Empty dependency array means this effect runs once after the first render
 
   return (
     <TableContainer component={Paper}>
@@ -37,9 +25,9 @@ const TableUsers = (props) => {
           <TableRow>
             <TableCell align="center">ID</TableCell>
             <TableCell align="center">Họ và tên</TableCell>
-            <TableCell align="center">Địa chỉ</TableCell>
-            <TableCell align="center">Email</TableCell>
-            <TableCell align="center">Số điện thoại</TableCell>
+            <TableCell align="center">Chức vụ</TableCell>
+            <TableCell align="center">Lương căn bản</TableCell>
+            <TableCell align="center">Hệ số lương</TableCell>
             <TableCell align="center">Điều chỉnh:</TableCell>
           </TableRow>
         </TableHead>
@@ -56,14 +44,24 @@ const TableUsers = (props) => {
                   {user.id}
                 </TableCell>
                 <TableCell align="center">{user.fullname}</TableCell>
-                <TableCell align="center">{user.address}</TableCell>
-                <TableCell align="center">{user.email}</TableCell>
-                <TableCell align="center">{user.phoneNumber}</TableCell>
                 <TableCell align="center">
-                  <Button>
-                    <BorderColorIcon />
-                  </Button>
-                  <AlertDialog userId={user.id} />
+                  {user.employee_statuses.length > 0 &&
+                    user.employee_statuses[0].role.info}
+                </TableCell>
+                <TableCell align="center">
+                  {user.employee_statuses.length > 0 &&
+                    user.employee_statuses[0].role.baseSalary}
+                </TableCell>
+                <TableCell align="center">
+                  {user.employee_statuses.length > 0 &&
+                    user.employee_statuses[0].salaryScale}
+                </TableCell>
+                <TableCell align="center" size="small">
+                  <Box display="flex" alignItems="center" width={100} mx={2}>
+                    <EditEmployeeModal />
+                    <EmployeeInfoModal employee={user} />
+                    <AlertDialog userId={user.id} />
+                  </Box>
                 </TableCell>
               </TableRow>
             )
