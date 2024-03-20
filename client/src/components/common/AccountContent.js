@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import DashboardHeader from "../common/DashboardHeader";
-import DashboardTable from "../common/DashboardTable";
 import { styled } from "@mui/system";
 import SearchInput from "../common/SearchInput";
 import FilterButtonGroup from "../common/FilterButtonGroup";
 import { fetchAllUsers, addNewUser } from "../../services/UserService";
 import AccountsTable from "./AccountsTable";
-export default function DashboardContent() {
+import AccountHeader from "./AccountHeader";
+export default function AccountContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
     padding: "10px", // Add padding for better spacing
@@ -46,7 +45,7 @@ export default function DashboardContent() {
   };
   return (
     <ContentContainer>
-      <DashboardHeader onAddEmployee={handleAddEmployee} />
+      <AccountHeader />
       <div
         style={{
           display: "flex",
@@ -58,7 +57,9 @@ export default function DashboardContent() {
           <FilterButtonGroup style={{ border: "1px groove grey" }} />
         </FilterGroupContainer>
       </div>
-      <DashboardTable users={users} />
+      {/* <DashboardTable users={users} /> */}
+
+      <AccountsTable users={users} />
     </ContentContainer>
   );
 }

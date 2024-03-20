@@ -75,13 +75,17 @@ const handleLogout = () => {
 
 const menuItems = [
   { text: "Màn hình chính", icon: <HomeIcon /> },
-  { text: "Danh sách nhân viên", icon: <PeopleIcon /> },
-  { text: "Danh sách tài khoản", icon: <AccountBoxIcon /> },
+  { text: "Danh sách nhân viên", icon: <PeopleIcon />, section: "employees" },
+  {
+    text: "Danh sách tài khoản",
+    icon: <AccountBoxIcon />,
+    section: "accounts",
+  },
   { text: "Bảng chấm công", icon: <CalendarMonthIcon /> },
   { text: "Bảng lương", icon: <LocalAtmIcon /> },
 ];
 
-export default function MiniDrawer() {
+export default function MiniDrawer({ selectedSection, setSelectedSection }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -121,6 +125,11 @@ export default function MiniDrawer() {
                   justifyContent: open ? "initial" : "center",
                   px: 2.5,
                 }}
+                selected={selectedSection === menuItem.section}
+                onClick={() => {
+                  handleDrawerClose(); // Close the drawer when a menu item is clicked
+                  setSelectedSection(menuItem.section); // Set the selected section
+                }}
               >
                 <ListItemIcon
                   sx={{
@@ -128,6 +137,7 @@ export default function MiniDrawer() {
                     mr: open ? 3 : "auto",
                     justifyContent: "center",
                   }}
+                  selected={selectedSection === menuItem.section}
                 >
                   {menuItem.icon}
                 </ListItemIcon>
