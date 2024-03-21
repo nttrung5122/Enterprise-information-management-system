@@ -9,7 +9,7 @@ const Container = styled("div")({
 });
 
 const Dashboard = () => {
-  const [selectedSection, setSelectedSection] = React.useState("home");
+  const [selectedSection, setSelectedSection] = React.useState("employees");
 
   const handleMenuClick = (section) => {
     setSelectedSection(section);

@@ -74,7 +74,6 @@ const handleLogout = () => {
 };
 
 const menuItems = [
-  { text: "Màn hình chính", icon: <HomeIcon /> },
   { text: "Danh sách nhân viên", icon: <PeopleIcon />, section: "employees" },
   {
     text: "Danh sách tài khoản",
