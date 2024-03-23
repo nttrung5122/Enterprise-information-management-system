@@ -220,7 +220,7 @@ const EmployeeController = {
       }
       const employee = await Employee.findByPk(employeeId);
       if (!employee) {
-        return res.status(403).json("Data is invalid");
+        return res.status(403).json("Data is invalid  56");
       }
 
       const employeeRoleCurrent = await EmployeeStatus.findOne({

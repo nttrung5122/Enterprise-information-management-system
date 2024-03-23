@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -9,29 +9,25 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { createTheme } from "@mui/material/styles";
-import { addNewUser } from "../../../services/UserService";
 import RoleSelect from "./RoleSelect";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 
-export const AddEmployeeModal = () => {
-  const [open, setOpen] = React.useState(false);
-  const [roleId, setRoleId] = React.useState("");
+const EditEmployeeModal = ({ employeeData, updateUserData }) => {
+  const [open, setOpen] = useState(false);
+  const [roleId, setRoleId] = useState(
+    employeeData?.employeeRole?.roleId || ""
+  );
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleRoleChange = (event) => {
     setRoleId(event.target.value); // Update roleId state
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // //Gather form data
+    // Gather form data
     const formData = new FormData(event.target);
-    const employeeInfo = {
+    const updatedEmployeeInfo = {
       fullname: formData.get("fullname"),
       email: formData.get("email"),
       idCode: formData.get("idCode"),
@@ -39,28 +35,39 @@ export const AddEmployeeModal = () => {
       address: formData.get("address"),
       hireDate: formData.get("hireDate"),
     };
-    const contractInfo = {
+    const updatedContractInfo = {
       endDate: formData.get("endDate"),
     };
-    const employeeRole = {
+    const updatedEmployeeRole = {
       roleId: roleId,
       salaryScale: parseFloat(formData.get("salaryScale")),
     };
 
-    const userData = {
-      employeeInfo: employeeInfo,
-      contractInfo: contractInfo,
-      employeeRole: employeeRole,
+    const updatedUserData = {
+      employeeInfo: updatedEmployeeInfo,
+      contractInfo: updatedContractInfo,
+      employeeRole: updatedEmployeeRole,
     };
-    addNewUser(userData);
+
+    updateUserData(updatedUserData);
+
+    handleClose(); // Close the modal after submission
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
     setOpen(false);
   };
+
   const theme = createTheme();
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
-        Thêm nhân viên
+      <Button onClick={handleOpen}>
+        <BorderColorIcon />
       </Button>
       <Dialog
         open={open}
@@ -70,7 +77,7 @@ export const AddEmployeeModal = () => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Thêm nhân viên</DialogTitle>
+        <DialogTitle>Chỉnh sửa thông tin nhân viên</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -160,9 +167,11 @@ export const AddEmployeeModal = () => {
 
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
-          <Button type="submit">Thêm nhân viên</Button>
+          <Button type="submit">Lưu</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
   );
 };
+
+export default EditEmployeeModal;
