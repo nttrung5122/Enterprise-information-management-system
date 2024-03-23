@@ -28,7 +28,7 @@ const AccountController = {
         return res.status(403).json("account is disabled");
       }
       req.session.account = account;
-      account.password;
+      account.password = "";
       return res.status(200).json(account);
     } catch (error) {
       console.log(error);

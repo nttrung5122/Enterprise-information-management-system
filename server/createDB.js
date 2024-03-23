@@ -65,6 +65,9 @@ const role = [
 ];
 
 const addData = async () => {
+  await Permission.bulkCreate(permission);
+  await Role.bulkCreate(role);
+
   await Employee.create({
     id: 100,
     fullname: "admin",
@@ -88,11 +91,11 @@ const addData = async () => {
   });
 
 
-  await Permission.bulkCreate(permission);
-  await Role.bulkCreate(role);
+
+
   await AccountPermission.create({
     accountId: 100,
-    permissionId: 101,
+    permissionId: ADMIN_PERMISSION,
   });
   await EmployeeStatus.create({
     employeeId: 100,
@@ -112,5 +115,6 @@ const addData = async () => {
 sequelize.sync({ force: true }).then(async () => {
   console.log("Drop and re-sync db.");
   await addData();
+}).then(()=>{
   console.log("add data successfully");
 });

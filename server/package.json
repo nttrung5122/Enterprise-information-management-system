@@ -32,7 +32,8 @@
       "**/test/**",
       "**/docs/**",
       "addData.js",
-      "createDB.js"
+      "createDB.js",
+      "**/mockup/**"
     ],
     "delay": 2500
   }

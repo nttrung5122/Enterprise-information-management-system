@@ -1,0 +1,715 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "human-resource-management",
+    "dateExported": "2024-03-23T07:27:48.279Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "employee",
+            "containerId": "",
+            "created": "2024-03-22T02:29:30.924Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "52496dbe-e4df-4a53-9c1b-4d125f293eff",
+            "name": "account",
+            "containerId": "",
+            "created": "2024-03-22T02:29:30.925Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "102e742b-1a60-4b76-80d6-fc977610f30b",
+            "name": "contract",
+            "containerId": "",
+            "created": "2024-03-22T02:29:30.926Z",
+            "sortNum": 50000
+        },
+        {
+            "_id": "f384a79e-c0ab-46a0-a74b-d14424af9357",
+            "name": "role",
+            "containerId": "",
+            "created": "2024-03-22T02:29:30.927Z",
+            "sortNum": 60000
+        },
+        {
+            "_id": "656ad830-c104-4010-9e82-22cb30748d5b",
+            "name": "leave application",
+            "containerId": "",
+            "created": "2024-03-22T08:02:00.360Z",
+            "sortNum": 70000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "6bf3ee28-6bdb-43a8-9092-eaf0b8e9cddc",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "",
+            "name": "login",
+            "url": "http://localhost:8000/auth/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-22T02:29:30.924Z",
+            "modified": "2024-03-22T02:29:30.924Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"user\": 103,\n  \"password\": \"admin\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "2839dfc0-dc93-4243-bc0f-2ffc88bdc676",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "get all employee",
+            "url": "http://localhost:8000/human-resource-management/employee",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-03-22T02:29:30.926Z",
+            "modified": "2024-03-22T02:29:30.926Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "98d743e7-ded8-478a-ac0c-0615381e54e3",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "",
+            "name": "change password",
+            "url": "http://localhost:8000/auth/change-password",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-03-22T02:29:30.925Z",
+            "modified": "2024-03-22T02:29:30.925Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"user\": 999,\n  \"password\": \"admi33n\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "1b0a10d5-3e93-4f1b-a24f-2d75e10321f5",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "get by id",
+            "url": "http://localhost:8000/human-resource-management/employee/103",
+            "method": "GET",
+            "sortNum": 32500,
+            "created": "2024-03-22T02:29:30.961Z",
+            "modified": "2024-03-23T04:06:13.979Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "0b95457a-6ddc-4c9d-9093-ba8a65ac2627",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "",
+            "name": "test",
+            "url": "http://localhost:8000/test",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-03-22T02:29:30.927Z",
+            "modified": "2024-03-22T02:29:30.927Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "343f29b9-2254-4ea1-985c-47870d443fe2",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "add employee",
+            "url": "http://localhost:8000/human-resource-management/employee/add-employee",
+            "method": "POST",
+            "sortNum": 55000,
+            "created": "2024-03-22T02:29:30.928Z",
+            "modified": "2024-03-22T02:29:30.928Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"employeeInfo\": {\n    \"fullname\": \"Nguyễn Thành Trung 1\",\n    \"idCode\":\"3242549043543\",\n    \"email\": \"\",\n    \"phoneNumber\": \"\",\n    \"address\": \"\",\n    \"hireDate\": \"2023-12-28\"\n  },\n  \"contractInfo\": {\n    \"endDate\": \"2026-03-07\"\n  },\n  \"employeeRole\": {\n    \"roleId\": \"203\",\n    \"salaryScale\": 1.1\n  }\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c74e17eb-7098-47f7-accc-8a6e0de5537b",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "update role",
+            "url": "http://localhost:8000/human-resource-management/employee/update-role",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-03-22T02:29:30.929Z",
+            "modified": "2024-03-22T02:29:30.929Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"employeeId\": 100,\n  \"roleId\": 201,\n  \"salaryScale\": 2,\n  \"date\": \"2024-4-10\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "41681122-5911-44c5-8ed4-8abcc01b328a",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "change Info Employee",
+            "url": "http://localhost:8000/human-resource-management/employee/change-info-employee",
+            "method": "PATCH",
+            "sortNum": 70000,
+            "created": "2024-03-22T02:29:30.930Z",
+            "modified": "2024-03-22T02:29:30.930Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"employeeId\": 102,\n  \"email\": \"nguyntrung291@gmail.com\",\n  \"phoneNumber\": \"123\",\n  \"address\": \"4534\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "f2bb8696-47b8-4439-9030-7825467172ea",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "delete employee",
+            "url": "http://localhost:8000/human-resource-management/employee/delete-employee",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2024-03-22T02:29:30.931Z",
+            "modified": "2024-03-22T02:29:30.931Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"employeeId\": 101,\n  \"date\": \"2024-4-1\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e7e9c2f8-5801-4dcd-a7fc-c98bddc14763",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "checkin daily",
+            "url": "http://localhost:8000/human-resource-management/employee/check-in-daily",
+            "method": "POST",
+            "sortNum": 90000,
+            "created": "2024-03-22T02:29:30.932Z",
+            "modified": "2024-03-22T02:29:30.932Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "57572dd4-db2c-43d0-9b6b-15b843e16039",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "Timekeeping",
+            "url": "http://localhost:8000/human-resource-management/employee/timekeeping",
+            "method": "POST",
+            "sortNum": 100000,
+            "created": "2024-03-22T02:29:30.934Z",
+            "modified": "2024-03-22T02:29:30.934Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"data\": [\n    {\n      \"employeeId\": 101,\n      \"date\": \"2024/3/5\",\n      \"haveWorking\": true\n    },\n    {\n      \"employeeId\": 100,\n      \"date\": \"2024/3/5\",\n      \"haveWorking\":true\n    }\n  ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "52e03962-d5a0-44bb-b6c9-9dd2a0daa478",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "get my salary in month",
+            "url": "http://localhost:8000/human-resource-management/employee/calculate-my-salary/?month=2&year=2021&employeeId=103",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2024-03-22T02:29:30.935Z",
+            "modified": "2024-03-22T16:36:05.744Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "month",
+                    "value": "2",
+                    "isPath": false
+                },
+                {
+                    "name": "year",
+                    "value": "2021",
+                    "isPath": false
+                },
+                {
+                    "name": "employeeId",
+                    "value": "103",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "fd8a1f3f-08fa-4fa2-acaf-6c7c3b0ce086",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "statictis all salary by month",
+            "url": "http://localhost:8000/human-resource-management/employee/statictis-all-employee-salary-by-month?year=2023",
+            "method": "GET",
+            "sortNum": 122500,
+            "created": "2024-03-22T17:28:18.114Z",
+            "modified": "2024-03-23T07:19:52.035Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2023",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "7f4614e9-d460-4f4c-b0e6-629d67d56ce0",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "statictis my salary by month ",
+            "url": "http://localhost:8000/human-resource-management/employee/statictis-my-salary-by-month?year=2023&employeeId=103",
+            "method": "GET",
+            "sortNum": 123125,
+            "created": "2024-03-23T07:25:23.273Z",
+            "modified": "2024-03-23T07:26:36.248Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2023",
+                    "isPath": false
+                },
+                {
+                    "name": "employeeId",
+                    "value": "103",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "7cb7f8e8-9c40-4454-bc17-7641d8283cfb",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "statictis all salary by year",
+            "url": "http://localhost:8000/human-resource-management/employee/statictis-all-employee-salary-by-year?2=2023&1=2022&3=2024",
+            "method": "GET",
+            "sortNum": 123750,
+            "created": "2024-03-22T17:33:01.314Z",
+            "modified": "2024-03-23T07:20:39.447Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "2",
+                    "value": "2023",
+                    "isPath": false
+                },
+                {
+                    "name": "1",
+                    "value": "2022",
+                    "isPath": false
+                },
+                {
+                    "name": "3",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "c5198daf-981a-4058-8286-da9ec6e4a4f2",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "statictis my salary by year ",
+            "url": "http://localhost:8000/human-resource-management/employee/statictis-my-salary-by-year?2=2023&1=2022&3=2024&employeeId=103",
+            "method": "GET",
+            "sortNum": 124375,
+            "created": "2024-03-23T07:21:05.892Z",
+            "modified": "2024-03-23T07:23:29.348Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "2",
+                    "value": "2023",
+                    "isPath": false
+                },
+                {
+                    "name": "1",
+                    "value": "2022",
+                    "isPath": false
+                },
+                {
+                    "name": "3",
+                    "value": "2024",
+                    "isPath": false
+                },
+                {
+                    "name": "employeeId",
+                    "value": "103",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "68ed4772-5bdd-460f-878a-14e1baa71e98",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "get my salary in year",
+            "url": "http://localhost:8000/human-resource-management/employee/calculate-my-salary-in-year/?year=2023&employeeId=102",
+            "method": "GET",
+            "sortNum": 125000,
+            "created": "2024-03-22T16:45:49.613Z",
+            "modified": "2024-03-23T06:57:19.044Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2023",
+                    "isPath": false
+                },
+                {
+                    "name": "employeeId",
+                    "value": "102",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "c35c2371-c57b-4559-8a83-a24b28c0e995",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "get all employee salary in year ",
+            "url": "http://localhost:8000/human-resource-management/employee/calculate-salary-all-in-year/?year=2024",
+            "method": "GET",
+            "sortNum": 127500,
+            "created": "2024-03-22T17:00:47.492Z",
+            "modified": "2024-03-22T17:03:28.546Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "0f98961d-9d09-4040-b3cd-c0c288c464e4",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "get all employee salary in month ",
+            "url": "http://localhost:8000/human-resource-management/employee/calculate-salary-all-in-month?month=2&year=2023",
+            "method": "GET",
+            "sortNum": 130000,
+            "created": "2024-03-22T02:29:30.936Z",
+            "modified": "2024-03-22T16:35:16.955Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "month",
+                    "value": "2",
+                    "isPath": false
+                },
+                {
+                    "name": "year",
+                    "value": "2023",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "32eb3691-dade-4974-b2ff-67725629bedb",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "52496dbe-e4df-4a53-9c1b-4d125f293eff",
+            "name": "get all account",
+            "url": "http://localhost:8000/human-resource-management/account",
+            "method": "GET",
+            "sortNum": 130000,
+            "created": "2024-03-22T02:29:30.937Z",
+            "modified": "2024-03-22T02:29:30.937Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "5b938194-0567-4240-b3fe-8a68380bda7e",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "52496dbe-e4df-4a53-9c1b-4d125f293eff",
+            "name": "change password for manager",
+            "url": "",
+            "method": "GET",
+            "sortNum": 140000,
+            "created": "2024-03-22T02:29:30.938Z",
+            "modified": "2024-03-22T02:29:30.938Z",
+            "headers": []
+        },
+        {
+            "_id": "bf0bf258-910a-45a4-bf87-783bff6ea32b",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "102e742b-1a60-4b76-80d6-fc977610f30b",
+            "name": "get contract",
+            "url": "http://localhost:8000/human-resource-management/contract/get-contract/101",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2024-03-22T02:29:30.939Z",
+            "modified": "2024-03-22T02:29:30.939Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "20f0a3aa-9f31-4476-8059-8753ccc201c7",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "102e742b-1a60-4b76-80d6-fc977610f30b",
+            "name": "get my contract ",
+            "url": "http://localhost:8000/human-resource-management/contract/get-my-contract",
+            "method": "GET",
+            "sortNum": 160000,
+            "created": "2024-03-22T02:29:30.940Z",
+            "modified": "2024-03-22T02:29:30.940Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "b8c24162-555e-4dd9-9cf3-62ba23fe0332",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "102e742b-1a60-4b76-80d6-fc977610f30b",
+            "name": "cancel contract",
+            "url": "http://localhost:8000/human-resource-management/contract/cancel-contract",
+            "method": "PATCH",
+            "sortNum": 160000,
+            "created": "2024-03-22T02:29:30.941Z",
+            "modified": "2024-03-22T02:29:30.941Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"contractId\":2\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "a87bf6db-09fb-4e2f-a120-794e5b0022f7",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "102e742b-1a60-4b76-80d6-fc977610f30b",
+            "name": "add contract ",
+            "url": "http://localhost:8000/human-resource-management/contract/cancel-contract",
+            "method": "PATCH",
+            "sortNum": 170000,
+            "created": "2024-03-22T02:29:30.942Z",
+            "modified": "2024-03-22T02:29:30.942Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"contractId\":2\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "6e0ce4d5-3df2-4785-adbe-79aab118e820",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "f384a79e-c0ab-46a0-a74b-d14424af9357",
+            "name": "get all role",
+            "url": "http://localhost:8000/human-resource-management/role",
+            "method": "GET",
+            "sortNum": 180000,
+            "created": "2024-03-22T02:29:30.943Z",
+            "modified": "2024-03-22T02:29:30.943Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "5199b4a7-c96a-41e6-b435-9039d37d390f",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "f384a79e-c0ab-46a0-a74b-d14424af9357",
+            "name": "get role",
+            "url": "http://localhost:8000/human-resource-management/role/206",
+            "method": "GET",
+            "sortNum": 190000,
+            "created": "2024-03-22T02:29:30.944Z",
+            "modified": "2024-03-22T02:29:30.944Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "617cbf82-1cde-4388-a0af-1d64b85697ea",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "f384a79e-c0ab-46a0-a74b-d14424af9357",
+            "name": "create role",
+            "url": "http://localhost:8000/human-resource-management/role",
+            "method": "POST",
+            "sortNum": 200000,
+            "created": "2024-03-22T02:29:30.945Z",
+            "modified": "2024-03-22T02:29:30.945Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"info\": \"Test\",\n  \"baseSalary\": 10000\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "0235c6c8-46aa-4739-9b2c-75e5595da84f",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "f384a79e-c0ab-46a0-a74b-d14424af9357",
+            "name": "update role ",
+            "url": "http://localhost:8000/human-resource-management/role",
+            "method": "PATCH",
+            "sortNum": 210000,
+            "created": "2024-03-22T02:29:30.946Z",
+            "modified": "2024-03-22T02:29:30.946Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"roleId\":206,\n  \"info\": \"Test1\",\n  \"baseSalary\": 50000\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e16e34f8-7307-4110-8928-680340508061",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "f384a79e-c0ab-46a0-a74b-d14424af9357",
+            "name": "del role  ",
+            "url": "http://localhost:8000/human-resource-management/role/206",
+            "method": "DELETE",
+            "sortNum": 220000,
+            "created": "2024-03-22T02:29:30.947Z",
+            "modified": "2024-03-22T02:29:30.947Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "b4b7d131-bb2d-4400-b89d-4dbff7946548",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "52496dbe-e4df-4a53-9c1b-4d125f293eff",
+            "name": "get all permission",
+            "url": "http://localhost:8000/human-resource-management/account/get-all-permission",
+            "method": "GET",
+            "sortNum": 260000,
+            "created": "2024-03-22T02:29:30.975Z",
+            "modified": "2024-03-22T03:15:01.027Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "4352af17-1c31-4d54-987d-8d476fa20f40",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "52496dbe-e4df-4a53-9c1b-4d125f293eff",
+            "name": "change permission",
+            "url": "http://localhost:8000/human-resource-management/account/change-permission",
+            "method": "PATCH",
+            "sortNum": 270000,
+            "created": "2024-03-22T03:27:42.816Z",
+            "modified": "2024-03-22T06:39:38.784Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"accountId\":100,\n  \"newPermissions\":[101]\n}",
+                "form": []
+            },
+            "reqType": "patch",
+            "tests": []
+        },
+        {
+            "_id": "bc8a8775-1c60-4e08-ba41-958f66518acc",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "656ad830-c104-4010-9e82-22cb30748d5b",
+            "name": "get all",
+            "url": "http://localhost:8000/human-resource-management/leave-application",
+            "method": "GET",
+            "sortNum": 280000,
+            "created": "2024-03-22T08:18:30.847Z",
+            "modified": "2024-03-22T08:19:28.287Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "ef31cfab-bf24-442a-9366-b7886144480f",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "656ad830-c104-4010-9e82-22cb30748d5b",
+            "name": "send application",
+            "url": "http://localhost:8000/human-resource-management/leave-application/send-application",
+            "method": "POST",
+            "sortNum": 290000,
+            "created": "2024-03-22T08:40:25.371Z",
+            "modified": "2024-03-23T06:30:14.813Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"employeeId\":103,\n  \"startDate\":\"2023/3/22\",\n  \"numberOfDaysOff\":7,\n  \"reason\":\"Nghỉ đẻ\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "ae83ae0f-71a9-40c5-9a17-9b9701acbf6c",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "656ad830-c104-4010-9e82-22cb30748d5b",
+            "name": "accept application",
+            "url": "http://localhost:8000/human-resource-management/leave-application/accept-application",
+            "method": "PATCH",
+            "sortNum": 300000,
+            "created": "2024-03-22T09:50:12.946Z",
+            "modified": "2024-03-22T16:06:25.894Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"leaveApplicationId\":1,\n  \"isApprove\": true,\n  \"numberOfDaysAllowed\":6\n}",
+                "form": []
+            },
+            "reqType": "patch",
+            "tests": []
+        }
+    ]
+}
