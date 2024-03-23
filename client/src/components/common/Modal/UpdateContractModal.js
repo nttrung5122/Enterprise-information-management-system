@@ -11,8 +11,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { createTheme } from "@mui/material/styles";
 import RoleSelect from "./RoleSelect";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import { updateUserContract } from "../../../services/UserService";
 
-const UpdateContractModal = ({ selectedUser, updateUserData }) => {
+const UpdateContractModal = ({ selectedUser }) => {
   const [open, setOpen] = useState(false);
   const [roleId, setRoleId] = useState(
     selectedUser?.employeeRole?.roleId || ""
@@ -27,24 +28,12 @@ const UpdateContractModal = ({ selectedUser, updateUserData }) => {
 
     // Gather form data
     const formData = new FormData(event.target);
-    const updatedEmployeeInfo = {
-      address: formData.get("address"),
-      hireDate: formData.get("hireDate"),
-    };
+
     const updatedContractInfo = {
-      endDate: formData.get("endDate"),
-    };
-    const updatedEmployeeRole = {
+      roleId: roleId,
       salaryScale: parseFloat(formData.get("salaryScale")),
+      date: formData.get("startDate"),
     };
-
-    const updatedUserData = {
-      employeeInfo: updatedEmployeeInfo,
-      contractInfo: updatedContractInfo,
-      employeeRole: updatedEmployeeRole,
-    };
-
-    updateUserData(updatedUserData);
 
     handleClose();
   };

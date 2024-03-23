@@ -124,7 +124,7 @@ export const AddEmployeeModal = () => {
               label="Ngày tuyển"
               fullWidth
               variant="standard"
-              sx={{ marginTop: 3 }}
+              sx={{ ml: 2, mt: 3 }}
             />
             <DatePicker
               id="endDate"
@@ -132,7 +132,7 @@ export const AddEmployeeModal = () => {
               label="Ngày hết hợp đồng"
               fullWidth
               variant="standard"
-              sx={{ marginTop: 3, marginLeft: 2 }}
+              sx={{ mt: 3, ml: 2 }}
             />
           </LocalizationProvider>
 

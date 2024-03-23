@@ -42,5 +42,21 @@ const deleteUser = (employeeId, date) => {
       throw error.response.data;
     });
 };
+const updateUserContract = (employeeId, roleId, salaryScale, date) => {
+  return axios
+    .post("/human-resource-management/employee/update-role", {
+      employeeId: employeeId,
+      roleId: roleId,
+      salaryScale: salaryScale,
+      date: date,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error:", error);
+      throw error.response.data;
+    });
+};
 
-export { loginApi, fetchAllUsers, addNewUser, deleteUser };
+export { loginApi, fetchAllUsers, addNewUser, deleteUser, updateUserContract };
