@@ -8,7 +8,9 @@ const {
   Permission,
   Role,
   TimeKeeping,
-  Contract
+  Contract,
+  LeaveApplication,
+  LeaveApplicationDetail
 } = require("./human-resource-management");
 
 const {
@@ -48,6 +50,12 @@ Employee.hasMany(EmployeeStatus);
 
 EmployeeStatus.belongsTo(Role);
 Role.hasMany(EmployeeStatus);
+
+Employee.hasOne(LeaveApplication);
+LeaveApplication.belongsTo(Employee);
+
+LeaveApplicationDetail.belongsTo(Employee);
+Employee.hasMany(LeaveApplicationDetail);
 
 // Employee.belongsToMany(Role,{through:{
 //   model:EmployeeStatus,
@@ -148,5 +156,7 @@ module.exports = {
   Recipe,
   SectionDetail,
   SectionMenu,
-  Contract
+  Contract,
+  LeaveApplication,
+  LeaveApplicationDetail
 };

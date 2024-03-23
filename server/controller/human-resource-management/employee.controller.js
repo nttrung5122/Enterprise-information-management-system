@@ -6,6 +6,7 @@ const {
   Account,
   TimeKeeping,
   sequelize,
+  LeaveApplicationDetail,
 } = require("../../models");
 const { Op } = require("sequelize");
 const moment = require("moment");
@@ -30,14 +31,14 @@ const EmployeeController = {
   },
   getById: async (req, res) => {
     try {
-      const id =  req.params?.id;
-      const employee = await Employee.findByPk(id,{
-        include:{
+      const id = req.params?.id;
+      const employee = await Employee.findByPk(id, {
+        include: {
           model: EmployeeStatus,
           include: Role,
-        }
+        },
       });
-      if(!employee) {
+      if (!employee) {
         return res.status(404).json("id not found");
       }
       res.status(200).json(employee);
@@ -62,7 +63,7 @@ const EmployeeController = {
       const employee = await Employee.findByPk(employeeId);
       const role = await Role.findByPk(roleId);
       if (!employee || !role) {
-        return res.status(403).json("Data is invalid 0");
+        return res.status(403).json("Data is invalid");
       }
 
       const employeeRoleCurrent = await EmployeeStatus.findOne({
@@ -76,17 +77,15 @@ const EmployeeController = {
         employeeRoleCurrent.salaryScale == salaryScale
       ) {
         console.log(employeeRoleCurrent);
-        return res.status(403).json("Data is invalid 1");
+        return res.status(403).json("Data is invalid");
       }
       // console.log(Date.parse(employeeRoleCurrent.startDate)-Date.parse(date))
-      if (
-        Date.parse(employeeRoleCurrent.startDate) - Date.parse(dateFormat) >=
-        0
-      ) {
+      if (moment(employeeRoleCurrent.startDate).isAfter(date, "month")) {
         // date smaller than start date
-        return res.status(403).json("Data is invalid 2");
+        return res.status(403).json("Data is invalid");
       }
-      await employeeRoleCurrent.update({ endDate: dateFormat });
+      const endDate = moment(date).subtract(1, "month");
+      await employeeRoleCurrent.update({ endDate });
       await EmployeeStatus.create({
         employeeId,
         roleId,
@@ -107,6 +106,7 @@ const EmployeeController = {
     }
   },
   addEmployee: async (req, res) => {
+    const transaction = await sequelize.transaction();
     try {
       const { employeeInfo, contractInfo, employeeRole } = req.body;
 
@@ -155,27 +155,37 @@ const EmployeeController = {
       }
 
       const employee = await Employee.create(employeeInfo);
-      await Account.create({
-        employeeId: employee.id,
-        password:'123456' ,
-      })
-      await Contract.create({
-        ...contractInfo,
-        startDate: employee.hireDate,
-        employeeId: employee.id,
-      });
-      await EmployeeStatus.create({
-        ...employeeRole,
-        employeeId: employee.id,
-        startDate: employee.hireDate,
-      });
+      await Account.create(
+        {
+          employeeId: employee.id,
+          password: "123456",
+        },
+        { transaction: transaction }
+      );
+      await Contract.create(
+        {
+          ...contractInfo,
+          startDate: employee.hireDate,
+          employeeId: employee.id,
+        },
+        { transaction: transaction }
+      );
+      await EmployeeStatus.create(
+        {
+          ...employeeRole,
+          employeeId: employee.id,
+          startDate: employee.hireDate,
+        },
+        { transaction: transaction }
+      );
       const newEmployee = await Employee.findByPk(employee.id, {
         include: [Contract, { model: EmployeeStatus, include: Role }],
       });
-
+      await transaction.commit();
       return res.status(200).json(newEmployee);
     } catch (error) {
       console.log(error);
+      await transaction.rollback();
       return res.status(500).json(error);
     }
   },
@@ -200,6 +210,7 @@ const EmployeeController = {
     }
   },
   deleteEmployee: async (req, res) => {
+    // const transaction = await sequelize.transaction();
     try {
       //TODO: change isWorking, disable account, change employee status
       const employeeId = req.body?.employeeId;
@@ -285,82 +296,106 @@ const EmployeeController = {
       res.status(500).json("You have already checked in");
     }
   },
+  calSalaryInMonth: async (year, month, employeeId) => {
+    const date = moment({
+      y: year,
+      M: month,
+      day: 15,
+    }).format("YYYY-MM-DD");
+    const employeeStatus = await EmployeeStatus.findOne({
+      where: {
+        startDate: {
+          [Op.lt]: date,
+        },
+        endDate: {
+          [Op.or]: {
+            [Op.is]: null,
+            [Op.gt]: date,
+          },
+        },
+        employeeId: employeeId,
+      },
+      include: [Role],
+    });
+    if (!employeeStatus) {
+      return {
+        employeeId,
+        countOfDayOffWithPay: 0,
+        countOfWorkingDay: 0,
+        totalPaidDay: 0,
+        salary: 0,
+      };
+    }
+    const baseSalary =
+      employeeStatus.salaryScale * employeeStatus.role.baseSalary;
+
+    const firstDay = moment({
+      y: year,
+      M: month,
+    })
+      .startOf("month")
+      .format("YYYY-MM-DD");
+    const lastDay = moment({
+      y: year,
+      M: month,
+    })
+      .endOf("month")
+      .format("YYYY-MM-DD");
+    const timekeeping = await TimeKeeping.findAll({
+      where: {
+        date: {
+          [Op.lte]: lastDay,
+          [Op.gte]: firstDay,
+        },
+        haveWorking: true,
+        employeeId,
+      },
+      attributes: [
+        [sequelize.fn("COUNT", sequelize.col("employeeId")), "count"],
+      ],
+    });
+    const countOfDaysOffAllowed = await LeaveApplicationDetail.findAll({
+      where: {
+        date: {
+          [Op.lte]: lastDay,
+          [Op.gte]: firstDay,
+        },
+        havePay: true,
+        employeeId,
+      },
+      attributes: [
+        [sequelize.fn("COUNT", sequelize.col("employeeId")), "count"],
+      ],
+    });
+    const countOfWorkingDay = timekeeping[0].getDataValue("count");
+    const countOfDayOffWithPay = countOfDaysOffAllowed[0].getDataValue("count");
+    const totalPaidDay = countOfWorkingDay + countOfDayOffWithPay;
+    const salary = (totalPaidDay / 26) * baseSalary;
+    // console.log(timekeeping)
+    // console.log(employeeStatus)
+    return {
+      employeeId,
+      countOfDayOffWithPay,
+      countOfWorkingDay,
+      totalPaidDay,
+      salary,
+    };
+  },
   calculateSalaryAllEmployeeInMonth: async (req, res) => {
     try {
-      //TODO: check user is hr,
-      const data = req.query?.month;
-      if (!data) return res.status(401).json("Data is invalid");
-      const date = new Date();
-      const y = date.getFullYear(),
-        m = date.getMonth();
-      const firstDay = new Date(y, m, 0);
-      const lastDay = new Date(y, m + 1, 1);
-      console.log(firstDay, lastDay);
-
-      //todo check role in time
-      const employees = await Employee.findAll({
-        include: [
-          {
-            model: EmployeeStatus,
-            include: Role,
-          },
-        ],
-      });
-      const salaryPerEmp = employees.map((employee) => {
-        const salary = employee.employee_statuses.reduce(
-          (previousValue, currentValue) => {
-            if (currentValue.endDate === null) {
-              return currentValue.role.baseSalary * currentValue.salaryScale;
-            }
-            return previousValue;
-          },
-          0
-        );
-        return {
-          employeeId: employee.id,
-          salary,
-        };
-      });
-      const timekeeping = await TimeKeeping.findAll({
-        where: {
-          date: {
-            [Op.lt]: lastDay,
-            [Op.gt]: firstDay,
-          },
-          haveWorking: true,
-        },
-        attributes: [
-          "employeeId",
-          [sequelize.fn("COUNT", sequelize.col("employeeId")), "count"],
-        ],
-        group: "employeeId",
-      });
-      const timekeepingMap = timekeeping.reduce(
-        (previousValue, currentValue) => {
-          previousValue[currentValue.employeeId] =
-            currentValue.getDataValue("count");
-          return previousValue;
-        },
-        {}
+      const month = req.query?.month;
+      const year = req.query?.year;
+      if (!month || !year) {
+        return res.status(401).json("Data is invalid");
+      }
+      const employees = await Employee.findAll();
+      const data = await Promise.all(
+        employees.map((employee) => {
+          return EmployeeController.calSalaryInMonth(year, month, employee.id);
+        })
       );
-      // const timekeepingMap =  new Map(timekeeping.map(i => [i.employeeId, i.count]));
-      console.log(timekeepingMap);
-      const salaryArray = salaryPerEmp.map((employee) => {
-        const countDay = timekeepingMap[employee.employeeId]
-          ? timekeepingMap[employee.employeeId]
-          : 0;
-        const scale = countDay != 0 ? countDay / 26 : 0;
-        const salary = employee.salary * scale;
-        return {
-          employeeId: employee.employeeId,
-          salaryBase: employee.salary,
-          salary: Math.floor(salary),
-          day: countDay,
-        };
-      });
-      //TODO: get  all: role, employee status, TimeKeeping
-      //TODO: calculate salary
-      res.status(200).json(salaryArray);
+
+      return res.status(200).json(data);
     } catch (error) {
       console.log(error);
       res.status(500).json(error);
@@ -370,22 +405,308 @@ const EmployeeController = {
     try {
       //TODO: get role, employee status, TimeKeeping
       //TODO: calculate salary of user
-    } catch (error) {}
+      const month = req.query?.month;
+      const year = req.query?.year;
+      const employeeId = req.query?.employeeId;
+      if (!month || !year || !employeeId) {
+        return res.status(401).json("Data is invalid");
+      }
+      const data = await EmployeeController.calSalaryInMonth(
+        year,
+        month,
+        employeeId
+      );
+
+      return res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
   },
-  getSalaryAllInRange: async (req, res) => {
-    try {
-      //TODO: check user is hr
-      //TODO: get range
-      //TODO: get all role, employee status, TimeKeeping
-      //TODO: calculate salary of user
-    } catch (error) {}
+  //need to optimize
+  calSalaryInYear: async (year, employeeId) => {
+    const monthArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    const data = await Promise.all(
+      monthArr.map((month) => {
+        return EmployeeController.calSalaryInMonth(year, month, employeeId);
+      })
+    );
+    const totalData = {
+      employeeId,
+      countOfDayOffWithPay: 0,
+      countOfWorkingDay: 0,
+      totalPaidDay: 0,
+      salary: 0,
+    };
+
+    data.forEach((item) => {
+      totalData.countOfDayOffWithPay += item.countOfDayOffWithPay;
+      totalData.countOfWorkingDay += item.countOfWorkingDay;
+      totalData.totalPaidDay += item.totalPaidDay;
+      totalData.salary += item.salary;
+    });
+    return totalData;
   },
-  getSalaryInRange: async (req, res) => {
+  calSalaryInYearOptimize: async (year, employeeId) => {
+    const firstDay = moment({
+      y: year,
+    })
+      .startOf("year")
+      .format("YYYY-MM-DD");
+    const lastDay = moment({
+      y: year,
+    })
+      .endOf("year")
+      .format("YYYY-MM-DD");
+    let employeeStatus = await EmployeeStatus.findAll({
+      where: {
+        employeeId,
+        [Op.or]: [
+          {
+            startDate: {
+              [Op.lte]: lastDay,
+              [Op.gte]: firstDay,
+            },
+          },
+          {
+            endDate: {
+              [Op.lte]: lastDay,
+              [Op.gte]: firstDay,
+            },
+          },
+        ],
+      },
+      include: [Role],
+      order: ["startDate"],
+    });
+
+    if (!employeeStatus || !employeeStatus.length) {
+      return {
+        employeeId,
+        countOfDayOffWithPay: 0,
+        countOfWorkingDay: 0,
+        totalPaidDay: 0,
+        salary: 0,
+      };
+    }
+    const compareDates = (d1, d2) => {
+      let date1 = new Date(d1).getTime();
+      let date2 = new Date(d2).getTime();
+
+      return date1 > date2;
+    };
+
+    employeeStatus = employeeStatus.map((status) => {
+      const startDate = compareDates(status.startDate, firstDay)
+        ? status.startDate
+        : firstDay;
+
+      const endDate =
+        compareDates(status.endDate, lastDay) || !status.endDate
+          ? lastDay
+          : status.endDate;
+      return {
+        baseSalary: status.salaryScale * status.role.baseSalary,
+        startDate,
+        endDate,
+      };
+    });
+
+    const timekeeping = await Promise.all(
+      employeeStatus.map((status) => {
+        return TimeKeeping.findAll({
+          where: {
+            date: {
+              [Op.gte]: status.startDate,
+              [Op.lte]: status.endDate,
+            },
+            haveWorking: true,
+            employeeId,
+          },
+          attributes: [
+            [sequelize.fn("COUNT", sequelize.col("employeeId")), "count"],
+          ],
+        });
+      })
+    );
+    const countOfDaysOffAllowed = await Promise.all(
+      employeeStatus.map((status) => {
+        return LeaveApplicationDetail.findAll({
+          where: {
+            date: {
+              [Op.gte]: status.startDate,
+              [Op.lte]: status.endDate,
+            },
+            havePay: true,
+            employeeId,
+          },
+          attributes: [
+            [sequelize.fn("COUNT", sequelize.col("employeeId")), "count"],
+          ],
+        });
+      })
+    );
+    const totalData = {
+      employeeId,
+      countOfDayOffWithPay: 0,
+      countOfWorkingDay: 0,
+      totalPaidDay: 0,
+      salary: 0,
+    };
+    const dataPerState = [];
+    employeeStatus.forEach((value, index, array) => {
+      const countOfWorkingDay = timekeeping[index][0].getDataValue("count");
+      const countOfDayOffWithPay =
+        countOfDaysOffAllowed[index][0].getDataValue("count");
+      const totalPaidDay = countOfWorkingDay + countOfDayOffWithPay;
+      const salary = (totalPaidDay / 26) * value.baseSalary;
+      dataPerState.push({
+        countOfWorkingDay,
+        countOfDayOffWithPay,
+        totalPaidDay,
+        salary,
+      });
+    });
+    const result = dataPerState.reduce(
+      (previousValue, currentValue) => {
+        previousValue.countOfDayOffWithPay += currentValue.countOfDayOffWithPay;
+        previousValue.countOfWorkingDay += currentValue.countOfWorkingDay;
+        previousValue.totalPaidDay += currentValue.totalPaidDay;
+        previousValue.salary += currentValue.salary;
+        return previousValue;
+      },
+      {
+        employeeId,
+        countOfDayOffWithPay: 0,
+        countOfWorkingDay: 0,
+        totalPaidDay: 0,
+        salary: 0,
+      }
+    );
+    return result;
+  },
+  getSalaryAllEmployeeInYear: async (req, res) => {
     try {
-      //TODO: get range
-      //TODO: get role, employee status, TimeKeeping
-      //TODO: calculate salary of user
-    } catch (error) {}
+      const year = req.query?.year;
+      if (!year) {
+        return res.status(401).json("Data is invalid");
+      }
+      const employees = await Employee.findAll();
+      const data = await Promise.all(
+        employees.map((employee) => {
+          // return EmployeeController.calSalaryInYear(year, employee.id);
+          return EmployeeController.calSalaryInYearOptimize(year, employee.id);
+        })
+      );
+      return res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+
+  getMySalaryInYear: async (req, res) => {
+    try {
+      const year = req.query?.year;
+      const employeeId = req.query?.employeeId;
+      if (!year || !employeeId) {
+        return res.status(401).json("Data is invalid");
+      }
+      // const data = await EmployeeController.calSalaryInYear(year, employeeId);
+      const data = await EmployeeController.calSalaryInYearOptimize(
+        year,
+        employeeId
+      );
+      return res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+  statictisMySalaryByMonth: async (req, res) => {
+    try {
+      const year = req.query?.year;
+      const employeeId = req.query?.employeeId;
+      if (!year || !employeeId) return res.status(400).json("Data is invalid");
+      const monthArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      const data = await Promise.all(
+        monthArr.map((month) => {
+          return EmployeeController.calSalaryInMonth(year, month, employeeId);
+        })
+      );
+      return res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+  statictisMySalaryByYear: async (req, res) => {
+    try {
+      const {employeeId, ...yearObj} = req.query;
+      const yearArr = Object.values(yearObj);
+      if (!yearArr) return res.status(404).json("data is invalid");
+
+      const data = await Promise.all(
+        yearArr.map((year) => {
+          // return EmployeeController.calSalaryInYear(year, employeeId);
+          return EmployeeController.calSalaryInYearOptimize(year, employeeId);
+        })
+      );
+      return res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+  statictisAllEmployeeSalaryByYear: async (req, res) => {
+    try {
+      const yearArr = Object.values(req.query);
+      if (!yearArr || !yearArr.length)
+        return res.status(404).json("data is invalid");
+      const employees = await Employee.findAll();
+      const data = await Promise.all(
+        employees.map((employee) => {
+          return Promise.all(
+            yearArr.map((year) => {
+              // return EmployeeController.calSalaryInYear(year, employee.id);
+              return EmployeeController.calSalaryInYearOptimize(
+                year,
+                employee.id
+              );
+            })
+          );
+        })
+      );
+      return res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+  statictisAllEmployeeSalaryByMonth: async (req, res) => {
+    try {
+      const year = req.query?.year;
+      if (!year) return res.status(404).json("data is invalid");
+      const monthArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      const employees = await Employee.findAll();
+      const data = await Promise.all(
+        employees
+          .map((employee) => {
+            return monthArr.map((month) => {
+              return EmployeeController.calSalaryInMonth(
+                year,
+                month,
+                employee.id
+              );
+            });
+          })
+          .flat(Infinity)
+      );
+      return res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
   },
 };
 

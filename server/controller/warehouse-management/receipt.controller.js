@@ -39,6 +39,7 @@ const ReceiptController = {
       const employeeId = req.body?.employeeId;
       // const employeeId = req.session.account.id;
       const supplierId = req.body?.supplierId;
+      const note = req.body?.note;
       const date = req.body?.date || Date.now();
       const details = req.body?.details;
       // {
@@ -56,6 +57,7 @@ const ReceiptController = {
           employeeId,
           supplierId,
           date,
+          note,
           priceTotal: details.reduce((previousValue, currentValue) => {
             return previousValue + currentValue.quantity * currentValue.pricePerUnit
           }, 0)
@@ -96,7 +98,7 @@ const ReceiptController = {
       return res.status(200).json(receipt);
     } catch (error) {
       console.log(error);
-      t.rollback();
+      await t.rollback();
       return res.status(500).json(error);
     }
   },

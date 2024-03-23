@@ -6,6 +6,8 @@ const Permission = require('./permission.model');
 const Role = require('./role.model')
 const TimeKeeping = require('./time_keeping.model')
 const Contract = require('./contract.model')
+const LeaveApplication = require('./leave_application.model')
+const LeaveApplicationDetail = require('./leave_application_detail.model')
 module.exports = {
     AccountPermission,
     Account,
@@ -14,5 +16,7 @@ module.exports = {
     Permission,
     Role,
     TimeKeeping,
-    Contract
+    Contract,
+    LeaveApplication,
+    LeaveApplicationDetail
 }
