@@ -5,7 +5,6 @@ import { styled } from "@mui/system";
 import SearchInput from "../common/SearchInput";
 import FilterButtonGroup from "../common/FilterButtonGroup";
 import { fetchAllUsers, addNewUser } from "../../services/UserService";
-import AccountsTable from "./AccountsTable";
 export default function DashboardContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
@@ -18,7 +17,7 @@ export default function DashboardContent() {
     alignItems: "center",
   });
 
-  const [users, setUsers] = useState([]); // State to store users data
+  const [users, setUsers] = useState([]);
   const fetchUsersData = () => {
     fetchAllUsers()
       .then((response) => {

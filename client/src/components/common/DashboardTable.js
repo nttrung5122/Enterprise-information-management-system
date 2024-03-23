@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button } from "@mui/material";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,12 +8,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AlertDialog from "./Modal/DeleteUserModal";
 import EmployeeInfoModal from "./Modal/EmployeeInfoModal";
-import EditEmployeeModal from "./Modal/EditEmployeeModal";
+import UpdateContractModal from "./Modal/UpdateContractModal";
 
-const TableUsers = ({ users }) => {
+const TableUsers = ({ users, updateUserData }) => {
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const handleCloseEditModal = () => {
+    setSelectedUser(null); // Reset the selected user when modal is closed
+  };
+
   const handleDelete = (employeeId) => {
     console.log("Check user id: ", employeeId);
   };
@@ -32,40 +37,36 @@ const TableUsers = ({ users }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map(
-            (
-              user // Iterate over users array
-            ) => (
-              <TableRow
-                key={user.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row" align="center">
-                  {user.id}
-                </TableCell>
-                <TableCell align="center">{user.fullname}</TableCell>
-                <TableCell align="center">
-                  {user.employee_statuses.length > 0 &&
-                    user.employee_statuses[0].role.info}
-                </TableCell>
-                <TableCell align="center">
-                  {user.employee_statuses.length > 0 &&
-                    user.employee_statuses[0].role.baseSalary}
-                </TableCell>
-                <TableCell align="center">
-                  {user.employee_statuses.length > 0 &&
-                    user.employee_statuses[0].salaryScale}
-                </TableCell>
-                <TableCell align="center" size="small">
-                  <Box display="flex" alignItems="center" width={100} mx={2}>
-                    <EditEmployeeModal />
-                    <EmployeeInfoModal employee={user} />
-                    <AlertDialog userId={user.id} />
-                  </Box>
-                </TableCell>
-              </TableRow>
-            )
-          )}
+          {users.map((user) => (
+            <TableRow key={user.id}>
+              <TableCell align="center">{user.id}</TableCell>
+              <TableCell align="center">{user.fullname}</TableCell>
+              <TableCell align="center">
+                {user.employee_statuses.length > 0 &&
+                  user.employee_statuses[0].role.info}
+              </TableCell>
+              <TableCell align="center">
+                {user.employee_statuses.length > 0 &&
+                  user.employee_statuses[0].role.baseSalary}
+              </TableCell>
+              <TableCell align="center">
+                {user.employee_statuses.length > 0 &&
+                  user.employee_statuses[0].salaryScale}
+              </TableCell>
+              <TableCell align="center" size="small">
+                <Box display="flex" alignItems="center" width={100} mx={2}>
+                  <UpdateContractModal
+                    selectedUser={user} // Pass the selected user
+                    updateUserData={updateUserData}
+                    handleClose={handleCloseEditModal}
+                  />
+
+                  <EmployeeInfoModal user={user} />
+                  <AlertDialog userId={user.id} />
+                </Box>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
