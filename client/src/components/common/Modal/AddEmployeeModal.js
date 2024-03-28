@@ -12,7 +12,7 @@ import { createTheme } from "@mui/material/styles";
 import { addNewUser } from "../../../services/UserService";
 import RoleSelect from "./RoleSelect";
 
-export const AddEmployeeModal = () => {
+export const AddEmployeeModal = ({ fetchUsersData }) => {
   const [open, setOpen] = React.useState(false);
   const [roleId, setRoleId] = React.useState("");
 
@@ -39,8 +39,10 @@ export const AddEmployeeModal = () => {
       address: formData.get("address"),
       hireDate: formData.get("hireDate"),
     };
+    const endDate = formData.get("endDate") || null;
+
     const contractInfo = {
-      endDate: formData.get("endDate"),
+      endDate: endDate,
     };
     const employeeRole = {
       roleId: roleId,
@@ -52,7 +54,14 @@ export const AddEmployeeModal = () => {
       contractInfo: contractInfo,
       employeeRole: employeeRole,
     };
-    addNewUser(userData);
+    addNewUser(userData)
+      .then(() => {
+        console.log("Employee added successfully!");
+        fetchUsersData(); // Fetch users data again after adding a new employee
+      })
+      .catch((error) => {
+        console.error("Error adding employee:", error);
+      });
     setOpen(false);
   };
   const theme = createTheme();

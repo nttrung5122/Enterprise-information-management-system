@@ -80,7 +80,7 @@ const menuItems = [
     section: "accounts",
   },
   { text: "Bảng chấm công", icon: <CalendarMonthIcon /> },
-  { text: "Bảng lương", icon: <LocalAtmIcon /> },
+  { text: "Bảng lương", icon: <LocalAtmIcon />, section: "salary" },
 ];
 
 export default function MiniDrawer({ selectedSection, setSelectedSection }) {

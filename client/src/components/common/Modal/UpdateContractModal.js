@@ -35,6 +35,22 @@ const UpdateContractModal = ({ selectedUser }) => {
       date: formData.get("startDate"),
     };
 
+    updateUserContract(
+      selectedUser.id,
+      updatedContractInfo.roleId,
+      updatedContractInfo.salaryScale,
+      updatedContractInfo.date
+    )
+      .then((response) => {
+        console.log("Contract updated successfully:", response);
+        // Close the modal or do any further actions upon successful update
+        handleClose();
+      })
+      .catch((error) => {
+        console.error("Error updating contract:", error);
+        // Handle error
+      });
+
     handleClose();
   };
 

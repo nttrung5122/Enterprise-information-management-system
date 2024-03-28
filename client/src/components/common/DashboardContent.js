@@ -4,7 +4,7 @@ import DashboardTable from "../common/DashboardTable";
 import { styled } from "@mui/system";
 import SearchInput from "../common/SearchInput";
 import FilterButtonGroup from "../common/FilterButtonGroup";
-import { fetchAllUsers, addNewUser } from "../../services/UserService";
+import { fetchAllUsers } from "../../services/UserService";
 export default function DashboardContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
@@ -18,34 +18,23 @@ export default function DashboardContent() {
   });
 
   const [users, setUsers] = useState([]);
+  useEffect(() => {
+    fetchUsersData();
+  }, []);
   const fetchUsersData = () => {
     fetchAllUsers()
       .then((response) => {
-        console.log("Check data >>>>:", response.data);
-        setUsers(response.data);
+        console.log("Fetched users:", response.data);
+        setUsers(response.data); // Update the users state
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }; // Empty dependency array means this effect runs once after the first render
-
-  useEffect(() => {
-    fetchUsersData();
-  }, []);
-
-  const handleAddEmployee = (userData) => {
-    addNewUser(userData)
-      .then(() => {
-        console.log("Employee added successfully!");
-        fetchUsersData(); // Fetch users data again after adding a new employee
-      })
-      .catch((error) => {
-        console.error("Error adding employee:", error);
-      });
   };
+
   return (
     <ContentContainer>
-      <DashboardHeader onAddEmployee={handleAddEmployee} />
+      <DashboardHeader fetchUsersData={fetchUsersData} />
       <div
         style={{
           display: "flex",

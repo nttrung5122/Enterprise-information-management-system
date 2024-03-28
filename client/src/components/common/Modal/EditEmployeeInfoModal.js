@@ -6,16 +6,14 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
+import { updateUserInfo } from "../../../services/UserService";
 
-const EditEmployeeInfoModal = ({ selectedUser }) => {
+const EditEmployeeInfoModal = ({
+  selectedUser,
+  handleInfoUpdate,
+  setUserData,
+}) => {
   const [open, setOpen] = useState(false);
-  const [roleId, setRoleId] = useState(
-    selectedUser?.employeeRole?.roleId || ""
-  );
-
-  const handleRoleChange = (event) => {
-    setRoleId(event.target.value); // Update roleId state
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,17 +21,27 @@ const EditEmployeeInfoModal = ({ selectedUser }) => {
     // Gather form data
     const formData = new FormData(event.target);
     const updatedEmployeeInfo = {
-      fullname: formData.get("fullname"),
       email: formData.get("email"),
+      phoneNumber: formData.get("phoneNumber"),
       address: formData.get("address"),
-      hireDate: formData.get("hireDate"),
     };
+    setUserData({ ...updatedEmployeeInfo });
 
-    const updatedUserData = {
-      employeeInfo: updatedEmployeeInfo,
-    };
-
-    handleClose();
+    updateUserInfo(
+      selectedUser.id,
+      updatedEmployeeInfo.email,
+      updatedEmployeeInfo.phoneNumber,
+      updatedEmployeeInfo.address
+    )
+      .then((response) => {
+        console.log("Employee info updated successfully:", response);
+        // Close the modal or do any further actions upon successful update
+        handleClose();
+      })
+      .catch((error) => {
+        console.error("Error updating employee info:", error);
+        // Handle error
+      });
   };
 
   const handleOpen = () => {
@@ -74,12 +82,12 @@ const EditEmployeeInfoModal = ({ selectedUser }) => {
           />
           <TextField
             margin="dense"
-            id="idCode"
-            name="idCode"
-            label="CCCD"
+            id="phoneNumber"
+            name="phoneNumber"
+            label="Số điện thoại"
             fullWidth
             variant="standard"
-            defaultValue={selectedUser.idCode}
+            defaultValue={selectedUser.phoneNumber}
             sx={{ marginTop: 3 }}
           />
           <TextField
@@ -90,16 +98,6 @@ const EditEmployeeInfoModal = ({ selectedUser }) => {
             fullWidth
             variant="standard"
             defaultValue={selectedUser.address}
-            sx={{ marginTop: 3 }}
-          />
-          <TextField
-            margin="dense"
-            id="phoneNumber"
-            name="phoneNumber"
-            label="Số điện thoại"
-            fullWidth
-            variant="standard"
-            defaultValue={selectedUser.phoneNumber}
             sx={{ marginTop: 3 }}
           />
         </DialogContent>

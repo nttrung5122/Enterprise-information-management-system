@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -36,10 +36,14 @@ const lineStyle = {
 };
 
 export default function EmployeeInfoModal({ user }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  // const [updatedUser, setUpdatedUser] = useState(user);
+  const [userData, setUserData] = useState({ ...user });
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  // const handleInfoUpdate = (updatedUserInfo) => {
+  //   setUpdatedUser(updatedUserInfo);
+  // };
   return (
     <div>
       <Button onClick={handleOpen}>
@@ -76,8 +80,10 @@ export default function EmployeeInfoModal({ user }) {
               Đóng
             </Button>
             <EditEmployeeInfoModal
-              selectedUser={user}
+              selectedUser={userData}
               handleClose={handleClose}
+              // handleInfoUpdate={handleInfoUpdate}
+              setUserData={setUserData}
             />
           </Box>
         </Box>

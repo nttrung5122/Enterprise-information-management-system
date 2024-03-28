@@ -59,4 +59,43 @@ const updateUserContract = (employeeId, roleId, salaryScale, date) => {
     });
 };
 
-export { loginApi, fetchAllUsers, addNewUser, deleteUser, updateUserContract };
+const updateUserInfo = (employeeId, email, phoneNumber, address) => {
+  return axios
+    .patch("/human-resource-management/employee/change-info-employee", {
+      employeeId: employeeId,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ", error);
+      throw error.response.data;
+    });
+};
+
+const getUserSalaryInMonth = (employeeId, year) => {
+  return axios
+    .get(
+      `/human-resource-management/employee/statictis-my-salary-by-month?year=${year}&employeeId=${employeeId}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ", error);
+      throw error.response.data;
+    });
+};
+
+export {
+  loginApi,
+  fetchAllUsers,
+  addNewUser,
+  deleteUser,
+  updateUserContract,
+  updateUserInfo,
+  getUserSalaryInMonth,
+};
