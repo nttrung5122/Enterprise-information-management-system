@@ -8,7 +8,7 @@ const Employee = sequelize.define("employee", {
   },
   idCode:  {
     type:DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   email: DataTypes.STRING,
   phoneNumber: DataTypes.STRING,
