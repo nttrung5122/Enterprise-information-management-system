@@ -17,6 +17,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PeopleIcon from "@mui/icons-material/People";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
+import InventoryIcon from "@mui/icons-material/Inventory";
 
 const drawerWidth = 240;
 
@@ -80,6 +81,7 @@ const menuItems = [
     section: "accounts",
   },
   { text: "Bảng chấm công", icon: <CalendarMonthIcon /> },
+  { text: "Quản lý kho", icon: <InventoryIcon />, section: "inventory" },
   { text: "Bảng lương", icon: <LocalAtmIcon />, section: "salary" },
 ];
 

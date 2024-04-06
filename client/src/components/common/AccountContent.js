@@ -57,7 +57,6 @@ export default function AccountContent() {
           <FilterButtonGroup style={{ border: "1px groove grey" }} />
         </FilterGroupContainer>
       </div>
-      {/* <DashboardTable users={users} /> */}
 
       <AccountsTable users={users} />
     </ContentContainer>

@@ -90,6 +90,42 @@ const getUserSalaryInMonth = (employeeId, year) => {
     });
 };
 
+const getAllIngredients = () => {
+  return axios
+    .get("/warehouse-management/ingredient")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ", error);
+      throw error.response.data;
+    });
+};
+
+const addIngredient = (name, unitCal) => {
+  return axios
+    .post("/warehouse-management/ingredient")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
+const deleteIngredient = (id) => {
+  return axios
+    .delete(`/warehouse-management/ingredient/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
 export {
   loginApi,
   fetchAllUsers,
@@ -98,4 +134,7 @@ export {
   updateUserContract,
   updateUserInfo,
   getUserSalaryInMonth,
+  getAllIngredients,
+  addIngredient,
+  deleteIngredient,
 };
