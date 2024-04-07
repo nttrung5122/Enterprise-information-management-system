@@ -6,7 +6,7 @@ const Warehouse = sequelize.define("warehouse", {
     type: DataTypes.INTEGER,
     primaryKey: true,
   },
-  quantity: DataTypes.INTEGER,
+  quantity: DataTypes.FLOAT,
 },
 {
   timestamps:false,

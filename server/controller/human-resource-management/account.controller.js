@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const {
   Account,
   AccountPermission,
@@ -18,15 +19,16 @@ const AccountController = {
   },
   changePasswordForManager: async (req, res) => {
     try {
-      const employeeId = res.body?.employeeId;
-      const password = res.body?.password;
-      if (!id || !password) {
-        return res.status(403).json("Data is invalid");
+      const employeeId = req.body?.employeeId;
+      const password = req.body?.password;
+      console.log(employeeId, password);
+      if (!employeeId || !password) {
+        return res.status(403).json("Data is invalid1");
       }
-      const salt = await bcrypt.genSalt(10);
-      const hashPassword = await bcrypt.hash(newPassword, salt);
+      // const salt = await bcrypt.genSalt(10);
+      // const hashPassword = await bcrypt.hash(password, salt);
       await Account.update(
-        { password: hashPassword },
+        { password },
         {
           where: {
             employeeId,

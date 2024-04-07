@@ -7,7 +7,7 @@ const Account = sequelize.define('account', {
       type:DataTypes.STRING,
       set(value){
         const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync("admin", salt);
+        const hash = bcrypt.hashSync(value, salt);
         this.setDataValue('password', hash);
       }
     },

@@ -1,4 +1,13 @@
-const { CancellationForm, CancellationFormDetail, ReceiptDetail, Ingredient, Warehouse, Supplier, Receipt, ReasonCancellation } = require("../models");
+const {
+  CancellationForm,
+  CancellationFormDetail,
+  ReceiptDetail,
+  Ingredient,
+  Warehouse,
+  Supplier,
+  Receipt,
+  ReasonCancellation,
+} = require("../models");
 
 const supplierMockupData = [
   {
@@ -22,18 +31,38 @@ const supplierMockupData = [
 ];
 const ingredientMockupData = [
   {
-    id: 900,
-    nameIngredient: "chicken",
-    unitCal: "kg",
-  },
-  {
-    id: 901,
-    nameIngredient: "rice",
-    unitCal: "kg",
-  },
-  {
     id: 902,
-    nameIngredient: "pork",
+    nameIngredient: "Gà",
+    unitCal: "kg",
+  },
+  {
+    id: 903,
+    nameIngredient: "Phô mai miếng",
+    unitCal: "kg",
+  },
+  {
+    id: 904,
+    nameIngredient: "Khoai Tây",
+    unitCal: "kg",
+  },
+  {
+    id: 905,
+    nameIngredient: "bánh hotdog",
+    unitCal: "cái",
+  },
+  {
+    id: 906,
+    nameIngredient: "Xúc xích",
+    unitCal: "kg",
+  },
+  {
+    id: 907,
+    nameIngredient: "Bánh hamburger",
+    unitCal: "cái",
+  },
+  {
+    id: 908,
+    nameIngredient: "Thịt bò xay",
     unitCal: "kg",
   },
 ];
@@ -48,7 +77,7 @@ const reasonCancellationMockupData = [
   {
     id: 101,
     name: "Hao hục",
-    description: "Nguyên liệu hao hục trong qua trình sản xuất",
+    description: "Nguyên liệu hao hục trong quá trình sản xuất",
   },
   {
     id: 102,
@@ -110,13 +139,13 @@ const cancellationFormMockupData = arrayMonthData
   })
   .flat(1);
 
-  module.exports = async ()=>{
-    const ingredient = await Ingredient.bulkCreate(ingredientMockupData);
+module.exports = async () => {
+  const ingredients = await Ingredient.bulkCreate(ingredientMockupData);
   await Warehouse.bulkCreate(
-    ingredient.map((ingredient) => {
+    ingredientMockupData.map((ingredient) => {
       return {
         ingredientId: ingredient.id,
-        quantity: 0,
+        quantity: 100,
       };
     })
   );
@@ -166,4 +195,4 @@ const cancellationFormMockupData = arrayMonthData
       })
       .flat(Infinity)
   );
-  }
+};

@@ -5,7 +5,7 @@ const {
 } = require("./models");
 const warhouseManagermentMockup = require("./mockup/warhouse-managerment.mockup");
 const humanResourceManagermentMockup = require('./mockup/human-resourcce-management.mockup');
-
+const businessManagermentMockup = require('./mockup/business-management.mokup')
 
 
 const addMockupData = async () => {
@@ -14,6 +14,7 @@ const addMockupData = async () => {
 
   await warhouseManagermentMockup();
   
+  await businessManagermentMockup();
 };
 
 sequelize

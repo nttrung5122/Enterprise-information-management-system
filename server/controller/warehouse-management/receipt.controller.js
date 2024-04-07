@@ -49,6 +49,7 @@ const ReceiptController = {
       // }
 
       if (!employeeId || !supplierId || !details) {
+        await t.rollback();
         return res.status(400).json("Data is invalid");
       }
 
