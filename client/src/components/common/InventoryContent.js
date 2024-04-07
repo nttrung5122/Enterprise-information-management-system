@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import DashboardHeader from "../common/DashboardHeader";
-import DashboardTable from "../common/DashboardTable";
 import { styled } from "@mui/system";
 import SearchInput from "../common/SearchInput";
 import FilterButtonGroup from "../common/FilterButtonGroup";
-import { fetchAllUsers } from "../../services/UserService";
-export default function DashboardContent() {
+import InventoryHeader from "./InventoryHeader";
+import { getAllIngredients } from "../../services/UserService";
+import InventoryTable from "./InventoryTable";
+
+export default function InventoryContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
     padding: "10px", // Add padding for better spacing
@@ -17,24 +18,23 @@ export default function DashboardContent() {
     alignItems: "center",
   });
 
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    fetchUsersData();
-  }, []);
-  const fetchUsersData = () => {
-    fetchAllUsers()
+  const [ingredients, setIngredients] = useState([]);
+  const fetchIngredientsData = () => {
+    getAllIngredients()
       .then((response) => {
-        console.log("Fetched users:", response.data);
-        setUsers(response.data); // Update the users state
+        console.log("Check data: ", response);
+        setIngredients(response);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.log("Check error: ", error);
       });
   };
-
+  useEffect(() => {
+    fetchIngredientsData();
+  }, []);
   return (
     <ContentContainer>
-      <DashboardHeader fetchUsersData={fetchUsersData} />
+      <InventoryHeader />
       <div
         style={{
           display: "flex",
@@ -46,7 +46,7 @@ export default function DashboardContent() {
           <FilterButtonGroup style={{ border: "1px groove grey" }} />
         </FilterGroupContainer>
       </div>
-      <DashboardTable users={users} />
+      <InventoryTable ingredients={ingredients} />
     </ContentContainer>
   );
 }

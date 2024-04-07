@@ -42,5 +42,99 @@ const deleteUser = (employeeId, date) => {
       throw error.response.data;
     });
 };
+const updateUserContract = (employeeId, roleId, salaryScale, date) => {
+  return axios
+    .post("/human-resource-management/employee/update-role", {
+      employeeId: employeeId,
+      roleId: roleId,
+      salaryScale: salaryScale,
+      date: date,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error:", error);
+      throw error.response.data;
+    });
+};
 
-export { loginApi, fetchAllUsers, addNewUser, deleteUser };
+const updateUserInfo = (employeeId, email, phoneNumber, address) => {
+  return axios
+    .patch("/human-resource-management/employee/change-info-employee", {
+      employeeId: employeeId,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ", error);
+      throw error.response.data;
+    });
+};
+
+const getUserSalaryInMonth = (employeeId, year) => {
+  return axios
+    .get(
+      `/human-resource-management/employee/statictis-my-salary-by-month?year=${year}&employeeId=${employeeId}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ", error);
+      throw error.response.data;
+    });
+};
+
+const getAllIngredients = () => {
+  return axios
+    .get("/warehouse-management/ingredient")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ", error);
+      throw error.response.data;
+    });
+};
+
+const addIngredient = (name, unitCal) => {
+  return axios
+    .post("/warehouse-management/ingredient")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
+const deleteIngredient = (id) => {
+  return axios
+    .delete(`/warehouse-management/ingredient/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
+export {
+  loginApi,
+  fetchAllUsers,
+  addNewUser,
+  deleteUser,
+  updateUserContract,
+  updateUserInfo,
+  getUserSalaryInMonth,
+  getAllIngredients,
+  addIngredient,
+  deleteIngredient,
+};

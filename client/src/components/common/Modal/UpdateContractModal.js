@@ -11,11 +11,12 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { createTheme } from "@mui/material/styles";
 import RoleSelect from "./RoleSelect";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import { updateUserContract } from "../../../services/UserService";
 
-const EditEmployeeModal = ({ employeeData, updateUserData }) => {
+const UpdateContractModal = ({ selectedUser }) => {
   const [open, setOpen] = useState(false);
   const [roleId, setRoleId] = useState(
-    employeeData?.employeeRole?.roleId || ""
+    selectedUser?.employeeRole?.roleId || ""
   );
 
   const handleRoleChange = (event) => {
@@ -27,35 +28,35 @@ const EditEmployeeModal = ({ employeeData, updateUserData }) => {
 
     // Gather form data
     const formData = new FormData(event.target);
-    const updatedEmployeeInfo = {
-      fullname: formData.get("fullname"),
-      email: formData.get("email"),
-      idCode: formData.get("idCode"),
-      phoneNumber: formData.get("phoneNumber"),
-      address: formData.get("address"),
-      hireDate: formData.get("hireDate"),
-    };
+
     const updatedContractInfo = {
-      endDate: formData.get("endDate"),
-    };
-    const updatedEmployeeRole = {
       roleId: roleId,
       salaryScale: parseFloat(formData.get("salaryScale")),
+      date: formData.get("startDate"),
     };
 
-    const updatedUserData = {
-      employeeInfo: updatedEmployeeInfo,
-      contractInfo: updatedContractInfo,
-      employeeRole: updatedEmployeeRole,
-    };
+    updateUserContract(
+      selectedUser.id,
+      updatedContractInfo.roleId,
+      updatedContractInfo.salaryScale,
+      updatedContractInfo.date
+    )
+      .then((response) => {
+        console.log("Contract updated successfully:", response);
+        // Close the modal or do any further actions upon successful update
+        handleClose();
+      })
+      .catch((error) => {
+        console.error("Error updating contract:", error);
+        // Handle error
+      });
 
-    updateUserData(updatedUserData);
-
-    handleClose(); // Close the modal after submission
+    handleClose();
   };
 
   const handleOpen = () => {
     setOpen(true);
+    console.log("selected user: ", selectedUser);
   };
 
   const handleClose = () => {
@@ -77,72 +78,21 @@ const EditEmployeeModal = ({ employeeData, updateUserData }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Chỉnh sửa thông tin nhân viên</DialogTitle>
+        <DialogTitle sx={{ textAlign: "center" }}>
+          Cập nhật hợp đồng nhân viên
+        </DialogTitle>
         <DialogContent>
           <TextField
-            autoFocus
-            required
             margin="dense"
             id="fullname"
             name="fullname"
             label="Họ và tên"
             fullWidth
             variant="standard"
+            defaultValue={selectedUser.fullname}
+            sx={{ marginTop: 3 }}
+            disabled
           />
-          <TextField
-            id="idCode"
-            margin="dense"
-            name="idCode"
-            label="CCCD"
-            variant="standard"
-            fullWidth
-          />
-          <TextField
-            id="address"
-            margin="dense"
-            name="address"
-            label="Địa chỉ"
-            variant="standard"
-            fullWidth
-          />
-          <TextField
-            id="phoneNumber"
-            margin="dense"
-            name="phoneNumber"
-            label="Số điện thoại"
-            variant="standard"
-            fullWidth
-          />
-          <TextField
-            id="email"
-            margin="dense"
-            name="email"
-            label="Email"
-            variant="standard"
-            fullWidth
-          />
-          <LocalizationProvider
-            dateAdapter={AdapterDayjs}
-            sx={{ align: "center" }}
-          >
-            <DatePicker
-              id="hireDate"
-              name="hireDate"
-              label="Ngày tuyển"
-              fullWidth
-              variant="standard"
-              sx={{ marginTop: 3 }}
-            />
-            <DatePicker
-              id="endDate"
-              name="endDate"
-              label="Ngày hết hợp đồng"
-              fullWidth
-              variant="standard"
-              sx={{ marginTop: 3, marginLeft: 2 }}
-            />
-          </LocalizationProvider>
-
           <RoleSelect
             roleId={roleId} // Pass roleId state
             handleRoleChange={handleRoleChange} // Pass handleRoleChange function
@@ -153,8 +103,33 @@ const EditEmployeeModal = ({ employeeData, updateUserData }) => {
             fullWidth
             variant="standard"
             sx={{ marginTop: 3 }}
+            defaultValue={selectedUser.employee_statuses[0].role.roleInfo}
           />
+          {/* Date pickers */}
+          <LocalizationProvider
+            dateAdapter={AdapterDayjs}
+            sx={{ align: "center" }}
+          >
+            <DatePicker
+              id="hireDate"
+              name="hireDate"
+              label="Ngày tuyển"
+              fullWidth
+              variant="standard"
+              sx={{ mt: 3, ml: 2 }}
+            />
+            <DatePicker
+              id="endDate"
+              name="endDate"
+              label="Ngày hết hợp đồng"
+              fullWidth
+              variant="standard"
+              sx={{ mt: 3, ml: 2 }}
+            />
+          </LocalizationProvider>
+          {/* Role select */}
 
+          {/* Salary scale */}
           <TextField
             margin="dense"
             id="salaryScale"
@@ -162,9 +137,11 @@ const EditEmployeeModal = ({ employeeData, updateUserData }) => {
             label="Salary Scale"
             fullWidth
             variant="standard"
+            defaultValue={selectedUser.employee_statuses[0].salaryScale}
+            sx={{ marginTop: 3 }}
           />
         </DialogContent>
-
+        {/* Modal actions */}
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
           <Button type="submit">Lưu</Button>
@@ -174,4 +151,4 @@ const EditEmployeeModal = ({ employeeData, updateUserData }) => {
   );
 };
 
-export default EditEmployeeModal;
+export default UpdateContractModal;

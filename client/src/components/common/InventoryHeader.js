@@ -4,18 +4,15 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { AddEmployeeModal } from "./Modal/AddEmployeeModal";
-export default function ButtonAppBar({ fetchUsersData }) {
+export default function InventoryHeader() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Nhân viên:
+            Quản lý kho
           </Typography>
-          <Button color="inherit">
-            <AddEmployeeModal fetchUsersData={fetchUsersData} />
-          </Button>
+          <Button color="inherit"></Button>
         </Toolbar>
       </AppBar>
     </Box>

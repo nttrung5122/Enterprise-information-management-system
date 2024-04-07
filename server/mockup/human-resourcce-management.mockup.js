@@ -4,7 +4,7 @@ const employeeMockupData = [
   {
     id: 102,
     fullname: "Nguyễn Văn A",
-    email: "<EMAIL>",
+    email: "EMAIL@GMAIL.COM",
     phoneNumber: "123456789",
     address: "abc",
   },
@@ -45,37 +45,39 @@ const timeKeepingMockupData = employeeMockupData
   .flat(Infinity);
 
 // console.log(timeKeepingMockupData);
-const employeeStatusMockupData = employeeMockupData.map((employee) => {
-  return [
-    {
-      employeeId: employee.id,
-      roleId: 203,
-      startDate: new Date(2022, 7, 1),
-      endDate: new Date(2023,3,1),
-      salaryScale: 1.0,
-    },
-    {
-      employeeId: employee.id,
-      roleId: 201,
-      startDate: new Date(2023, 4, 1),
-      endDate: new Date(2023,8,1),
-      salaryScale: 1.0,
-    },
-    {
-      employeeId: employee.id,
-      roleId: 203,
-      startDate: new Date(2023, 9, 1),
-      endDate: new Date(2024,2,1),
-      salaryScale: 1.0,
-    },
-    {
-      employeeId: employee.id,
-      roleId: 202,
-      startDate: new Date(2024, 3, 1),
-      salaryScale: 1.0,
-    },
-  ];
-}).flat(Infinity);
+const employeeStatusMockupData = employeeMockupData
+  .map((employee) => {
+    return [
+      {
+        employeeId: employee.id,
+        roleId: 203,
+        startDate: new Date(2022, 7, 1),
+        endDate: new Date(2023, 3, 1),
+        salaryScale: 1.0,
+      },
+      {
+        employeeId: employee.id,
+        roleId: 201,
+        startDate: new Date(2023, 4, 1),
+        endDate: new Date(2023, 8, 1),
+        salaryScale: 1.0,
+      },
+      {
+        employeeId: employee.id,
+        roleId: 203,
+        startDate: new Date(2023, 9, 1),
+        endDate: new Date(2024, 2, 1),
+        salaryScale: 1.0,
+      },
+      {
+        employeeId: employee.id,
+        roleId: 202,
+        startDate: new Date(2024, 3, 1),
+        salaryScale: 1.0,
+      },
+    ];
+  })
+  .flat(Infinity);
 // console.log(employeeStatusMockupData);
 module.exports = async () => {
   await Employee.bulkCreate(employeeMockupData);
