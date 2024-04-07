@@ -8,7 +8,7 @@ const {
   sequelize,
   LeaveApplicationDetail,
 } = require("../../models");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const moment = require("moment");
 const bcrypt = require("bcrypt");
 const {
@@ -48,11 +48,11 @@ const EmployeeController = {
     }
   },
   updateRole: async (req, res) => {
+    const t = await sequelize.transaction();
     try {
       const { employeeId, roleId, salaryScale, date } = req.body;
-
-      console.log(employeeId, roleId, salaryScale);
       if (!employeeId || !roleId || !salaryScale || !date) {
+        await t.rollback();
         return res.status(403).json("Data is invalid");
       }
       //ToDo: check date valid
@@ -63,6 +63,7 @@ const EmployeeController = {
       const employee = await Employee.findByPk(employeeId);
       const role = await Role.findByPk(roleId);
       if (!employee || !role) {
+        await t.rollback();
         return res.status(403).json("Data is invalid");
       }
 
@@ -72,36 +73,40 @@ const EmployeeController = {
           endDate: null,
         },
       });
+      console.log(employeeRoleCurrent)
       if (
         employeeRoleCurrent.roleId == roleId &&
         employeeRoleCurrent.salaryScale == salaryScale
       ) {
-        console.log(employeeRoleCurrent);
+        await t.rollback();
         return res.status(403).json("Data is invalid");
       }
       // console.log(Date.parse(employeeRoleCurrent.startDate)-Date.parse(date))
       if (moment(employeeRoleCurrent.startDate).isAfter(date, "month")) {
         // date smaller than start date
+        await t.rollback();
         return res.status(403).json("Data is invalid");
       }
       const endDate = moment(date).subtract(1, "month");
-      await employeeRoleCurrent.update({ endDate });
+      await employeeRoleCurrent.update({ endDate },{transaction: t});
       await EmployeeStatus.create({
         employeeId,
         roleId,
         salaryScale: salaryScale,
         startDate: dateFormat,
-      });
+      },{transaction: t});
       const newEmployee = await Employee.findByPk(employeeId, {
         include: {
           model: EmployeeStatus,
           include: Role,
         },
       });
+      await t.commit();
       return res.status(200).json(newEmployee);
       // return res.status(200).json("ok");
     } catch (error) {
       console.log(error);
+      await t.rollback();
       res.status(500).json(error);
     }
   },
@@ -144,6 +149,7 @@ const EmployeeController = {
         !checkRoleValid(employeeRole) ||
         !checkEmployeeInfoValid(employeeInfo)
       ) {
+        await transaction.rollback();
         return res.status(402).json("Data is invalid");
       }
       contractInfo.endDate = moment(contractInfo.endDate).format();
@@ -151,6 +157,7 @@ const EmployeeController = {
       const role = await Role.findByPk(employeeRole?.roleId);
 
       if (!role) {
+        await transaction.rollback();
         return res.status(402).json("Data is invalid");
       }
 
@@ -417,7 +424,7 @@ const EmployeeController = {
         year,
         month,
         employeeId,
-        req.session?.account.employee.fullname || "test"
+        req.session?.account?.employee?.fullname || "test"
       );
 
       return res.status(200).json(data);

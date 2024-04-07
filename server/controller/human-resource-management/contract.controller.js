@@ -78,8 +78,8 @@ const ContractController = {
         infoContract,
       });
 
-      // return res.status(200).json(contract);
-      return res.status(200).json("ok");
+      return res.status(200).json(contract);
+      // return res.status(200).json("ok");
     } catch (error) {
       console.log(error);
       return res.status(500).json(error);

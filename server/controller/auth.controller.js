@@ -24,11 +24,10 @@ const AccountController = {
       if (!validPassword) {
         return res.status(403).json("wrong password or username");
       }
-      if(!account.active) {
+      if (!account.active) {
         return res.status(403).json("account is disabled");
       }
       req.session.account = account;
-      account.password = "";
       return res.status(200).json(account);
     } catch (error) {
       console.log(error);
@@ -37,6 +36,7 @@ const AccountController = {
   },
   changePassword: async (req, res) => {
     try {
+      const accountId = req.body.accountId;
       const oldPassword = req.body?.oldPassword;
       const newPassword = req.body?.newPassword;
 
@@ -44,30 +44,35 @@ const AccountController = {
         return res.status(403).json("Data is invalid");
       }
 
-      if (req.session?.account) {
-        return res.status(401).json("you are not allowed to change");
-      }
+      // if (req.session?.account) {
+      //   return res.status(401).json("you are not allowed to change");
+      // }
       const account = await Account.findOne({
         where: {
-          id: req.session.account.id,
+          id: accountId,
         },
       });
       if (!account) {
         return res.status(403).json("Not Found Account");
       }
 
-      const validPassword = bcrypt.compareSync(password, account.password);
+      const validPassword = bcrypt.compareSync(oldPassword, account.password);
       if (!validPassword) {
         return res.status(403).json("wrong password");
       }
-
-      const salt = await bcrypt.genSalt(10);
-      const hashPassword = await bcrypt.hash(newPassword, salt);
-      await account.update(
-        { password: hashPassword }
+      await Account.update(
+        {
+          password: newPassword,
+        },
+        {
+          where: {
+            id: accountId,
+          },
+        }
       );
       return res.status(200).json("success");
     } catch (error) {
+      console.log(error);
       return res.status(500).json(error);
     }
   },

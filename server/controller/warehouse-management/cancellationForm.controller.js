@@ -59,6 +59,7 @@ const CancellationFormController = {
       const date = req.body?.date
       const reasonCancellationId = req.body?.reasonCancellationId;
       if (!info || !employeeId || !details || !reasonCancellationId) {
+        await t.rollback();
         return res.status(403).json("Data is invalid");
       }
 

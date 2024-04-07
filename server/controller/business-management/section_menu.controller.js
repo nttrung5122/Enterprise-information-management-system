@@ -3,7 +3,6 @@ const {
   Food,
   sequelize,
   SectionDetail,
-  Menu,
   MenuDetail,
 } = require("../../models");
 
@@ -22,9 +21,7 @@ const SectionMenuController = {
   },
   getAll: async (req, res) => {
     try {
-      const section = await SectionMenu.findAll({
-        include: [Food],
-      });
+      const section = await SectionMenu.findAll();
       res.status(200).json(section);
     } catch (error) {
       console.log(error);
@@ -34,39 +31,37 @@ const SectionMenuController = {
   create: async (req, res) => {
     const t = await sequelize.transaction();
     try {
-      const name = req.body?.name;
+      const nameSection = req.body?.name;
       const info = req.body?.info;
       const details = req.body?.details;
-      // [
-      //     {
-      //         foodId:10
-      //     }
-      // ]
-      if (!name || !info || !details || details.length == 0) {
+      //[1,2,3,4] array of foodId
+      if (!nameSection || !info || !details || details.length == 0) {
+        await t.rollback();
         return res.status(400).json("Data is invalid");
       }
       const newSection = await SectionMenu.create(
         {
-          name,
+          nameSection,
           info,
         },
         { transaction: t }
       );
 
       await SectionDetail.bulkCreate(
-        details.map((detail) => {
+        details.map((foodId) => {
           return {
-            sectionId: newSection.id,
-            foodId: detail.foodId,
+            sectionMenuId: newSection.id,
+            foodId,
           };
         }),
         { transaction: t }
       );
+      await t.commit();
 
       const section = await SectionMenu.findByPk(newSection.id, {
         include: [Food],
       });
-      await t.commit();
+
       res.status(200).json(section);
     } catch (error) {
       console.log(error);
@@ -78,24 +73,40 @@ const SectionMenuController = {
     const t = await sequelize.transaction();
     try {
       const id = req.params.id;
+      const nameSection = req.body?.name;
+      const info = req.body?.info;
       const details = req.body?.details;
-      // [
-      //     {
-      //         foodId:10
-      //     }
-      // ]
-      if (!details || details.length == 0) {
+      //[1,2,3,4] array of foodId
+
+      if ((!details || details.length == 0) && !nameSection && !info) {
+        await t.rollback();
         return res.status(400).json("Data is invalid");
       }
 
-      const section = await SectionMenu.findByPk(id);
+      const section = await SectionMenu.findByPk(id,{
+        include: [Food],
+      });
 
-      if (!section) return res.status(404).json("Id section not found");
-
+      
+      if (!section) 
+      {
+        await t.rollback();        
+        return res.status(404).json("Id section not found");
+      }
+      
+      await section.update({nameSection,info},{transaction: t})
+      
+      
+      if (!details || details.length == 0) {
+        await section.reload();
+        await t.commit();
+        return res.status(200).json(section);
+      }
+      
       await SectionDetail.destroy(
         {
           where: {
-            sectionId: id,
+            sectionMenuId: id,
           },
           transaction: t,
         },
@@ -105,9 +116,9 @@ const SectionMenuController = {
       );
 
       await SectionDetail.bulkCreate(
-        details.map((detail) => {
+        details.map((foodId) => {
           return {
-            ...detail,
+            foodId,
             sectionMenuId: id,
           };
         }),
@@ -130,24 +141,30 @@ const SectionMenuController = {
     try {
       const id = req.params.id;
       const section = await SectionMenu.findByPk(id);
-      if (!section) return res.status(404).json("Id section not found");
-
-
-
-      const menuDetail = await MenuDetail.findAll({ 
-        where: {
-          sectionMenuId:id
-        }       
-      });
-
-      if(menuDetail.length > 0) {
-        return res.status(400).json("section has in menu detail, cannot be deleted");
+      if (!section)
+      {
+        await t.rollback();
+        return res.status(404).json("Id section not found");
       }
 
-            await SectionDetail.destroy(
+      const menuDetail = await MenuDetail.findAll({
+        where: {
+          sectionMenuId: id,
+        },
+      });
+
+      if (menuDetail.length > 0) {
+        await t.rollback();
+
+        return res
+          .status(400)
+          .json("section has in menu detail, cannot be deleted");
+      }
+
+      await SectionDetail.destroy(
         {
           where: {
-            sectionId: id,
+            sectionMenuId: id,
           },
           transaction: t,
         },
@@ -156,10 +173,9 @@ const SectionMenuController = {
         }
       );
 
-      await section.destroy({force: true,transaction: t});
+      await section.destroy({ force: true, transaction: t });
       await t.commit();
-      return res.status(200).json('success');
-
+      return res.status(200).json("success");
     } catch (error) {
       console.log(error);
       await t.rollback();

@@ -20,14 +20,15 @@ const RecipeController = {
     const t = await sequelize.transaction();
     try {
       const name = req.body?.name;
-      const detail = req.body?.detail;
+      const details = req.body?.details;
       // [
       //     {
       //         ingredientId: 1,
       //         quantity: 10,
       //     }
       // ]
-      if (!name || !detail || detail.length == 0) {
+      if (!name || !details || details.length == 0) {
+        await t.rollback();
         return res.status(400).json("data is invalid");
       }
       const newRecipe = await Recipe.create(
@@ -38,7 +39,7 @@ const RecipeController = {
       );
 
       await RecipeDetail.bulkCreate(
-        detail.map((item) => {
+        details.map((item) => {
           return {
             ...item,
             recipeId: newRecipe.id,
@@ -47,8 +48,10 @@ const RecipeController = {
         { transaction: t }
       );
 
-      const recipe = await Recipe.findByPk(newRecipe.id);
       await t.commit();
+      const recipe = await Recipe.findByPk(newRecipe.id, {
+        include: [Ingredient],
+      });
       return res.status(200).json(recipe);
     } catch (error) {
       await t.rollback();
@@ -60,20 +63,34 @@ const RecipeController = {
     const t = await sequelize.transaction();
     try {
       const id = req.params.id;
-      const detail = req.body?.detail;
+      const nameRecipe = req.body?.name;
+      const details = req.body?.details;
       // [
       //     {
       //         ingredientId: 1,
       //         quantity: 10,
       //     }
       // ]
-      if (!detail || detail.length == 0) {
-        return res.status(400).json("data is invalid");
+      if ((!details || details.length == 0) && !nameRecipe) {
+        await t.rollback();
+        return res.status(400).json("Data is invalid");
       }
-      const recipe = await Recipe.findByPk(id);
+
+      const recipe = await Recipe.findByPk(id,{
+        include: [Ingredient],
+      });
 
       if (!recipe) {
+        await t.rollback();
         return res.status(400).json("id not found");
+      }
+
+      await recipe.update({nameRecipe},{transaction: t})
+
+      if (!details || details.length == 0) {
+        await t.commit();
+        await recipe.reload();
+        return res.status(200).json(recipe);
       }
 
       await RecipeDetail.destroy(
@@ -89,20 +106,21 @@ const RecipeController = {
       );
 
       await RecipeDetail.bulkCreate(
-        detail.map((item) => {
+        details.map((item) => {
           return {
             ...item,
-            recipeId: newRecipe.id,
+            recipeId: id,
           };
         }),
         { transaction: t }
       );
 
+      await t.commit()
+
       const newRecipe  = await Recipe.findByPk(id,{
         include:[Ingredient]
       })
 
-      await t.commit()
       return res.status(200).json(newRecipe);
 
     } catch (error) {
@@ -117,7 +135,11 @@ const RecipeController = {
         const id = req.params.id;
         const recipe = await Recipe.findByPk(id);
         
-        if(!recipe) return res.status(404).json("Recipe not found");
+        if(!recipe) 
+        {
+          await t.rollback();
+          return res.status(404).json("Recipe not found");
+        }
 
         const foods = await Food.findAll(
             {
@@ -128,6 +150,7 @@ const RecipeController = {
         )
         
         if(foods.length > 0 ){
+            await t.rollback();
             return res.status(400).json("recipe has food, cannot be deleted");
         }
 
