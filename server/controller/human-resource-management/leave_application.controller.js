@@ -97,17 +97,22 @@ const LeaveApplicationController = {
       const leaveApplicationId = req.body?.leaveApplicationId;
       const isApprove = req.body?.isApprove;
       const numberOfDaysAllowed = req.body?.numberOfDaysAllowed;
-      if (!leaveApplicationId || !isApprove || !numberOfDaysAllowed)
+      if (!leaveApplicationId || !isApprove || !numberOfDaysAllowed){
+        await t.rollback();
         return res.status(400).json("data invalid");
+      }
       const leaveApplication = await LeaveApplication.findByPk(
         leaveApplicationId
       );
 
       if (!leaveApplication) {
+        await t.rollback();
         return res.status(400).json("leaveApplicationId not found");
       }
-      if(leaveApplication.numberOfDaysOff < numberOfDaysAllowed)
+      if(leaveApplication.numberOfDaysOff < numberOfDaysAllowed){
+        await t.rollback();
         return res.status(400).json("number of days allowed greater than number of days off");
+      }
 
       await leaveApplication.update({
         isApprove,

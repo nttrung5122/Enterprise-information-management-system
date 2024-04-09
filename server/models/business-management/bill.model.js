@@ -3,7 +3,10 @@ const sequelize = require('../config.database');
 
 const Bill = sequelize.define('bill', {
     totalPrice: DataTypes.INTEGER,
-    isDone: DataTypes.BOOLEAN,
+    isDone: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     date: DataTypes.DATE
   },
   {

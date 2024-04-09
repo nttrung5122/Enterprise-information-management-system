@@ -6,10 +6,11 @@ const Employee = sequelize.define(
   {
     fullname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     idCode: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     email: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
