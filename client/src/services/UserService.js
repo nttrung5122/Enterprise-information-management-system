@@ -102,9 +102,9 @@ const getAllIngredients = () => {
     });
 };
 
-const addIngredient = (name, unitCal) => {
+const addIngredient = (ingredientData) => {
   return axios
-    .post("/warehouse-management/ingredient")
+    .post("/warehouse-management/ingredient", ingredientData)
     .then((response) => {
       return response.data;
     })
@@ -126,6 +126,18 @@ const deleteIngredient = (id) => {
     });
 };
 
+const updateIngredient = (id, ingredientInfo) => {
+  return axios
+    .patch(`/warehouse-management/ingredient/${id}`, ingredientInfo)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
 export {
   loginApi,
   fetchAllUsers,
@@ -137,4 +149,5 @@ export {
   getAllIngredients,
   addIngredient,
   deleteIngredient,
+  updateIngredient,
 };

@@ -34,7 +34,7 @@ export default function InventoryContent() {
   }, []);
   return (
     <ContentContainer>
-      <InventoryHeader />
+      <InventoryHeader fetchIngredientsData={fetchIngredientsData} />
       <div
         style={{
           display: "flex",
@@ -46,7 +46,11 @@ export default function InventoryContent() {
           <FilterButtonGroup style={{ border: "1px groove grey" }} />
         </FilterGroupContainer>
       </div>
-      <InventoryTable ingredients={ingredients} />
+      <InventoryTable
+        ingredients={ingredients}
+        setIngredients={setIngredients}
+        fetchIngredientsData={fetchIngredientsData}
+      />
     </ContentContainer>
   );
 }

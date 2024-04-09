@@ -10,7 +10,6 @@ import { deleteIngredient } from "../../../services/UserService";
 
 const DeleteIngredientModal = ({ id }) => {
   const [open, setOpen] = React.useState(false);
-  console.log("check ingredient id:", id);
   const handleClickOpen = () => {
     setOpen(true);
   };
