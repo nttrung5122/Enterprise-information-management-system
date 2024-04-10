@@ -6,6 +6,7 @@ import DashboardContent from "../common/DashboardContent";
 import AccountContent from "../common/AccountContent";
 import { SalaryContent } from "../common/SalaryContent";
 import InventoryContent from "../common/InventoryContent";
+import SupplierContent from "../common/SupplierContent";
 const Container = styled("div")({
   display: "flex",
 });
@@ -27,6 +28,7 @@ const Dashboard = () => {
       {selectedSection === "employees" && <DashboardContent />}
       {selectedSection === "salary" && <SalaryContent />}
       {selectedSection === "inventory" && <InventoryContent />}
+      {selectedSection === "supplier" && <SupplierContent />}
     </Container>
   );
 };

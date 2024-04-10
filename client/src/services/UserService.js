@@ -138,6 +138,40 @@ const updateIngredient = (id, ingredientInfo) => {
     });
 };
 
+const fetchAllSuppliers = () => {
+  return axios
+    .get(`/warehouse-management/supplier`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
+const deleteSupplier = (id) => {
+  return axios
+    .delete(`/warehouse-management/supplier/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
+const addSupplier = (supplierInfo) => {
+  return axios
+    .post(`/warehouse-management/supplier`, supplierInfo)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   loginApi,
   fetchAllUsers,
@@ -150,4 +184,7 @@ export {
   addIngredient,
   deleteIngredient,
   updateIngredient,
+  fetchAllSuppliers,
+  deleteSupplier,
+  addSupplier,
 };

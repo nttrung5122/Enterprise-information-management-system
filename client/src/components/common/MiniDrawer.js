@@ -16,6 +16,7 @@ import ListItemText from "@mui/material/ListItemText";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PeopleIcon from "@mui/icons-material/People";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import StoreIcon from "@mui/icons-material/Store";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import InventoryIcon from "@mui/icons-material/Inventory";
 
@@ -80,9 +81,10 @@ const menuItems = [
     icon: <AccountBoxIcon />,
     section: "accounts",
   },
-  { text: "Bảng chấm công", icon: <CalendarMonthIcon /> },
+  { text: "Nhà cung cấp", icon: <StoreIcon />, section: "supplier" },
   { text: "Quản lý kho", icon: <InventoryIcon />, section: "inventory" },
   { text: "Bảng lương", icon: <LocalAtmIcon />, section: "salary" },
+  { text: "Bảng chấm công", icon: <CalendarMonthIcon /> },
 ];
 
 export default function MiniDrawer({ selectedSection, setSelectedSection }) {
