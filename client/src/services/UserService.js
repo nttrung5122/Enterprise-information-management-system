@@ -172,6 +172,17 @@ const addSupplier = (supplierInfo) => {
       throw error.response.data;
     });
 };
+
+const updateSupplier = (id, supplierInfo) => {
+  return axios
+    .patch(`/warehouse-management/supplier/${id}`, supplierInfo)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   loginApi,
   fetchAllUsers,
@@ -187,4 +198,5 @@ export {
   fetchAllSuppliers,
   deleteSupplier,
   addSupplier,
+  updateSupplier,
 };

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteSupplierModal from "./Modal/DeleteSupplierModal";
+import { EditSupplierModal } from "./Modal/EditSupplierModal";
 
 export default function SupplierTable({ suppliers, fetchSuppliersData }) {
   const rows = suppliers.map((supplier) => ({
@@ -23,6 +24,10 @@ export default function SupplierTable({ suppliers, fetchSuppliersData }) {
         <div>
           <DeleteSupplierModal
             id={params.id}
+            fetchSuppliersData={fetchSuppliersData}
+          />
+          <EditSupplierModal
+            supplier={params.row}
             fetchSuppliersData={fetchSuppliersData}
           />
         </div>
