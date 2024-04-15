@@ -67,9 +67,10 @@ export default function ReceiptInfoModal({ data }) {
                 <TableRow sx={{ backgroundColor: "#e8d6cb" }}>
                   <TableCell>Nguyên liệu</TableCell>
                   <TableCell>Đơn vị</TableCell>
-                  <TableCell>Giá</TableCell>
+
                   <TableCell>Giá mỗi đơn vị</TableCell>
                   <TableCell>Số lượng</TableCell>
+                  <TableCell>Tổng tiền</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -79,11 +80,12 @@ export default function ReceiptInfoModal({ data }) {
                       {ingredient.nameIngredient}
                     </TableCell>
                     <TableCell>{ingredient.unitCal}</TableCell>
-                    <TableCell>{ingredient.receipt_detail.price}</TableCell>
+
                     <TableCell>
                       {ingredient.receipt_detail.pricePerUnit}
                     </TableCell>
                     <TableCell>{ingredient.receipt_detail.quantity}</TableCell>
+                    <TableCell>{ingredient.receipt_detail.price}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
