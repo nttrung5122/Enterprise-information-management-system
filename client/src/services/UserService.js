@@ -183,6 +183,28 @@ const updateSupplier = (id, supplierInfo) => {
       throw error.response.data;
     });
 };
+
+const fetchAllInventory = () => {
+  return axios
+    .get(`/warehouse-management/warehouse`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const fetchAllReceipts = () => {
+  return axios
+    .get(`/warehouse-management/receipt`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   loginApi,
   fetchAllUsers,
@@ -199,4 +221,6 @@ export {
   deleteSupplier,
   addSupplier,
   updateSupplier,
+  fetchAllInventory,
+  fetchAllReceipts,
 };

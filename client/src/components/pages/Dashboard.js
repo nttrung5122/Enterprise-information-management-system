@@ -5,8 +5,11 @@ import { styled } from "@mui/system";
 import DashboardContent from "../common/DashboardContent";
 import AccountContent from "../common/AccountContent";
 import { SalaryContent } from "../common/SalaryContent";
-import InventoryContent from "../common/InventoryContent";
 import SupplierContent from "../common/SupplierContent";
+import IngredientContent from "./../common/IngredientContent";
+import InventoryContent from "../common/InventoryContent";
+import ReceiptContent from "../common/ReceiptContent";
+
 const Container = styled("div")({
   display: "flex",
 });
@@ -22,13 +25,16 @@ const Dashboard = () => {
       <MiniDrawer
         onMenuClick={handleMenuClick}
         setSelectedSection={setSelectedSection}
+        selectedSection={selectedSection}
       />
 
       {selectedSection === "accounts" && <AccountContent />}
       {selectedSection === "employees" && <DashboardContent />}
       {selectedSection === "salary" && <SalaryContent />}
+      {selectedSection === "ingredient" && <IngredientContent />}
       {selectedSection === "inventory" && <InventoryContent />}
       {selectedSection === "supplier" && <SupplierContent />}
+      {selectedSection === "receipt" && <ReceiptContent />}
     </Container>
   );
 };

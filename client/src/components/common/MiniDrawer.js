@@ -19,6 +19,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import StoreIcon from "@mui/icons-material/Store";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import SetMealIcon from "@mui/icons-material/SetMeal";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const drawerWidth = 240;
 
@@ -82,9 +84,15 @@ const menuItems = [
     section: "accounts",
   },
   { text: "Nhà cung cấp", icon: <StoreIcon />, section: "supplier" },
+  { text: "Nguyên liệu", icon: <SetMealIcon />, section: "ingredient" },
   { text: "Quản lý kho", icon: <InventoryIcon />, section: "inventory" },
   { text: "Bảng lương", icon: <LocalAtmIcon />, section: "salary" },
-  { text: "Bảng chấm công", icon: <CalendarMonthIcon /> },
+  { text: "Hóa đơn", icon: <ReceiptLongIcon />, section: "receipt" },
+  {
+    text: "Bảng chấm công",
+    icon: <CalendarMonthIcon />,
+    section: "attendance",
+  },
 ];
 
 export default function MiniDrawer({ selectedSection, setSelectedSection }) {
@@ -97,6 +105,11 @@ export default function MiniDrawer({ selectedSection, setSelectedSection }) {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleItemClick = (section) => {
+    setSelectedSection(section); // Set the selected section
+    handleDrawerClose(); // Close the drawer when a menu item is clicked
   };
 
   return (
@@ -126,11 +139,17 @@ export default function MiniDrawer({ selectedSection, setSelectedSection }) {
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
                   px: 2.5,
+                  bgcolor:
+                    selectedSection === menuItem
+                      ? theme.palette.primary.dark // Change to your desired color for the selected section
+                      : "transparent",
+                  "&:hover": {
+                    backgroundColor: theme.palette.action.hover,
+                  },
                 }}
                 selected={selectedSection === menuItem.section}
                 onClick={() => {
-                  handleDrawerClose(); // Close the drawer when a menu item is clicked
-                  setSelectedSection(menuItem.section); // Set the selected section
+                  handleItemClick(menuItem.section);
                 }}
               >
                 <ListItemIcon
@@ -138,14 +157,23 @@ export default function MiniDrawer({ selectedSection, setSelectedSection }) {
                     minWidth: 0,
                     mr: open ? 3 : "auto",
                     justifyContent: "center",
+                    color:
+                      selectedSection === menuItem.section
+                        ? theme.palette.action.primary
+                        : theme.palette.text.secondary,
                   }}
-                  selected={selectedSection === menuItem.section}
                 >
                   {menuItem.icon}
                 </ListItemIcon>
                 <ListItemText
                   primary={menuItem.text}
-                  sx={{ opacity: open ? 1 : 0 }}
+                  sx={{
+                    opacity: open ? 1 : 0,
+                    color:
+                      selectedSection === menuItem.section
+                        ? theme.palette.action.selected
+                        : theme.palette.text.secondary,
+                  }}
                 />
               </ListItemButton>
             </ListItem>
