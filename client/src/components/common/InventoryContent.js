@@ -43,7 +43,7 @@ export default function InventoryContent() {
       >
         <SearchInput />
       </div>
-      <InventoryTable items={items} />
+      <InventoryTable items={items} fetchInventoryData={fetchInventoryData} />
     </ContentContainer>
   );
 }

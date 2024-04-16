@@ -1,7 +1,8 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import { UpdateInventoryModal } from "./Modal/UpdateInventoryModal";
 
-export default function InventoryTable({ items }) {
+export default function InventoryTable({ items, fetchInventoryData }) {
   const rows = items.map((item) => ({
     id: item.ingredient.id,
     name: item.ingredient.nameIngredient,
@@ -18,7 +19,14 @@ export default function InventoryTable({ items }) {
       field: "action",
       headerName: "Hành động",
       width: 130,
-      renderCell: (params) => <div></div>,
+      renderCell: (params) => (
+        <div>
+          <UpdateInventoryModal
+            ingredient={params.row}
+            fetchInventoryData={fetchInventoryData}
+          />
+        </div>
+      ),
     },
   ];
   return (

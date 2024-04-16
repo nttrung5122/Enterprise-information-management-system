@@ -195,6 +195,17 @@ const fetchAllInventory = () => {
     });
 };
 
+const updateInventory = (id, quantity) => {
+  return axios
+    .patch(`/warehouse-management/warehouse/${id}`, quantity)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
 const fetchAllReceipts = () => {
   return axios
     .get(`/warehouse-management/receipt`)
@@ -233,6 +244,7 @@ export {
   addSupplier,
   updateSupplier,
   fetchAllInventory,
+  updateInventory,
   fetchAllReceipts,
   addReceipt,
 };
