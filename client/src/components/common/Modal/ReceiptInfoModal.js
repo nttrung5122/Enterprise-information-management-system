@@ -65,6 +65,7 @@ export default function ReceiptInfoModal({ data }) {
             <Table size="small" aria-label="a dense table" sx={{ mt: 3 }}>
               <TableHead>
                 <TableRow sx={{ backgroundColor: "#e8d6cb" }}>
+                  <TableCell>Mã nguyên liệu</TableCell>
                   <TableCell>Nguyên liệu</TableCell>
                   <TableCell>Đơn vị</TableCell>
 
@@ -77,8 +78,9 @@ export default function ReceiptInfoModal({ data }) {
                 {ingredients.map((ingredient) => (
                   <TableRow key={ingredient.id}>
                     <TableCell component="th" scope="row">
-                      {ingredient.nameIngredient}
+                      {ingredient.id}
                     </TableCell>
+                    <TableCell>{ingredient.nameIngredient}</TableCell>
                     <TableCell>{ingredient.unitCal}</TableCell>
 
                     <TableCell>

@@ -205,6 +205,17 @@ const fetchAllReceipts = () => {
       throw error.response.data;
     });
 };
+
+const addReceipt = (receiptData) => {
+  return axios
+    .post(`/warehouse-management/receipt`, receiptData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   loginApi,
   fetchAllUsers,
@@ -223,4 +234,5 @@ export {
   updateSupplier,
   fetchAllInventory,
   fetchAllReceipts,
+  addReceipt,
 };
