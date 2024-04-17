@@ -21,6 +21,7 @@ import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import SetMealIcon from "@mui/icons-material/SetMeal";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 
 const drawerWidth = 240;
 
@@ -88,6 +89,7 @@ const menuItems = [
   { text: "Quản lý kho", icon: <InventoryIcon />, section: "inventory" },
   { text: "Bảng lương", icon: <LocalAtmIcon />, section: "salary" },
   { text: "Hóa đơn", icon: <ReceiptLongIcon />, section: "receipt" },
+  { text: "Mẫu hủy ", icon: <DeleteSweepIcon />, section: "cancellationForm" },
   {
     text: "Bảng chấm công",
     icon: <CalendarMonthIcon />,

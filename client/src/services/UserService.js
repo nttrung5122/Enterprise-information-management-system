@@ -227,6 +227,17 @@ const addReceipt = (receiptData) => {
       throw error.response.data;
     });
 };
+
+const fetchAllCancellationForms = () => {
+  return axios
+    .get(`/warehouse-management/cancellation-form`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   loginApi,
   fetchAllUsers,
@@ -247,4 +258,5 @@ export {
   updateInventory,
   fetchAllReceipts,
   addReceipt,
+  fetchAllCancellationForms,
 };

@@ -18,9 +18,7 @@ export default function DashboardContent() {
   });
 
   const [users, setUsers] = useState([]);
-  useEffect(() => {
-    fetchUsersData();
-  }, []);
+
   const fetchUsersData = () => {
     fetchAllUsers()
       .then((response) => {
@@ -31,7 +29,9 @@ export default function DashboardContent() {
         console.error("Error fetching data:", error);
       });
   };
-
+  useEffect(() => {
+    fetchUsersData();
+  }, []);
   return (
     <ContentContainer>
       <DashboardHeader fetchUsersData={fetchUsersData} />

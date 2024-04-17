@@ -83,7 +83,7 @@ export const EditIngredientModal = ({ ingredient, fetchIngredientsData }) => {
 
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
-          <Button type="submit">Thêm nguyên liệu</Button>
+          <Button type="submit">Xác nhận</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

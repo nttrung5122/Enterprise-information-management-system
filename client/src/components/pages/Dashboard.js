@@ -9,6 +9,7 @@ import SupplierContent from "../common/SupplierContent";
 import IngredientContent from "./../common/IngredientContent";
 import InventoryContent from "../common/InventoryContent";
 import ReceiptContent from "../common/ReceiptContent";
+import CancellationFormContent from "../common/CancellationFormContent";
 
 const Container = styled("div")({
   display: "flex",
@@ -35,6 +36,7 @@ const Dashboard = () => {
       {selectedSection === "inventory" && <InventoryContent />}
       {selectedSection === "supplier" && <SupplierContent />}
       {selectedSection === "receipt" && <ReceiptContent />}
+      {selectedSection === "cancellationForm" && <CancellationFormContent />}
     </Container>
   );
 };
