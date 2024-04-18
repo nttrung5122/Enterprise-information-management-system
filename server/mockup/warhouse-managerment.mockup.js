@@ -6,7 +6,7 @@ const {
   Warehouse,
   Supplier,
   Receipt,
-  ReasonCancellation,
+  // ReasonCancellation,
 } = require("../models");
 
 const supplierMockupData = [
@@ -67,24 +67,24 @@ const ingredientMockupData = [
   },
 ];
 
-const reasonCancellationMockupData = [
-  {
-    id: 100,
-    name: "Quá hạn/Hư hỏng",
-    description:
-      "Nguyên liệu hết hạn sự dụng hoặc hư hỏng trong quá trình bảo quản",
-  },
-  {
-    id: 101,
-    name: "Hao hục",
-    description: "Nguyên liệu hao hục trong quá trình sản xuất",
-  },
-  {
-    id: 102,
-    name: "Khác",
-    description: "Các lý do khác",
-  },
-];
+// const reasonCancellationMockupData = [
+//   {
+//     id: 100,
+//     name: "Quá hạn/Hư hỏng",
+//     description:
+//       "Nguyên liệu hết hạn sự dụng hoặc hư hỏng trong quá trình bảo quản",
+//   },
+//   {
+//     id: 101,
+//     name: "Hao hục",
+//     description: "Nguyên liệu hao hục trong quá trình sản xuất",
+//   },
+//   {
+//     id: 102,
+//     name: "Khác",
+//     description: "Các lý do khác",
+//   },
+// ];
 
 const arrayMonthData = [1, 2, 3, 4];
 
@@ -119,17 +119,17 @@ const cancellationFormTemplate = (month) => [
   {
     date: new Date(2024, month - 1, 2),
     employeeId: 100,
-    reasonCancellationId: 101,
+    // reasonCancellationId: 101,
   },
   {
     date: new Date(2024, month - 1, 14),
     employeeId: 101,
-    reasonCancellationId: 102,
+    // reasonCancellationId: 102,
   },
   {
     date: new Date(2024, month - 1, 27),
     employeeId: 100,
-    reasonCancellationId: 100,
+    // reasonCancellationId: 100,
   },
 ];
 
@@ -173,7 +173,7 @@ module.exports = async () => {
       .flat(Infinity)
   );
 
-  await ReasonCancellation.bulkCreate(reasonCancellationMockupData);
+  // await ReasonCancellation.bulkCreate(reasonCancellationMockupData);
 
   const cancellationForms = await CancellationForm.bulkCreate(
     cancellationFormMockupData

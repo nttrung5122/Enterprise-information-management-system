@@ -17,7 +17,7 @@ const {
   CancellationFormDetail,
   CancellationForm,
   Ingredient,
-  ReasonCancellation,
+  // ReasonCancellation,
   ReceiptDetail,
   Receipt,
   Supplier,
@@ -95,8 +95,8 @@ CancellationForm.belongsTo(Employee);
 Employee.hasMany(CancellationForm);
 
 
-CancellationForm.belongsTo(ReasonCancellation);
-ReasonCancellation.hasMany(CancellationForm)
+// CancellationForm.belongsTo(ReasonCancellation);
+// ReasonCancellation.hasMany(CancellationForm)
 
 Food.belongsTo(Recipe);
 Recipe.hasMany(Food)
@@ -142,7 +142,7 @@ module.exports = {
   CancellationFormDetail,
   CancellationForm,
   Ingredient,
-  ReasonCancellation,
+  // ReasonCancellation,
   ReceiptDetail,
   Receipt,
   Supplier,
