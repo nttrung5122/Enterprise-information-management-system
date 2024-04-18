@@ -9,7 +9,7 @@ import { createTheme } from "@mui/material/styles";
 import { addReceipt } from "../../../services/UserService";
 import { Typography } from "@mui/material";
 
-export const AddReceiptModal = ({}) => {
+export const AddReceiptModal = ({ fetchReceiptsData }) => {
   const [open, setOpen] = React.useState(false);
   const [ingredients, setIngredients] = React.useState([
     { ingredientId: "", quantity: "", pricePerUnit: "" },
@@ -33,6 +33,7 @@ export const AddReceiptModal = ({}) => {
     addReceipt(receiptData)
       .then(() => {
         console.log("Supplier added successfully.");
+        fetchReceiptsData();
       })
       .catch((error) => {
         console.log("Check the error adding receipt: ", error);

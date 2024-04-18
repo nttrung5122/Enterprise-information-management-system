@@ -34,7 +34,7 @@ export default function ReceiptContent() {
   }, []);
   return (
     <ContentContainer>
-      <ReceiptHeader />
+      <ReceiptHeader fetchReceiptsData={fetchReceiptsData} />
       <div
         style={{
           display: "flex",

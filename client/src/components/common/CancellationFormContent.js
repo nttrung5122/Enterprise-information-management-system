@@ -36,7 +36,7 @@ export default function CancellationFormContent() {
   }, []);
   return (
     <ContentContainer>
-      <CancellationFormHeader />
+      <CancellationFormHeader fetchCancellationForms={fetchCancellationForms} />
       <div
         style={{
           display: "flex",
