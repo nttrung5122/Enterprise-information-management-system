@@ -26,7 +26,7 @@ const ReceiptController = {
       const receipt = await Receipt.findByPk(id, {
         include: [Ingredient, Employee, Supplier],
       });
-      if(!receipt) return res.status(400).json("id not found");
+      if (!receipt) return res.status(400).json("id not found");
       return res.status(200).json(receipt);
     } catch (error) {
       console.log(error);
@@ -39,7 +39,6 @@ const ReceiptController = {
       const employeeId = req.body?.employeeId;
       // const employeeId = req.session.account.id;
       const supplierId = req.body?.supplierId;
-      const note = req.body?.note;
       const date = req.body?.date || Date.now();
       const details = req.body?.details;
       // {
@@ -58,10 +57,11 @@ const ReceiptController = {
           employeeId,
           supplierId,
           date,
-          note,
           priceTotal: details.reduce((previousValue, currentValue) => {
-            return previousValue + currentValue.quantity * currentValue.pricePerUnit
-          }, 0)
+            return (
+              previousValue + currentValue.quantity * currentValue.pricePerUnit
+            );
+          }, 0),
         },
         {
           transaction: t,
@@ -71,25 +71,25 @@ const ReceiptController = {
         return {
           ...detail,
           receiptId: newReceipt.id,
-          price: detail.quantity * detail.pricePerUnit
-        }
-      })
-      await ReceiptDetail.bulkCreate(receiptDetails,{
-        transaction:t
+          price: detail.quantity * detail.pricePerUnit,
+        };
       });
-      for(const detail of details){
+      await ReceiptDetail.bulkCreate(receiptDetails, {
+        transaction: t,
+      });
+      for (const detail of details) {
         const ingredient = await Warehouse.findOne({
           where: {
             ingredientId: detail.ingredientId,
           },
         });
-        if(!ingredient) {
-            throw "Ingredient not found"
-        } 
+        if (!ingredient) {
+          throw "Ingredient not found";
+        }
         await ingredient.increment("quantity", {
           by: detail.quantity,
           transaction: t,
-        })
+        });
       }
 
       await t.commit();
@@ -104,16 +104,171 @@ const ReceiptController = {
     }
   },
   update: async (req, res) => {
+    const t = await sequelize.transaction();
     try {
+      const id = req.params?.id;
+      const employeeId = req.body?.employeeId;
+      // const employeeId = req.session.account.id;
+      const supplierId = req.body?.supplierId;
+      const date = req.body?.date || Date.now();
+      const details = req.body?.details;
+      // {
+      //     ingrendientId,
+      //     quantity,
+      //     pricePerUnit,
+      // }
+
+      if (
+        !employeeId &&
+        !date &&
+        !supplierId &&
+        (!details || details.length == 0)
+      ) {
+        await t.rollback();
+        return res.status(403).json("Data is invalid");
+      }
+      const receipt = await Receipt.findByPk(id);
+      if (!receipt) {
+        await t.rollback();
+        return res.status(400).json("id not found");
+      }
+
+      await receipt.update(
+        {
+          employeeId,
+          date,
+          supplierId,
+        },
+        { transaction: t }
+      );
+
+      if (!details || details.length == 0) {
+        await t.commit();
+        await receipt.reload();
+        return res.status(200).json(receipt);
+      }
+
+
+      // xóa thông tin cũ
+
+      const receiptDetails = await ReceiptDetail.findAll({
+        where: {
+          receiptId: id,
+        },
+      });
+
+      await Promise.all(
+        receiptDetails.map((receiptDetail) => {
+          return Warehouse.decrement(
+            {
+              quantity: receiptDetail.quantity,
+            },
+            {
+              where: {
+                ingredientId: receiptDetail.ingredientId,
+              },
+              transaction: t,
+            }
+          );
+        })
+      );
+
+      await ReceiptDetail.destroy({
+        where: {
+          receiptId: id,
+        },
+        transaction: t,
+        force:true
+      });
+
+      // cập nhật thông tin mới
+      const priceTotal = details.reduce((previousValue, currentValue) => {
+        return (
+          previousValue + currentValue.quantity * currentValue.pricePerUnit
+        );
+      }, 0);
+      await receipt.update(
+        {
+          priceTotal,
+        },
+        { transaction: t }
+      );
+
+      await Promise.all(
+        details.map((detail) => {
+          return Warehouse.increment(
+            {
+              quantity: detail.quantity,
+            },
+            {
+              where: {
+                ingredientId: detail.ingredientId,
+              },
+              transaction: t,
+            }
+          );
+        })
+      );
+      await ReceiptDetail.bulkCreate(details, {
+        transaction: t,
+      });
+      await t.commit();
+      const receiptNew = await Receipt.findByPk(id, {
+        include: [Ingredient, Employee, Supplier],
+      });
+      return res.status(200).json(receipt);
     } catch (error) {
       console.log(error);
       return res.status(500).json(error);
     }
   },
   delete: async (req, res) => {
+    const t = await sequelize.transaction()
+
     try {
+      const id = req.params?.id;
+      const receipt = await Receipt.findByPk(id);
+      if (!receipt) {
+        return res.status(403).json("id not found");
+      }
+
+      const receiptDetails = await ReceiptDetail.findAll({
+        where: {
+          receiptId: id,
+        },
+      });
+
+      await Promise.all(
+        receiptDetails.map((receiptDetail) => {
+          return Warehouse.decrement(
+            {
+              quantity: receiptDetail.quantity,
+            },
+            {
+              where: {
+                ingredientId: receiptDetail.ingredientId,
+              },
+              transaction: t,
+            }
+          );
+        })
+      );
+
+      await ReceiptDetail.destroy({
+        where: {
+          receiptId: id,
+        },
+        transaction: t,
+        force:true
+      });
+
+      await receipt.destroy({force:true});
+      await t.commit();
+      res.status(200).json("success");
+
     } catch (error) {
       console.log(error);
+      await t.rollback();
       return res.status(500).json(error);
     }
   },
