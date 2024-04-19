@@ -12,6 +12,7 @@ const EditEmployeeInfoModal = ({
   selectedUser,
   handleInfoUpdate,
   setUserData,
+  fetchUsersData,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -36,6 +37,7 @@ const EditEmployeeInfoModal = ({
       .then((response) => {
         console.log("Employee info updated successfully:", response);
         // Close the modal or do any further actions upon successful update
+        fetchUsersData();
         handleClose();
       })
       .catch((error) => {

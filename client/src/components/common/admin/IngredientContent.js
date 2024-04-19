@@ -2,17 +2,15 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
 import SearchInput from "./SearchInput";
 import FilterButtonGroup from "./FilterButtonGroup";
-import ReceiptHeader from "./ReceiptHeader";
-import { fetchAllCancellationForms } from "../../services/UserService";
-import ReceiptTable from "./ReceiptTable";
-import CancellationFormHeader from "./CancellationFormHeader";
-import CancellationFormTable from "./CancellationFormTable";
+import IngredientHeader from "./IngredientHeader";
+import { getAllIngredients } from "../../../services/UserService";
+import IngredientTable from "./IngredientTable";
 
-export default function CancellationFormContent() {
+export default function IngredientContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
-    padding: "10px",
-    marginLeft: "-60px",
+    padding: "10px", // Add padding for better spacing
+    marginLeft: "-60px", // Adjust the margin to offset the sidebar width
   });
 
   const FilterGroupContainer = styled("div")({
@@ -20,23 +18,23 @@ export default function CancellationFormContent() {
     alignItems: "center",
   });
 
-  const [cancellationForms, setCancellationForms] = useState([]);
-  const fetchCancellationForms = () => {
-    fetchAllCancellationForms()
+  const [ingredients, setIngredients] = useState([]);
+  const fetchIngredientsData = () => {
+    getAllIngredients()
       .then((response) => {
         console.log("Check data: ", response);
-        setCancellationForms(response);
+        setIngredients(response);
       })
       .catch((error) => {
         console.log("Check error: ", error);
       });
   };
   useEffect(() => {
-    fetchCancellationForms();
+    fetchIngredientsData();
   }, []);
   return (
     <ContentContainer>
-      <CancellationFormHeader fetchCancellationForms={fetchCancellationForms} />
+      <IngredientHeader fetchIngredientsData={fetchIngredientsData} />
       <div
         style={{
           display: "flex",
@@ -48,7 +46,11 @@ export default function CancellationFormContent() {
           <FilterButtonGroup style={{ border: "1px groove grey" }} />
         </FilterGroupContainer>
       </div>
-      <CancellationFormTable cancellationForms={cancellationForms} />
+      <IngredientTable
+        ingredients={ingredients}
+        setIngredients={setIngredients}
+        fetchIngredientsData={fetchIngredientsData}
+      />
     </ContentContainer>
   );
 }

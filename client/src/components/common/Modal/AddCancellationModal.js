@@ -6,13 +6,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
-import {
-  addCancellationForm,
-  fetchAllCancellationForms,
-} from "../../../services/UserService";
+import { addCancellationForm } from "../../../services/UserService";
 import { Typography } from "@mui/material";
 
-export const AddCancellationModal = ({}) => {
+export const AddCancellationModal = ({ fetchCancellationForms }) => {
   const [open, setOpen] = React.useState(false);
   const [ingredients, setIngredients] = React.useState([
     { ingredientId: "", quantity: "" },
@@ -31,16 +28,15 @@ export const AddCancellationModal = ({}) => {
       employeeId: formData.get("employeeId"),
       note: formData.get("note"),
       details: ingredients,
-      reasonCancellationId: 101,
     };
 
     addCancellationForm(cancelFormData)
       .then(() => {
-        console.log("Supplier added successfully.");
-        fetchAllCancellationForms();
+        fetchCancellationForms();
+        console.log("Cancellation Form added successfully.");
       })
       .catch((error) => {
-        console.log("Check the error adding receipt: ", error);
+        console.log("Check the error adding form: ", error);
         console.log(cancelFormData);
       });
     setOpen(false);

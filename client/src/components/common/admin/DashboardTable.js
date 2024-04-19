@@ -8,16 +8,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import AlertDialog from "./Modal/DeleteUserModal";
-import EmployeeInfoModal from "./Modal/EmployeeInfoModal";
-import UpdateContractModal from "./Modal/UpdateContractModal";
+import AlertDialog from "../Modal/DeleteUserModal";
+import EmployeeInfoModal from "../Modal/EmployeeInfoModal";
+import UpdateContractModal from "../Modal/UpdateContractModal";
 import Pagination from "@mui/material/Pagination";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 
-const TableUsers = ({ users, updateUserData }) => {
+const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -85,8 +85,12 @@ const TableUsers = ({ users, updateUserData }) => {
                       selectedUser={user} // Pass the selected user
                       updateUserData={updateUserData}
                       handleClose={handleCloseEditModal}
+                      fetchUsersData={fetchUsersData}
                     />
-                    <EmployeeInfoModal user={user} />
+                    <EmployeeInfoModal
+                      user={user}
+                      fetchUsersData={fetchUsersData}
+                    />
                     <AlertDialog userId={user.id} />
                   </Box>
                 </TableCell>

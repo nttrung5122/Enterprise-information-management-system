@@ -1,19 +1,22 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { UpdateInventoryModal } from "./Modal/UpdateInventoryModal";
+import DeleteIngredientModal from "../Modal/DeleteIngredientModal";
+import { EditIngredientModal } from "../Modal/EditIngredientModal";
 
-export default function InventoryTable({ items, fetchInventoryData }) {
-  const rows = items.map((item) => ({
-    id: item.ingredient.id,
-    name: item.ingredient.nameIngredient,
-    unit: item.ingredient.unitCal,
-    quantity: item.quantity,
+export default function IngredientTable({
+  ingredients,
+  setIngredients,
+  fetchIngredientsData,
+}) {
+  const rows = ingredients.map((ingredient) => ({
+    id: ingredient.id,
+    name: ingredient.nameIngredient,
+    unit: ingredient.unitCal,
   }));
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "name", headerName: "Tên nguyên liệu", width: 130 },
     { field: "unit", headerName: "Đơn vị", width: 90 },
-    { field: "quantity", headerName: "Số lượng", width: 90 },
     { field: "", headerName: "", flex: 1 },
     {
       field: "action",
@@ -21,9 +24,11 @@ export default function InventoryTable({ items, fetchInventoryData }) {
       width: 130,
       renderCell: (params) => (
         <div>
-          <UpdateInventoryModal
+          <DeleteIngredientModal id={params.row.id} />
+          <EditIngredientModal
             ingredient={params.row}
-            fetchInventoryData={fetchInventoryData}
+            setIngredients={setIngredients}
+            fetchIngredientsData={fetchIngredientsData}
           />
         </div>
       ),

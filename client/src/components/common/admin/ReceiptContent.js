@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
 import SearchInput from "./SearchInput";
 import FilterButtonGroup from "./FilterButtonGroup";
-import InventoryHeader from "./InventoryHeader";
-import InventoryTable from "./InventoryTable";
-import { fetchAllInventory } from "../../services/UserService";
+import ReceiptHeader from "./ReceiptHeader";
+import { fetchAllReceipts } from "../../../services/UserService";
+import ReceiptTable from "./ReceiptTable";
 
-export default function InventoryContent() {
+export default function ReceiptContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
     padding: "10px", // Add padding for better spacing
@@ -18,23 +18,23 @@ export default function InventoryContent() {
     alignItems: "center",
   });
 
-  const [items, setItems] = useState([]);
-  const fetchInventoryData = () => {
-    fetchAllInventory()
+  const [receipts, setReceipts] = useState([]);
+  const fetchReceiptsData = () => {
+    fetchAllReceipts()
       .then((response) => {
-        console.log("Check warehouse: ", response);
-        setItems(response);
+        console.log("Check data: ", response);
+        setReceipts(response);
       })
       .catch((error) => {
-        console.log("Check error");
+        console.log("Check error: ", error);
       });
   };
   useEffect(() => {
-    fetchInventoryData();
+    fetchReceiptsData();
   }, []);
   return (
     <ContentContainer>
-      <InventoryHeader />
+      <ReceiptHeader fetchReceiptsData={fetchReceiptsData} />
       <div
         style={{
           display: "flex",
@@ -42,8 +42,15 @@ export default function InventoryContent() {
         }}
       >
         <SearchInput />
+        <FilterGroupContainer>
+          <FilterButtonGroup style={{ border: "1px groove grey" }} />
+        </FilterGroupContainer>
       </div>
-      <InventoryTable items={items} fetchInventoryData={fetchInventoryData} />
+      <ReceiptTable
+        receipts={receipts}
+        setReceipts={setReceipts}
+        fetchReceiptsData={fetchReceiptsData}
+      />
     </ContentContainer>
   );
 }

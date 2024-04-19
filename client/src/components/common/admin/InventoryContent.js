@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
 import SearchInput from "./SearchInput";
 import FilterButtonGroup from "./FilterButtonGroup";
-import ReceiptHeader from "./ReceiptHeader";
-import { fetchAllReceipts } from "../../services/UserService";
-import ReceiptTable from "./ReceiptTable";
+import InventoryHeader from "./InventoryHeader";
+import InventoryTable from "./InventoryTable";
+import { fetchAllInventory } from "../../../services/UserService";
 
-export default function ReceiptContent() {
+export default function InventoryContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
     padding: "10px", // Add padding for better spacing
@@ -18,23 +18,23 @@ export default function ReceiptContent() {
     alignItems: "center",
   });
 
-  const [receipts, setReceipts] = useState([]);
-  const fetchReceiptsData = () => {
-    fetchAllReceipts()
+  const [items, setItems] = useState([]);
+  const fetchInventoryData = () => {
+    fetchAllInventory()
       .then((response) => {
-        console.log("Check data: ", response);
-        setReceipts(response);
+        console.log("Check warehouse: ", response);
+        setItems(response);
       })
       .catch((error) => {
-        console.log("Check error: ", error);
+        console.log("Check error");
       });
   };
   useEffect(() => {
-    fetchReceiptsData();
+    fetchInventoryData();
   }, []);
   return (
     <ContentContainer>
-      <ReceiptHeader fetchReceiptsData={fetchReceiptsData} />
+      <InventoryHeader />
       <div
         style={{
           display: "flex",
@@ -42,15 +42,8 @@ export default function ReceiptContent() {
         }}
       >
         <SearchInput />
-        <FilterGroupContainer>
-          <FilterButtonGroup style={{ border: "1px groove grey" }} />
-        </FilterGroupContainer>
       </div>
-      <ReceiptTable
-        receipts={receipts}
-        setReceipts={setReceipts}
-        fetchReceiptsData={fetchReceiptsData}
-      />
+      <InventoryTable items={items} fetchInventoryData={fetchInventoryData} />
     </ContentContainer>
   );
 }

@@ -3,17 +3,19 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { AddSupplierModal } from "./Modal/AddSupplierModal";
-
-export default function SupplierHeader({ fetchSuppliersData }) {
+import Button from "@mui/material/Button";
+import { AddEmployeeModal } from "../Modal/AddEmployeeModal";
+export default function ButtonAppBar({ fetchUsersData }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Nhà cung cấp:
+            Nhân viên:
           </Typography>
-          <AddSupplierModal fetchSuppliersData={fetchSuppliersData} />
+          <Button color="inherit">
+            <AddEmployeeModal fetchUsersData={fetchUsersData} />
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

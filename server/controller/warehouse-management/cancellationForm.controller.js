@@ -12,7 +12,7 @@ const CancellationFormController = {
   getAll: async (req, res) => {
     try {
       const cancellationForm = await CancellationForm.findAll({
-        include: [Ingredient, ReasonCancellation],
+        include: [Ingredient],
       });
       return res.status(200).json(cancellationForm);
     } catch (error) {
@@ -30,9 +30,6 @@ const CancellationFormController = {
         include: [
           {
             model: Ingredient,
-          },
-          {
-            model: ReasonCancellation,
           },
         ],
       });
@@ -53,15 +50,15 @@ const CancellationFormController = {
       // const employeeId = req.session.account.employeeId
       const details = req.body?.details;
       // [
-        // {
-          //     ingredientId,
-          //     quantity
-          // }
+      // {
+      //     ingredientId,
+      //     quantity
+      // }
       // ]
-          const date = req.body?.date;
+      const date = req.body?.date;
       // const reasonCancellationId = req.body?.reasonCancellationId;
       // if (!note || !employeeId || !details || !reasonCancellationId) {
-        if (!note || !employeeId || !details ) {
+      if (!note || !employeeId || !details) {
         await t.rollback();
         return res.status(403).json("Data is invalid");
       }
@@ -127,11 +124,11 @@ const CancellationFormController = {
       const note = req.body?.note;
       const employeeId = req.body?.employeeId;
       const details = req.body?.details;
-            // [
-        // {
-          //     ingredientId,
-          //     quantity
-          // }
+      // [
+      // {
+      //     ingredientId,
+      //     quantity
+      // }
       // ]
       const date = req.body?.date;
       // const reasonCancellationId = req.body?.reasonCancellationId;
@@ -169,7 +166,7 @@ const CancellationFormController = {
       }
 
       // xóa chi tiết form cũ
-      const cancellationFormDetails = await  CancellationFormDetail.findAll({
+      const cancellationFormDetails = await CancellationFormDetail.findAll({
         where: {
           cancellationFormId: id,
         },
@@ -189,15 +186,17 @@ const CancellationFormController = {
           );
         })
       );
-      await CancellationFormDetail.destroy({
-        where: {
-          cancellationFormId: id,
+      await CancellationFormDetail.destroy(
+        {
+          where: {
+            cancellationFormId: id,
+          },
+          transaction: t,
         },
-        transaction: t,
-      },{
-        focus:true
-      })
-
+        {
+          focus: true,
+        }
+      );
 
       // cập nhập chi tiết mới
       await Promise.all(
@@ -219,15 +218,11 @@ const CancellationFormController = {
         transaction: t,
       });
       await t.commit();
-      const cancellationFormNew = await CancellationForm.findByPk(
-        id,
-        {
-          include: [Ingredient],
-        }
-      );
-      
-      return res.status(200).json(cancellationFormNew);
+      const cancellationFormNew = await CancellationForm.findByPk(id, {
+        include: [Ingredient],
+      });
 
+      return res.status(200).json(cancellationFormNew);
     } catch (error) {
       console.log(error);
       await t.rollback();
@@ -235,14 +230,14 @@ const CancellationFormController = {
     }
   },
   delete: async (req, res) => {
-    const t = await sequelize.transaction()
+    const t = await sequelize.transaction();
     try {
       const id = req.params?.id;
       const cancellationForm = await CancellationForm.findByPk(id);
       if (!cancellationForm) {
         return res.status(403).json("id not found");
       }
-      const cancellationFormDetails = await  CancellationFormDetail.findAll({
+      const cancellationFormDetails = await CancellationFormDetail.findAll({
         where: {
           cancellationFormId: id,
         },
@@ -267,10 +262,10 @@ const CancellationFormController = {
           cancellationFormId: id,
         },
         transaction: t,
-        force:true
-      })
+        force: true,
+      });
 
-      await cancellationForm.destroy({force:true});
+      await cancellationForm.destroy({ force: true });
       await t.commit();
       return res.status(200).json("success");
     } catch (error) {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
-import SearchInput from "../common/SearchInput";
 import SupplierHeader from "./SupplierHeader";
 import SupplierTable from "./SupplierTable";
-import { fetchAllSuppliers } from "../../services/UserService";
+import { fetchAllSuppliers } from "../../../services/UserService";
+import SearchInput from "./SearchInput";
 
 export default function SupplierContent() {
   const ContentContainer = styled("div")({

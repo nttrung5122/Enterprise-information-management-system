@@ -35,7 +35,7 @@ const lineStyle = {
   textAlign: "left", // Align text to the left within the line
 };
 
-export default function EmployeeInfoModal({ user }) {
+export default function EmployeeInfoModal({ user, fetchUsersData }) {
   const [open, setOpen] = useState(false);
   // const [updatedUser, setUpdatedUser] = useState(user);
   const [userData, setUserData] = useState({ ...user });
@@ -74,6 +74,9 @@ export default function EmployeeInfoModal({ user }) {
                 Số điện thoại: {user.phoneNumber}
               </Typography>
             </div>
+            <div sx={lineStyle}>
+              <Typography variant="h6">Địa chỉ: {user.address}</Typography>
+            </div>
           </Box>
           <Box sx={buttonContainerStyle}>
             <Button onClick={handleClose} color="primary">
@@ -84,6 +87,7 @@ export default function EmployeeInfoModal({ user }) {
               handleClose={handleClose}
               // handleInfoUpdate={handleInfoUpdate}
               setUserData={setUserData}
+              fetchUsersData={fetchUsersData}
             />
           </Box>
         </Box>

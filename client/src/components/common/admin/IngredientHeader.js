@@ -3,19 +3,17 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { AddCancellationModal } from "./Modal/AddCancellationModal";
+import { AddIngredientModal } from "../Modal/AddIngredientModal";
 
-export default function CancellationFormHeader({ fetchCancellationForms }) {
+export default function IngredientHeader({ fetchIngredientsData }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Danh sách mẫu hủy:
+            Danh sách nguyên liệu:
           </Typography>
-          <AddCancellationModal
-            fetchCancellationForms={fetchCancellationForms}
-          />
+          <AddIngredientModal fetchIngredientsData={fetchIngredientsData} />
         </Toolbar>
       </AppBar>
     </Box>
