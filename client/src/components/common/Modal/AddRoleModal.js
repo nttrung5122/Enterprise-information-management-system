@@ -5,13 +5,13 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { createTheme } from "@mui/material/styles";
-import { updateIngredient } from "../../../services/UserService";
+import { addRole } from "../../../services/UserService";
+import SuccessModal from "./SuccessModal";
 
-export const EditIngredientModal = ({ ingredient, fetchIngredientsData }) => {
+export const AddRoleModal = ({ role, fetchAllRole }) => {
   const [open, setOpen] = React.useState(false);
-
+  const [showSuccessModal, setShowSuccessModal] = React.useState(false); // State to control the success modal
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -19,34 +19,35 @@ export const EditIngredientModal = ({ ingredient, fetchIngredientsData }) => {
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const ingredientData = {
-      nameIngredient: formData.get("nameIngredient"),
-      unitCal: formData.get("unitCal"),
+    const roleData = {
+      id: role.id,
+      info: formData.get("info"),
+      baseSalary: formData.get("baseSalary"),
     };
 
-    updateIngredient(ingredient.id, ingredientData)
+    addRole(roleData)
       .then(() => {
-        console.log("update successfully");
-        handleClose(); // Call handleClose as a function
-        fetchIngredientsData();
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          fetchAllRole();
+        }, 2000);
       })
       .catch((error) => {
-        console.log("Check updated error: ", error);
+        console.log("Check the error adding role: ", error);
+        console.log("Check the role: ", roleData);
       });
+    setOpen(false);
   };
-
   const theme = createTheme();
 
   return (
     <React.Fragment>
-      <Button>
-        <ModeEditIcon onClick={handleClickOpen} />
+      <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
+        Thêm chức vụ:
       </Button>
-
       <Dialog
         open={open}
         onClose={handleClose}
@@ -55,37 +56,36 @@ export const EditIngredientModal = ({ ingredient, fetchIngredientsData }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Sửa thông tin nguyên liệu</DialogTitle>
+        <DialogTitle>Thêm chức vụ</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            id="nameIngredient"
-            name="nameIngredient"
-            label="Tên nguyên liệu"
+            id="info"
+            name="info"
+            label="Tên chức vụ"
             fullWidth
             variant="standard"
-            defaultValue={ingredient.name}
           />
           <TextField
             autoFocus
             required
             margin="dense"
-            id="unitCal"
-            name="unitCal"
-            label="Đơn vị"
+            id="baseSalary"
+            name="baseSalary"
+            label="Lương cơ bản"
             fullWidth
             variant="standard"
-            defaultValue={ingredient.unit}
           />
         </DialogContent>
 
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
-          <Button type="submit">Xác nhận</Button>
+          <Button type="submit">Thêm chức vụ</Button>
         </DialogActions>
       </Dialog>
+      {showSuccessModal && <SuccessModal message="Thêm thành công." />}
     </React.Fragment>
   );
 };

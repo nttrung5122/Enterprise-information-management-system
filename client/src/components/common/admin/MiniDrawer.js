@@ -22,6 +22,7 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import SetMealIcon from "@mui/icons-material/SetMeal";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import BadgeIcon from "@mui/icons-material/Badge";
 
 const drawerWidth = 240;
 
@@ -78,6 +79,7 @@ const handleLogout = () => {
 };
 
 const menuItems = [
+  { text: "Danh sách chức vụ", icon: <BadgeIcon />, section: "role" },
   { text: "Danh sách nhân viên", icon: <PeopleIcon />, section: "employees" },
   {
     text: "Danh sách tài khoản",

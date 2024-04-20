@@ -11,6 +11,7 @@ import ReceiptContent from "../common/admin/ReceiptContent";
 import CancellationFormContent from "../common/admin/CancellationFormContent";
 import { SalaryContent } from "../common/admin/SalaryContent";
 import TimeKeepingContent from "../common/admin/TimeKeepingContent";
+import RoleContent from "../common/admin/RoleContent";
 
 const Container = styled("div")({
   display: "flex",
@@ -29,7 +30,7 @@ const Dashboard = () => {
         setSelectedSection={setSelectedSection}
         selectedSection={selectedSection}
       />
-
+      {selectedSection === "role" && <RoleContent />}
       {selectedSection === "accounts" && <AccountContent />}
       {selectedSection === "employees" && <DashboardContent />}
       {selectedSection === "salary" && <SalaryContent />}

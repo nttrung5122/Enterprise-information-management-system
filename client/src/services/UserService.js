@@ -250,6 +250,47 @@ const addCancellationForm = (formData) => {
       throw error.response.data;
     });
 };
+
+const getAllRole = () => {
+  return axios
+    .get(`/human-resource-management/role`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const addRole = (roleData) => {
+  return axios
+    .post(`/human-resource-management/role`, roleData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const updateRole = (roleData) => {
+  return axios
+    .patch(`/human-resource-management/role`, roleData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const deleteRole = (roleId) => {
+  return axios
+    .delete(`/human-resource-management/role/${roleId}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   loginApi,
   fetchAllUsers,
@@ -272,4 +313,8 @@ export {
   addReceipt,
   fetchAllCancellationForms,
   addCancellationForm,
+  getAllRole,
+  addRole,
+  updateRole,
+  deleteRole,
 };
