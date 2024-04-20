@@ -7,10 +7,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
 import { addIngredient } from "../../../services/UserService";
+import SuccessModal from "./SuccessModal";
 
 export const AddIngredientModal = ({ fetchIngredientsData }) => {
   const [open, setOpen] = React.useState(false);
-
+  const [showSuccessModal, setShowSuccessModal] = React.useState(false); // State to control the success modal
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -28,8 +29,10 @@ export const AddIngredientModal = ({ fetchIngredientsData }) => {
 
     addIngredient(ingredientData)
       .then(() => {
-        console.log("Ingredient added successfully.");
-        fetchIngredientsData();
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          fetchIngredientsData();
+        }, 3000);
       })
       .catch((error) => {
         console.log("Check the error adding ingredient: ", error);
@@ -81,6 +84,7 @@ export const AddIngredientModal = ({ fetchIngredientsData }) => {
           <Button type="submit">Thêm nguyên liệu</Button>
         </DialogActions>
       </Dialog>
+      {showSuccessModal && <SuccessModal message="Tạo thành công." />}
     </React.Fragment>
   );
 };

@@ -10,6 +10,7 @@ import InventoryContent from "../common/admin/InventoryContent";
 import ReceiptContent from "../common/admin/ReceiptContent";
 import CancellationFormContent from "../common/admin/CancellationFormContent";
 import { SalaryContent } from "../common/admin/SalaryContent";
+import TimeKeepingContent from "../common/admin/TimeKeepingContent";
 
 const Container = styled("div")({
   display: "flex",
@@ -37,6 +38,7 @@ const Dashboard = () => {
       {selectedSection === "supplier" && <SupplierContent />}
       {selectedSection === "receipt" && <ReceiptContent />}
       {selectedSection === "cancellationForm" && <CancellationFormContent />}
+      {selectedSection === "attendance" && <TimeKeepingContent />}
     </Container>
   );
 };

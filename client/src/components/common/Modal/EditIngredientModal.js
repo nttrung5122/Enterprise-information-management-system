@@ -11,6 +11,7 @@ import { updateIngredient } from "../../../services/UserService";
 
 export const EditIngredientModal = ({ ingredient, fetchIngredientsData }) => {
   const [open, setOpen] = React.useState(false);
+  const [showSuccessModal, setShowSuccessModal] = React.useState(false); // State to control the success modal
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -19,6 +20,7 @@ export const EditIngredientModal = ({ ingredient, fetchIngredientsData }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -28,17 +30,16 @@ export const EditIngredientModal = ({ ingredient, fetchIngredientsData }) => {
     };
 
     updateIngredient(ingredient.id, ingredientData)
-      .then((response) => {
-        console.log("Ingredient updated successfully.");
+      .then(() => {
+        console.log("update successfully");
         handleClose(); // Call handleClose as a function
         fetchIngredientsData();
       })
       .catch((error) => {
         console.log("Check updated error: ", error);
       });
-
-    setOpen(false);
   };
+
   const theme = createTheme();
 
   return (
