@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import DeleteRoleModal from "../Modal/DeleteRoleModal";
-import { EditRoleModal } from "../Modal/EditRoleModal";
+import DeleteRoleModal from "../modal/DeleteRoleModal";
+import { EditRoleModal } from "../modal/EditRoleModal";
 
 export default function RoleTable({ role, fetchAllRole }) {
   const rows = role.map((item) => ({

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import DeleteIngredientModal from "../Modal/DeleteIngredientModal";
-import { EditIngredientModal } from "../Modal/EditIngredientModal";
+import DeleteIngredientModal from "../modal/DeleteIngredientModal";
+import { EditIngredientModal } from "../modal/EditIngredientModal";
 
 export default function IngredientTable({
   ingredients,

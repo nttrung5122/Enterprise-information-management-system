@@ -15,6 +15,20 @@ const loginApi = ({ user, password }) => {
     });
 };
 
+const changePasswordByAdmin = (accountData) => {
+  return axios
+    .post(
+      `/human-resource-management/account/change-password-for-manager`,
+      accountData
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
 const fetchAllUsers = () => {
   return axios.get("/human-resource-management/employee");
 };
@@ -293,6 +307,7 @@ const deleteRole = (roleId) => {
 };
 export {
   loginApi,
+  changePasswordByAdmin,
   fetchAllUsers,
   addNewUser,
   deleteUser,

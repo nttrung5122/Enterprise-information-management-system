@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { UpdateInventoryModal } from "../Modal/UpdateInventoryModal";
+import { UpdateInventoryModal } from "../modal/UpdateInventoryModal";
 
 export default function InventoryTable({ items, fetchInventoryData }) {
   const rows = items.map((item) => ({

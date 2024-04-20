@@ -12,6 +12,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import OrderModal from "./modal/OrderModal";
 
 export default function ProductHeader() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -139,7 +140,7 @@ export default function ProductHeader() {
               color="inherit"
             >
               <Badge badgeContent={4} color="error">
-                <MailIcon />
+                <OrderModal />
               </Badge>
             </IconButton>
             <IconButton

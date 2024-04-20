@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import ReceiptInfoModal from "../Modal/ReceiptInfoModal";
+import ReceiptInfoModal from "../modal/ReceiptInfoModal";
 
 export default function ReceiptTable({ receipts }) {
   const rows = receipts.map((item) => ({

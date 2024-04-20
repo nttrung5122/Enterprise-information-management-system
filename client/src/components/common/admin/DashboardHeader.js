@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { AddEmployeeModal } from "../Modal/AddEmployeeModal";
+import { AddEmployeeModal } from "../modal/AddEmployeeModal";
 export default function ButtonAppBar({ fetchUsersData }) {
   return (
     <Box sx={{ flexGrow: 1 }}>

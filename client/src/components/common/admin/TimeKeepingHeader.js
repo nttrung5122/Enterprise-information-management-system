@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import SuccessModal from "../Modal/SuccessModal";
+import SuccessModal from "../modal/SuccessModal";
 export default function TimeKeepingHeader({}) {
   return (
     <Box sx={{ flexGrow: 1 }}>

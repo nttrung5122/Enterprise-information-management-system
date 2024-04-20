@@ -26,7 +26,7 @@ export const EditRoleModal = ({ fetchAllRole, role }) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const roleData = {
-      id: role.id,
+      roleId: role.id,
       info: formData.get("info"),
       baseSalary: formData.get("baseSalary"),
     };
@@ -35,7 +35,10 @@ export const EditRoleModal = ({ fetchAllRole, role }) => {
       .then(() => {
         console.log("update successfully");
         handleClose();
-        fetchAllRole();
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          fetchAllRole();
+        }, 2000);
       })
       .catch((error) => {
         console.log("Check updated error: ", error);
