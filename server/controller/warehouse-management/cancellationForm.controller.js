@@ -1,4 +1,6 @@
-const { where } = require("sequelize");
+const { Op } = require("sequelize");
+const moment = require("moment");
+
 const {
   CancellationForm,
   CancellationFormDetail,
@@ -274,6 +276,111 @@ const CancellationFormController = {
       return res.status(500).json(error);
     }
   },
+  calInMonth: async (year, month)=>{
+    const startOfMonth = moment(`${year}/${month}/01`).format('YYYY/MM/DD');
+    const endOfMonth = moment(`${year}/${month}/01`).endOf('month').format('YYYY/MM/DD');
+    const cancellationForms = await CancellationForm.findAll({
+      where:{
+        date: {
+          [Op.between]: [startOfMonth, endOfMonth]
+        }
+      },
+      include: [Ingredient]
+    });
+    const ingredientList = await Ingredient.findAll();
+    const dataStatistics = ingredientList.reduce((previousValue, currentValue) => {
+      previousValue[currentValue.id] = {
+        id: currentValue.id,
+        name: currentValue.nameIngredient,
+        unitCal: currentValue.unitCal,
+        totalQuantity: 0,
+      }
+      return previousValue;
+    }, {})
+
+    cancellationForms.forEach((cancellationForm) => {
+      cancellationForm.ingredients.forEach((detail) => {
+        dataStatistics[detail.id].totalQuantity += detail.cancellation_form_detail.quantity;
+      })
+    })
+    // const dataStatisticsArray = Array.from((new Map(Object.entries(dataStatistics))).values())
+    return dataStatistics;
+    // return dataStatisticsArray;
+  },
+  calInYear: async (year)=>{
+    const startOfYear = moment(`${year}/01/01`).format('YYYY/MM/DD');
+    const endOfYear = moment(`${year}/01/01`).endOf('year').format('YYYY/MM/DD');
+    const cancellationForms = await CancellationForm.findAll({
+      where:{
+        date: {
+          [Op.between]: [startOfYear, endOfYear]
+        }
+      },
+      include: [Ingredient]
+    });
+    const ingredientList = await Ingredient.findAll();
+    const dataStatistics = ingredientList.reduce((previousValue, currentValue) => {
+      previousValue[currentValue.id] = {
+        id: currentValue.id,
+        name: currentValue.nameIngredient,
+        unitCal: currentValue.unitCal,
+        totalQuantity: 0,
+      }
+      return previousValue;
+    }, {})
+
+    cancellationForms.forEach((cancellationForm) => {
+      cancellationForm.ingredients.forEach((detail) => {
+        dataStatistics[detail.id].totalQuantity += detail.cancellation_form_detail.quantity;
+      })
+    })
+    // const dataStatisticsArray = Array.from((new Map(Object.entries(dataStatistics))).values())
+    return dataStatistics;
+    // return dataStatisticsArray    
+  },
+  statisticsInMonth: async (req,res) => {
+    try {
+      const month= req.query?.month;
+      const year= req.query?.year;
+      if(!month || !year){
+        return res.status(403).json("Data is invalid");
+      }
+      const data = await CancellationFormController.calInMonth(year,month);
+      res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+  statisticsInYear: async (req,res) => {
+    try {
+      const year= req.query?.year;
+      if(!year){
+        return res.status(403).json("Data is invalid");
+      }
+      const data = await CancellationFormController.calInYear(year);
+      res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+  statisticsEachMonth: async (req,res) => {
+    try {
+      const year= req.query?.year;
+      if(!year){
+        return res.status(403).json("Data is invalid");
+      }
+      const monthArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12];
+      const data = await Promise.all(monthArr.map((month)=>{
+        return CancellationFormController.calInMonth(year,month)
+      }))
+      res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  }
 };
 
 module.exports = CancellationFormController;
