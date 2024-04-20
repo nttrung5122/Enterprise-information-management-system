@@ -17,6 +17,7 @@ router.get('/statistic-my-salary-by-month',EmployeeController.statisticMySalaryB
 router.get('/statistic-all-employee-salary-by-month',EmployeeController.statisticAllEmployeeSalaryByMonth)
 router.get('/statistic-all-employee-salary-by-year',EmployeeController.statisticAllEmployeeSalaryByYear)
 router.get('/statistic-my-salary-by-year',EmployeeController.statisticMySalaryByYear)
+router.get('/get-all-employee-working',EmployeeController.getAllEmployeeWorking)
 router.get('/:id',EmployeeController.getById)
 router.get('/',EmployeeController.getAllEmployee)
 

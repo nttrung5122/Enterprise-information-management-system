@@ -29,6 +29,22 @@ const EmployeeController = {
       res.status(500).json(error);
     }
   },
+  getAllEmployeeWorking: async (req, res) => {
+    try {
+      const employee = await Employee.findAll({
+        where:{
+          isWorking: true,
+        },
+        include: {
+          model: EmployeeStatus,
+          include: Role,
+        },
+      });
+      res.status(200).json(employee);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
   getById: async (req, res) => {
     try {
       const id = req.params?.id;
@@ -73,7 +89,7 @@ const EmployeeController = {
           endDate: null,
         },
       });
-      console.log(employeeRoleCurrent)
+      console.log(employeeRoleCurrent);
       if (
         employeeRoleCurrent.roleId == roleId &&
         employeeRoleCurrent.salaryScale == salaryScale
@@ -88,13 +104,16 @@ const EmployeeController = {
         return res.status(403).json("Data is invalid");
       }
       const endDate = moment(date).subtract(1, "month");
-      await employeeRoleCurrent.update({ endDate },{transaction: t});
-      await EmployeeStatus.create({
-        employeeId,
-        roleId,
-        salaryScale: salaryScale,
-        startDate: dateFormat,
-      },{transaction: t});
+      await employeeRoleCurrent.update({ endDate }, { transaction: t });
+      await EmployeeStatus.create(
+        {
+          employeeId,
+          roleId,
+          salaryScale: salaryScale,
+          startDate: dateFormat,
+        },
+        { transaction: t }
+      );
       const newEmployee = await Employee.findByPk(employeeId, {
         include: {
           model: EmployeeStatus,
@@ -400,7 +419,12 @@ const EmployeeController = {
       const employees = await Employee.findAll();
       const data = await Promise.all(
         employees.map((employee) => {
-          return EmployeeController.calSalaryInMonth(year, month, employee.id, employee.fullname);
+          return EmployeeController.calSalaryInMonth(
+            year,
+            month,
+            employee.id,
+            employee.fullname
+          );
         })
       );
 
@@ -434,11 +458,16 @@ const EmployeeController = {
     }
   },
   //need to optimize
-  calSalaryInYear: async (year, employeeId,employeeName) => {
+  calSalaryInYear: async (year, employeeId, employeeName) => {
     const monthArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     const data = await Promise.all(
       monthArr.map((month) => {
-        return EmployeeController.calSalaryInMonth(year, month, employeeId,employeeName);
+        return EmployeeController.calSalaryInMonth(
+          year,
+          month,
+          employeeId,
+          employeeName
+        );
       })
     );
     const totalData = {
@@ -457,7 +486,7 @@ const EmployeeController = {
     });
     return totalData;
   },
-  calSalaryInYearOptimize: async (year, employeeId,employeeName) => {
+  calSalaryInYearOptimize: async (year, employeeId, employeeName) => {
     const firstDay = moment({
       y: year,
     })
@@ -601,7 +630,11 @@ const EmployeeController = {
       const data = await Promise.all(
         employees.map((employee) => {
           // return EmployeeController.calSalaryInYear(year, employee.id);
-          return EmployeeController.calSalaryInYearOptimize(year, employee.id,employee.fulname);
+          return EmployeeController.calSalaryInYearOptimize(
+            year,
+            employee.id,
+            employee.fulname
+          );
         })
       );
       return res.status(200).json(data);
@@ -618,8 +651,8 @@ const EmployeeController = {
       if (!year || !employeeId) {
         return res.status(401).json("Data is invalid");
       }
-      const employee  = await Employee.findByPk(employeeId);
-      if(!employee) return res.status(400).json("Employee not found");
+      const employee = await Employee.findByPk(employeeId);
+      if (!employee) return res.status(400).json("Employee not found");
       // const data = await EmployeeController.calSalaryInYear(year, employeeId);
       const data = await EmployeeController.calSalaryInYearOptimize(
         year,
@@ -637,12 +670,17 @@ const EmployeeController = {
       const year = req.query?.year;
       const employeeId = req.query?.employeeId;
       if (!year || !employeeId) return res.status(400).json("Data is invalid");
-      const employee  = await Employee.findByPk(employeeId);
-      if(!employee) return res.status(400).json("Employee not found");
+      const employee = await Employee.findByPk(employeeId);
+      if (!employee) return res.status(400).json("Employee not found");
       const monthArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
       const data = await Promise.all(
         monthArr.map((month) => {
-          return EmployeeController.calSalaryInMonth(year, month, employeeId, employee.fullname);
+          return EmployeeController.calSalaryInMonth(
+            year,
+            month,
+            employeeId,
+            employee.fullname
+          );
         })
       );
       return res.status(200).json(data);
@@ -653,17 +691,21 @@ const EmployeeController = {
   },
   statisticMySalaryByYear: async (req, res) => {
     try {
-      const {employeeId, ...yearObj} = req.query;
+      const { employeeId, ...yearObj } = req.query;
       const yearArr = Object.values(yearObj);
       if (!yearArr) return res.status(404).json("data is invalid");
 
-      const employee  = await Employee.findByPk(employeeId);
-      if(!employee) return res.status(400).json("Employee not found");
+      const employee = await Employee.findByPk(employeeId);
+      if (!employee) return res.status(400).json("Employee not found");
 
       const data = await Promise.all(
         yearArr.map((year) => {
           // return EmployeeController.calSalaryInYear(year, employeeId);
-          return EmployeeController.calSalaryInYearOptimize(year, employeeId,employee.fullname);
+          return EmployeeController.calSalaryInYearOptimize(
+            year,
+            employeeId,
+            employee.fullname
+          );
         })
       );
       return res.status(200).json(data);
@@ -705,26 +747,25 @@ const EmployeeController = {
       const monthArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
       const employees = await Employee.findAll();
       const data = await Promise.all(
-        employees
-          .map((employee) => {
-            return Promise.all(
-              monthArr.map((month) => {
-                return EmployeeController.calSalaryInMonth(
-                  year,
-                  month,
-                  employee.id,
-                  employee.fullname
-                );
-              })
-            ) 
-          })
+        employees.map((employee) => {
+          return Promise.all(
+            monthArr.map((month) => {
+              return EmployeeController.calSalaryInMonth(
+                year,
+                month,
+                employee.id,
+                employee.fullname
+              );
+            })
+          );
+        })
       );
       return res.status(200).json(data);
     } catch (error) {
       console.log(error);
       res.status(500).json(error);
     }
-  },
+  }
 };
 
 module.exports = EmployeeController;
