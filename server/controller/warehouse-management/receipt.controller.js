@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const {
   Receipt,
   Ingredient,
@@ -7,6 +8,7 @@ const {
   ReceiptDetail,
   Warehouse,
 } = require("../../models");
+const moment = require("moment");
 
 const ReceiptController = {
   getAll: async (req, res) => {
@@ -272,6 +274,119 @@ const ReceiptController = {
       return res.status(500).json(error);
     }
   },
+  calInMonth: async (year, month)=>{
+    const startOfMonth = moment(`${year}/${month}/01`).format('YYYY/MM/DD');
+    const endOfMonth = moment(`${year}/${month}/01`).endOf('month').format('YYYY/MM/DD');
+    const receipts = await Receipt.findAll({
+      where:{
+        date: {
+          [Op.between]: [startOfMonth, endOfMonth]
+        }
+      },
+      include: [Ingredient]
+    });
+    const ingredientList = await Ingredient.findAll();
+    const dataStatistics = ingredientList.reduce((previousValue, currentValue) => {
+      previousValue[currentValue.id] = {
+        id: currentValue.id,
+        name: currentValue.nameIngredient,
+        unitCal: currentValue.unitCal,
+        totalPrice: 0,
+        totalQuantity: 0,
+        avgPrice: 0
+      }
+      return previousValue;
+    }, {})
+
+    receipts.forEach((receipt) => {
+      receipt.ingredients.forEach((detail) => {
+        dataStatistics[detail.id].totalPrice += detail.receipt_detail.price;
+        dataStatistics[detail.id].totalQuantity += detail.receipt_detail.quantity;
+        dataStatistics[detail.id].avgPrice = dataStatistics[detail.id].totalPrice / dataStatistics[detail.id].totalQuantity;
+      })
+    })
+    // const dataStatisticsArray = Array.from((new Map(Object.entries(dataStatistics))).values())
+    return dataStatistics;
+    // return dataStatisticsArray;
+  },
+  calInYear: async (year)=>{
+    const startOfYear = moment(`${year}/01/01`).format('YYYY/MM/DD');
+    const endOfYear = moment(`${year}/01/01`).endOf('year').format('YYYY/MM/DD');
+    const receipts = await Receipt.findAll({
+      where:{
+        date: {
+          [Op.between]: [startOfYear, endOfYear]
+        }
+      },
+      include: [Ingredient]
+    });
+    const ingredientList = await Ingredient.findAll();
+    const dataStatistics = ingredientList.reduce((previousValue, currentValue) => {
+      previousValue[currentValue.id] = {
+        id: currentValue.id,
+        name: currentValue.nameIngredient,
+        unitCal: currentValue.unitCal,
+        totalPrice: 0,
+        totalQuantity: 0,
+        avgPrice: 0
+      }
+      return previousValue;
+    }, {})
+
+    receipts.forEach((receipt) => {
+      receipt.ingredients.forEach((detail) => {
+        dataStatistics[detail.id].totalPrice += detail.receipt_detail.price;
+        dataStatistics[detail.id].totalQuantity += detail.receipt_detail.quantity;
+        dataStatistics[detail.id].avgPrice = dataStatistics[detail.id].totalPrice / dataStatistics[detail.id].totalQuantity;
+      })
+    })
+    // const dataStatisticsArray = Array.from((new Map(Object.entries(dataStatistics))).values())
+    return dataStatistics;
+    // return dataStatisticsArray;
+  },
+  statisticsInMonth: async (req,res) => {
+    try {
+      const month= req.query?.month;
+      const year= req.query?.year;
+      if(!month || !year){
+        return res.status(403).json("Data is invalid");
+      }
+      const data = await ReceiptController.calInMonth(year,month);
+      res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+  statisticsInYear: async (req,res) => {
+    try {
+      const year= req.query?.year;
+      if(!year){
+        return res.status(403).json("Data is invalid");
+      }
+      const data = await ReceiptController.calInYear(year);
+      res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+  statisticsEachMonth: async (req,res) => {
+    try {
+      const year= req.query?.year;
+      if(!year){
+        return res.status(403).json("Data is invalid");
+      }
+      const monthArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12];
+      const data = await Promise.all(monthArr.map((month)=>{
+        return ReceiptController.calInMonth(year,month)
+      }))
+      res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  }
 };
 
 module.exports = ReceiptController;

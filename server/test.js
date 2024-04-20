@@ -4,16 +4,9 @@ const { Bill, Food, Recipe, Ingredient } = require("./models");
 
 
 // const date  = moment('2010/10/20')
-
-const bill =  Bill.findAll({
-    include: {
-        model: Food,
-        include: {
-          model: Recipe,
-          include: [Ingredient]
-        }
-    }})
-
-bill.then((res)=>{
-   console.log( res[0].food[0].recipe.ingredients[0].toJSON())
-})
+const month = "02";
+const year = "2022";
+const startOfMonth = moment(`${year}/01/01`).format('YYYY/MM/DD');
+const endOfMonth = moment(`${year}/01/01`).endOf('year').format('YYYY/MM/DD');
+console.log(startOfMonth);
+console.log(endOfMonth);
