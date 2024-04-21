@@ -1,4 +1,10 @@
-const { Employee, Account, TimeKeeping, EmployeeStatus } = require("../models");
+const { Employee, Account, TimeKeeping, EmployeeStatus, AccountPermission } = require("../models");
+const {
+  ADMIN_PERMISSION,
+  BUSINESS_MANAGE_PERMISSION,
+  USER_MANAGE_PERMISSION,
+  WAREHOUSE_MANAGE_PERMISSION,
+} = require("../constants/permission.const");
 
 const employeeMockupData = [
   {
@@ -23,6 +29,8 @@ const employeeMockupData = [
     address: "abc",
   },
 ];
+
+
 const yearArr = [2023, 2024];
 const monthArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
@@ -86,6 +94,18 @@ module.exports = async () => {
       return { employeeId: employee.id, password: "123" };
     })
   );
+  await AccountPermission.create({
+    accountId: 102,
+    permissionId: BUSINESS_MANAGE_PERMISSION,
+  });
+  await AccountPermission.create({
+    accountId: 103,
+    permissionId: USER_MANAGE_PERMISSION,
+  });
+  await AccountPermission.create({
+    accountId: 104,
+    permissionId: WAREHOUSE_MANAGE_PERMISSION,
+  });
   await EmployeeStatus.bulkCreate(employeeStatusMockupData);
   await TimeKeeping.bulkCreate(timeKeepingMockupData);
 };
