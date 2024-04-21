@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "business management",
     "collectionId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
-    "dateExported": "2024-04-21T05:57:27.982Z",
+    "dateExported": "2024-04-21T07:05:13.934Z",
     "version": "1.2",
     "folders": [
         {
@@ -137,12 +137,12 @@
             "_id": "1a0d6a86-35af-40bf-8bf6-831517938cf5",
             "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
             "containerId": "ec2977ab-742c-4255-a99c-e5138d364a7a",
-            "name": "statisticsRevenueAllMonthOfYear",
-            "url": "http://localhost:8000/business-management/statistics/statisticsRevenueAllMonthOfYear?year=2024",
+            "name": "statisticsRevenueAllMonthInYear",
+            "url": "http://localhost:8000/business-management/statistics/statisticsRevenueAllMonthInYear?year=2024",
             "method": "GET",
             "sortNum": 10000,
             "created": "2024-04-19T17:12:28.296Z",
-            "modified": "2024-04-20T08:42:52.557Z",
+            "modified": "2024-04-21T07:04:04.099Z",
             "headers": [],
             "params": [
                 {
@@ -406,12 +406,12 @@
             "_id": "76fb878f-c8f8-4881-8a5e-74f64a280095",
             "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
             "containerId": "ec2977ab-742c-4255-a99c-e5138d364a7a",
-            "name": "statisticsRevenueDayOfMonth",
-            "url": "http://localhost:8000/business-management/statistics/statisticsRevenueDayOfMonth?year=2024&month=3",
+            "name": "statisticsRevenueDayInMonth",
+            "url": "http://localhost:8000/business-management/statistics/statisticsRevenueDayInMonth?year=2024&month=3",
             "method": "GET",
             "sortNum": 20000,
             "created": "2024-04-19T17:15:22.910Z",
-            "modified": "2024-04-19T17:16:31.180Z",
+            "modified": "2024-04-21T07:04:46.455Z",
             "headers": [],
             "params": [
                 {
@@ -740,5 +740,5 @@
             ]
         }
     ],
-    "ref": "41_RZcuOa9KC1AaWuDSe5qpsXzq8-Wf4XFwQixUev5CM1TuA4JfNe5_HrdwhOfhFYRu_xAa5dCrL8BlL_mOheA"
+    "ref": "41_RZcuOa9KC1AaWuDSe5qpsXzq8-Wf4XFwQixUev5A0nC3s1u-lUfXtSxGh9A5MbezWmpZnuPbRROQo7fsiZQ"
 }

@@ -5,7 +5,7 @@ const {StatisticsController} = require('../../controller/business-management')
 
 // Doanh thu
 router.get('/statisticsRevenueAllMonthInYear',StatisticsController.statisticsRevenueAllMonthInYear) // doanh thu các tháng trong 1 năm
-router.get('/statisticsRevenueDayOfMonth',StatisticsController.statisticsRevenueDayOfMonth) // doanh thu các ngày trong 1 tháng
+router.get('/statisticsRevenueDayInMonth',StatisticsController.statisticsRevenueDayInMonth) // doanh thu các ngày trong 1 tháng
 router.get('/statisticsRevenueAllDayInYear',StatisticsController.statisticsRevenueAllDayInYear)  // doanh thu các ngày trong 12 tháng
 
 // Lợi nhuận
