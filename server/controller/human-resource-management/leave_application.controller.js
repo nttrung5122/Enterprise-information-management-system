@@ -112,6 +112,10 @@ const LeaveApplicationController = {
         await t.rollback();
         return res.status(400).json("leaveApplicationId not found");
       }
+      if(leaveApplication.isApprove){
+        await t.commit();
+        return res.status(200).json("leave Application is already approved");
+      }
       if(leaveApplication.numberOfDaysOff < numberOfDaysAllowed){
         await t.rollback();
         return res.status(400).json("number of days allowed greater than number of days off");

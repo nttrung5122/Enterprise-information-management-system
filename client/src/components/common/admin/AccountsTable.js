@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import { ChangePasswordModal } from "../modal/ChangePasswordModal";
+import  {ChangePasswordModal}  from "../modal/ChangePasswordModal";
 
 const AccountsTable = ({ users }) => {
   const handleDelete = (employeeId) => {

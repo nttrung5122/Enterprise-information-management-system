@@ -180,7 +180,9 @@ const RecipeController = {
   },
   getAll: async (req, res) => {
     try {
-        const recipes = await Recipe.findAll();
+        const recipes = await Recipe.findAll({
+          include:[Ingredient]
+        });
         return res.status(200).json(recipes);
     } catch (error) {
         console.log(error);
