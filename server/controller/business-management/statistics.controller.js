@@ -48,7 +48,7 @@ const StatisticController = {
 
     return dataStatistics;
   },
-  statisticsRevenueDayOfMonth: async (req, res) => {
+  statisticsRevenueDayInMonth: async (req, res) => {
     try {
       const month = req.query?.month;
       const year = req.query?.year;
