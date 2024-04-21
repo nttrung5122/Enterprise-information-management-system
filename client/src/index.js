@@ -2,7 +2,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from "./components/pages/Dashboard";
 import SignIn from "./components/pages/SignIn";
-import FoodListingPage from "./components/pages/FoodListingPage";
+import BusinessPage from "./components/pages/BusinessPage";
 import ReactDOM from "react-dom/client";
 
 const router = createBrowserRouter([
@@ -15,8 +15,8 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: "/foodlisting", //path for food listing
-    element: <FoodListingPage />,
+    path: "/business", //path for food listing
+    element: <BusinessPage />,
   },
 ]);
 

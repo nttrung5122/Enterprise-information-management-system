@@ -13,7 +13,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import PeopleIcon from "@mui/icons-material/People";
+import FastfoodIcon from "@mui/icons-material/Fastfood";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import ArticleIcon from "@mui/icons-material/Article";
 
 const drawerWidth = 240;
 
@@ -70,13 +73,13 @@ const handleLogout = () => {
 };
 
 const menuItems = [
-  { text: "Món chính", icon: <PeopleIcon />, section: "employees" },
-  { text: "Món chính", icon: <PeopleIcon />, section: "employees" },
-  { text: "Món chính", icon: <PeopleIcon />, section: "employees" },
-  { text: "Món chính", icon: <PeopleIcon />, section: "employees" },
+  { text: "Món ăn", icon: <FastfoodIcon />, section: "food" },
+  { text: "Menu", icon: <MenuBookIcon />, section: "menu" },
+  { text: "Menu mục", icon: <ViewListIcon />, section: "sectionMenu" },
+  { text: "Công thức", icon: <ArticleIcon />, section: "recipe" },
 ];
 
-export default function ProductDrawer({ selectedSection, setSelectedSection }) {
+export default function PageDrawer({ selectedSection, setSelectedSection }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 

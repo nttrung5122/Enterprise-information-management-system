@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 import ProductHeader from "./ProductHeader";
 import ProductList from "./ProductList";
 
-export default function ProductPageContainer() {
+export default function PageContainer() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
     padding: "10px", // Add padding for better spacing

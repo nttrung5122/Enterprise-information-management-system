@@ -10,7 +10,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
@@ -43,7 +43,7 @@ const OrderModal = () => {
 
   return (
     <div>
-      <MenuBookIcon onClick={handleOpen} />
+      <ReceiptIcon onClick={handleOpen} />
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <DialogTitle>Hóa đơn:</DialogTitle>
         <DialogContent>
