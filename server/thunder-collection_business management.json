@@ -1,8 +1,9 @@
 {
-    "client": "Thunder Client",
+    "clientName": "Thunder Client",
     "collectionName": "business management",
-    "dateExported": "2024-04-07T15:41:23.677Z",
-    "version": "1.1",
+    "collectionId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+    "dateExported": "2024-04-21T05:57:27.982Z",
+    "version": "1.2",
     "folders": [
         {
             "_id": "1210ef9b-01db-419b-b5f1-345897ef36c7",
@@ -38,6 +39,41 @@
             "containerId": "",
             "created": "2024-04-05T17:39:22.908Z",
             "sortNum": 20000
+        },
+        {
+            "_id": "6f5d67da-d40f-4137-8e0a-62973347dc6f",
+            "name": "statistics",
+            "containerId": "",
+            "created": "2024-04-19T17:12:16.226Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "db4125b3-757f-4575-9263-e965333cdec6",
+            "name": "Profit",
+            "containerId": "6f5d67da-d40f-4137-8e0a-62973347dc6f",
+            "created": "2024-04-20T07:32:43.981Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "ec2977ab-742c-4255-a99c-e5138d364a7a",
+            "name": "Revenue",
+            "containerId": "6f5d67da-d40f-4137-8e0a-62973347dc6f",
+            "created": "2024-04-20T07:33:01.724Z",
+            "sortNum": 50000
+        },
+        {
+            "_id": "b5d03152-4fe2-4de7-ad1f-957bf1f2ca4b",
+            "name": "Food sold",
+            "containerId": "6f5d67da-d40f-4137-8e0a-62973347dc6f",
+            "created": "2024-04-20T08:11:44.290Z",
+            "sortNum": 60000
+        },
+        {
+            "_id": "13307110-f8e2-4029-a1ce-00a7e2dca328",
+            "name": "IngredientsConsumed",
+            "containerId": "6f5d67da-d40f-4137-8e0a-62973347dc6f",
+            "created": "2024-04-20T09:17:11.477Z",
+            "sortNum": 80000
         }
     ],
     "requests": [
@@ -96,6 +132,68 @@
             "headers": [],
             "params": [],
             "tests": []
+        },
+        {
+            "_id": "1a0d6a86-35af-40bf-8bf6-831517938cf5",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "ec2977ab-742c-4255-a99c-e5138d364a7a",
+            "name": "statisticsRevenueAllMonthOfYear",
+            "url": "http://localhost:8000/business-management/statistics/statisticsRevenueAllMonthOfYear?year=2024",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-04-19T17:12:28.296Z",
+            "modified": "2024-04-20T08:42:52.557Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "f5c65174-31cb-43c7-829d-be5bb600ea2c",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "db4125b3-757f-4575-9263-e965333cdec6",
+            "name": "statisticsProfitInMonth",
+            "url": "http://localhost:8000/business-management/statistics/statisticsProfitInMonth?year=2024&month=3",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-04-20T07:32:32.287Z",
+            "modified": "2024-04-20T07:35:32.483Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                },
+                {
+                    "name": "month",
+                    "value": "3",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "00897177-31c8-4e1a-9c70-8785f5d805e5",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "b5d03152-4fe2-4de7-ad1f-957bf1f2ca4b",
+            "name": "statisticsFoodSoldAllDayInYear",
+            "url": "http://localhost:8000/business-management/statistics/statisticsFoodSoldAllDayInYear?year=2024",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-04-20T08:13:32.953Z",
+            "modified": "2024-04-20T08:59:09.913Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
         },
         {
             "_id": "910d9b2c-6cbd-47b5-b689-ec0967b879b6",
@@ -230,6 +328,25 @@
             "tests": []
         },
         {
+            "_id": "715be74f-7a87-4d4d-a5b3-a69241457a7a",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "b5d03152-4fe2-4de7-ad1f-957bf1f2ca4b",
+            "name": "statisticsFoodSoldAllMonthInYear",
+            "url": "http://localhost:8000/business-management/statistics/statisticsFoodSoldAllMonthInYear?year=2024",
+            "method": "GET",
+            "sortNum": 15000,
+            "created": "2024-04-20T08:58:54.382Z",
+            "modified": "2024-04-20T08:59:18.723Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
             "_id": "47f830e9-0a67-464c-b605-a1556cf24c89",
             "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
             "containerId": "b1b07af4-2104-493c-be64-1a3455748edd",
@@ -286,6 +403,73 @@
             "tests": []
         },
         {
+            "_id": "76fb878f-c8f8-4881-8a5e-74f64a280095",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "ec2977ab-742c-4255-a99c-e5138d364a7a",
+            "name": "statisticsRevenueDayOfMonth",
+            "url": "http://localhost:8000/business-management/statistics/statisticsRevenueDayOfMonth?year=2024&month=3",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-04-19T17:15:22.910Z",
+            "modified": "2024-04-19T17:16:31.180Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                },
+                {
+                    "name": "month",
+                    "value": "3",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "bd0251c9-f8cc-42e4-b5eb-ebd8a5922d78",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "db4125b3-757f-4575-9263-e965333cdec6",
+            "name": "statisticsProfitAllMonthInYear",
+            "url": "http://localhost:8000/business-management/statistics/statisticsProfitAllMonthInYear?year=2024",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-04-20T07:40:28.845Z",
+            "modified": "2024-04-20T08:47:01.776Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "ed963fc2-56c8-4010-b702-cd5c2365af53",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "b5d03152-4fe2-4de7-ad1f-957bf1f2ca4b",
+            "name": "statisticsFoodSoldAllDayInMonth",
+            "url": "http://localhost:8000/business-management/statistics/statisticsFoodSoldInMonth?year=2024&month=3",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-04-20T08:39:48.557Z",
+            "modified": "2024-04-20T08:39:48.557Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                },
+                {
+                    "name": "month",
+                    "value": "3",
+                    "isPath": false
+                }
+            ]
+        },
+        {
             "_id": "41a0f8ec-fd6c-40a9-9c63-d5c1ed1b4e4b",
             "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
             "containerId": "53019ee6-be00-47f8-9c23-b7fefe7cadad",
@@ -322,6 +506,44 @@
                 "form": []
             },
             "tests": []
+        },
+        {
+            "_id": "10402816-368b-4b38-9ecb-eedde19f90e6",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "ec2977ab-742c-4255-a99c-e5138d364a7a",
+            "name": "statisticsRevenueAllDayInYear",
+            "url": "http://localhost:8000/business-management/statistics/statisticsRevenueAllDayInYear?year=2024",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-04-19T17:17:59.490Z",
+            "modified": "2024-04-20T08:43:59.712Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "42e71546-2ca5-4fcd-b198-bffd39fb83b2",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "db4125b3-757f-4575-9263-e965333cdec6",
+            "name": "statisticsProfitInYear",
+            "url": "http://localhost:8000/business-management/statistics/statisticsProfitInYear?year=2024",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-04-20T07:47:31.678Z",
+            "modified": "2024-04-20T07:48:19.510Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
         },
         {
             "_id": "fe42bbe6-5143-449f-bd67-6d9904e4bc2f",
@@ -454,6 +676,69 @@
             "headers": [],
             "params": [],
             "tests": []
+        },
+        {
+            "_id": "d37600c0-a1fb-4260-84b4-5d2220cfbe59",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "13307110-f8e2-4029-a1ce-00a7e2dca328",
+            "name": "statisticsIngredientsConsumedInMonth",
+            "url": "http://localhost:8000/business-management/statistics/statisticsIngredientsConsumedInMonth?year=2024&month=3",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2024-04-20T09:17:23.380Z",
+            "modified": "2024-04-20T09:19:49.510Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                },
+                {
+                    "name": "month",
+                    "value": "3",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "97ec9b9d-3f53-465f-9151-4168641b13c9",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "13307110-f8e2-4029-a1ce-00a7e2dca328",
+            "name": "statisticsIngredientsConsumedAllDayInYear",
+            "url": "http://localhost:8000/business-management/statistics/statisticsIngredientsConsumedAllDayInYear?year=2024",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2024-04-20T10:00:40.460Z",
+            "modified": "2024-04-20T10:01:08.950Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "d4526476-8c41-4c4a-9159-7195d6372715",
+            "colId": "a88cff31-0c1f-4df4-bd79-25e4dd1a034f",
+            "containerId": "13307110-f8e2-4029-a1ce-00a7e2dca328",
+            "name": "statisticsIngredientsConsumedAllMonthOfYear",
+            "url": "http://localhost:8000/business-management/statistics/statisticsIngredientsConsumedAllMonthOfYear?year=2024",
+            "method": "GET",
+            "sortNum": 130000,
+            "created": "2024-04-20T10:07:35.116Z",
+            "modified": "2024-04-20T10:07:46.544Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
         }
-    ]
+    ],
+    "ref": "41_RZcuOa9KC1AaWuDSe5qpsXzq8-Wf4XFwQixUev5CM1TuA4JfNe5_HrdwhOfhFYRu_xAa5dCrL8BlL_mOheA"
 }
