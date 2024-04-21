@@ -6,10 +6,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteIngredient } from "../../../services/UserService";
 
-const DeleteIngredientModal = ({ id }) => {
+import { deleteRole } from "../../../services/UserService";
+import SuccessModal from "./SuccessModal";
+
+const DeleteRoleModal = ({ id, fetchAllRole }) => {
   const [open, setOpen] = React.useState(false);
+  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -19,13 +22,16 @@ const DeleteIngredientModal = ({ id }) => {
   };
 
   const handleDelete = () => {
-    deleteIngredient(id)
+    deleteRole(id)
       .then(() => {
-        console.log("Delete successfully");
-        setOpen(false);
+        setShowSuccessModal(true);
+        handleClose();
+        setTimeout(() => {
+          fetchAllRole();
+        }, 2000);
       })
       .catch((error) => {
-        console.log("Error deleting ingredient: ", error);
+        console.log("Error deleting role: ", error);
         setOpen(false);
       });
   };
@@ -46,7 +52,7 @@ const DeleteIngredientModal = ({ id }) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" color="">
-            Bạn có chắc muốn xóa nguyên liệu này?
+            Bạn có chắc muốn xóa chức vụ này?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -56,7 +62,8 @@ const DeleteIngredientModal = ({ id }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      {showSuccessModal && <SuccessModal message="Xóa thành công." />}
     </React.Fragment>
   );
 };
-export default DeleteIngredientModal;
+export default DeleteRoleModal;

@@ -5,12 +5,27 @@ const loginApi = ({ user, password }) => {
     .post("/auth/login", { user, password })
     .then((response) => {
       // Handle successful login response
-      return response.data; // Assuming the server returns some data on successful login
+      const userData = response.data;
+      if (!userData.role) return response.data; // Assuming the server returns some data on successful login
     })
     .catch((error) => {
       // Handle login error
       console.error("Login Error:", error);
       throw error; // Rethrow the error to propagate it further if needed
+    });
+};
+
+const changePasswordByAdmin = (accountData) => {
+  return axios
+    .post(
+      `/human-resource-management/account/change-password-for-manager`,
+      accountData
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
     });
 };
 
@@ -102,9 +117,9 @@ const getAllIngredients = () => {
     });
 };
 
-const addIngredient = (name, unitCal) => {
+const addIngredient = (ingredientData) => {
   return axios
-    .post("/warehouse-management/ingredient")
+    .post("/warehouse-management/ingredient", ingredientData)
     .then((response) => {
       return response.data;
     })
@@ -126,8 +141,173 @@ const deleteIngredient = (id) => {
     });
 };
 
+const updateIngredient = (id, ingredientInfo) => {
+  return axios
+    .patch(`/warehouse-management/ingredient/${id}`, ingredientInfo)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
+const fetchAllSuppliers = () => {
+  return axios
+    .get(`/warehouse-management/supplier`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
+const deleteSupplier = (id) => {
+  return axios
+    .delete(`/warehouse-management/supplier/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Check error: ");
+      throw error.response.data;
+    });
+};
+
+const addSupplier = (supplierInfo) => {
+  return axios
+    .post(`/warehouse-management/supplier`, supplierInfo)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const updateSupplier = (id, supplierInfo) => {
+  return axios
+    .patch(`/warehouse-management/supplier/${id}`, supplierInfo)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const fetchAllInventory = () => {
+  return axios
+    .get(`/warehouse-management/warehouse`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const updateInventory = (id, quantity) => {
+  return axios
+    .patch(`/warehouse-management/warehouse/${id}`, quantity)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const fetchAllReceipts = () => {
+  return axios
+    .get(`/warehouse-management/receipt`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const addReceipt = (receiptData) => {
+  return axios
+    .post(`/warehouse-management/receipt`, receiptData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const fetchAllCancellationForms = () => {
+  return axios
+    .get(`/warehouse-management/cancellation-form`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const addCancellationForm = (formData) => {
+  return axios
+    .post(`/warehouse-management/cancellation-form`, formData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const getAllRole = () => {
+  return axios
+    .get(`/human-resource-management/role`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const addRole = (roleData) => {
+  return axios
+    .post(`/human-resource-management/role`, roleData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const updateRole = (roleData) => {
+  return axios
+    .patch(`/human-resource-management/role`, roleData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const deleteRole = (roleId) => {
+  return axios
+    .delete(`/human-resource-management/role/${roleId}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   loginApi,
+  changePasswordByAdmin,
   fetchAllUsers,
   addNewUser,
   deleteUser,
@@ -137,4 +317,19 @@ export {
   getAllIngredients,
   addIngredient,
   deleteIngredient,
+  updateIngredient,
+  fetchAllSuppliers,
+  deleteSupplier,
+  addSupplier,
+  updateSupplier,
+  fetchAllInventory,
+  updateInventory,
+  fetchAllReceipts,
+  addReceipt,
+  fetchAllCancellationForms,
+  addCancellationForm,
+  getAllRole,
+  addRole,
+  updateRole,
+  deleteRole,
 };

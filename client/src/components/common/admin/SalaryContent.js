@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
-import SearchInput from "../common/SearchInput";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -11,7 +10,8 @@ import { SalaryTable } from "./SalaryTable";
 import {
   getUserSalaryInMonth,
   fetchAllUsers,
-} from "../../services/UserService";
+} from "../../../services/UserService";
+import SearchInput from "./SearchInput";
 
 export const SalaryContent = () => {
   const [users, setUsers] = useState([]);

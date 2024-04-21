@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
+import { ChangePasswordModal } from "../modal/ChangePasswordModal";
 
 const AccountsTable = ({ users }) => {
   const handleDelete = (employeeId) => {
@@ -47,13 +48,10 @@ const AccountsTable = ({ users }) => {
                   {user.isWorking ? "Đang làm việc" : "Không"}
                 </TableCell>
 
-                <TableCell align="center" size="small">
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    width={100}
-                    mx={2}
-                  ></Box>
+                <TableCell align="center" width={200}>
+                  <Box mx={2}>
+                    <ChangePasswordModal id={user.id} />
+                  </Box>
                 </TableCell>
               </TableRow>
             )

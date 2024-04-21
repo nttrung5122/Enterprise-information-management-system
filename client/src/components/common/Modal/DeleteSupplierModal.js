@@ -6,9 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteIngredient } from "../../../services/UserService";
+import { deleteSupplier } from "../../../services/UserService";
 
-const DeleteIngredientModal = ({ id }) => {
+const DeleteSupplierModal = ({ id, fetchSuppliersData }) => {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -19,13 +19,14 @@ const DeleteIngredientModal = ({ id }) => {
   };
 
   const handleDelete = () => {
-    deleteIngredient(id)
+    deleteSupplier(id)
       .then(() => {
         console.log("Delete successfully");
         setOpen(false);
+        fetchSuppliersData();
       })
       .catch((error) => {
-        console.log("Error deleting ingredient: ", error);
+        console.log("Error deleting supplier: ", error);
         setOpen(false);
       });
   };
@@ -46,7 +47,7 @@ const DeleteIngredientModal = ({ id }) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" color="">
-            Bạn có chắc muốn xóa nguyên liệu này?
+            Bạn có chắc muốn xóa nhà cung cấp này?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -59,4 +60,4 @@ const DeleteIngredientModal = ({ id }) => {
     </React.Fragment>
   );
 };
-export default DeleteIngredientModal;
+export default DeleteSupplierModal;

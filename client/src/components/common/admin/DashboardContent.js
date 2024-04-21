@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import DashboardHeader from "../common/DashboardHeader";
-import DashboardTable from "../common/DashboardTable";
+import DashboardHeader from "./DashboardHeader";
+import DashboardTable from "./DashboardTable";
 import { styled } from "@mui/system";
-import SearchInput from "../common/SearchInput";
-import FilterButtonGroup from "../common/FilterButtonGroup";
-import { fetchAllUsers } from "../../services/UserService";
+import SearchInput from "./SearchInput";
+import FilterButtonGroup from "./FilterButtonGroup";
+import { fetchAllUsers } from "../../../services/UserService";
+
 export default function DashboardContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
@@ -18,9 +19,7 @@ export default function DashboardContent() {
   });
 
   const [users, setUsers] = useState([]);
-  useEffect(() => {
-    fetchUsersData();
-  }, []);
+
   const fetchUsersData = () => {
     fetchAllUsers()
       .then((response) => {
@@ -31,7 +30,9 @@ export default function DashboardContent() {
         console.error("Error fetching data:", error);
       });
   };
-
+  useEffect(() => {
+    fetchUsersData();
+  }, []);
   return (
     <ContentContainer>
       <DashboardHeader fetchUsersData={fetchUsersData} />
@@ -46,7 +47,7 @@ export default function DashboardContent() {
           <FilterButtonGroup style={{ border: "1px groove grey" }} />
         </FilterGroupContainer>
       </div>
-      <DashboardTable users={users} />
+      <DashboardTable users={users} fetchUsersData={fetchUsersData} />
     </ContentContainer>
   );
 }

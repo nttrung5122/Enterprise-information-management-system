@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
-import SearchInput from "../common/SearchInput";
-import FilterButtonGroup from "../common/FilterButtonGroup";
-import { fetchAllUsers, addNewUser } from "../../services/UserService";
+import { fetchAllUsers, addNewUser } from "../../../services/UserService";
 import AccountsTable from "./AccountsTable";
 import AccountHeader from "./AccountHeader";
+import SearchInput from "./SearchInput";
+import FilterButtonGroup from "./FilterButtonGroup";
+
 export default function AccountContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,

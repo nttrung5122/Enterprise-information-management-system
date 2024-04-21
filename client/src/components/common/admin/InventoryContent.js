@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
-import SearchInput from "../common/SearchInput";
-import FilterButtonGroup from "../common/FilterButtonGroup";
+import SearchInput from "./SearchInput";
+import FilterButtonGroup from "./FilterButtonGroup";
 import InventoryHeader from "./InventoryHeader";
-import { getAllIngredients } from "../../services/UserService";
 import InventoryTable from "./InventoryTable";
+import { fetchAllInventory } from "../../../services/UserService";
 
 export default function InventoryContent() {
   const ContentContainer = styled("div")({
@@ -18,19 +18,19 @@ export default function InventoryContent() {
     alignItems: "center",
   });
 
-  const [ingredients, setIngredients] = useState([]);
-  const fetchIngredientsData = () => {
-    getAllIngredients()
+  const [items, setItems] = useState([]);
+  const fetchInventoryData = () => {
+    fetchAllInventory()
       .then((response) => {
-        console.log("Check data: ", response);
-        setIngredients(response);
+        console.log("Check warehouse: ", response);
+        setItems(response);
       })
       .catch((error) => {
-        console.log("Check error: ", error);
+        console.log("Check error");
       });
   };
   useEffect(() => {
-    fetchIngredientsData();
+    fetchInventoryData();
   }, []);
   return (
     <ContentContainer>
@@ -42,11 +42,8 @@ export default function InventoryContent() {
         }}
       >
         <SearchInput />
-        <FilterGroupContainer>
-          <FilterButtonGroup style={{ border: "1px groove grey" }} />
-        </FilterGroupContainer>
       </div>
-      <InventoryTable ingredients={ingredients} />
+      <InventoryTable items={items} fetchInventoryData={fetchInventoryData} />
     </ContentContainer>
   );
 }
