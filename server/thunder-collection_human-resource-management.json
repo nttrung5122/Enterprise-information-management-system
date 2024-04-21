@@ -1,8 +1,9 @@
 {
-    "client": "Thunder Client",
+    "clientName": "Thunder Client",
     "collectionName": "human-resource-management",
-    "dateExported": "2024-04-07T15:41:01.526Z",
-    "version": "1.1",
+    "collectionId": "3d967237-f782-4c6e-863d-9a4c34146677",
+    "dateExported": "2024-04-21T05:57:09.583Z",
+    "version": "1.2",
     "folders": [
         {
             "_id": "ee07da1d-2c78-4073-9cfc-194134e14b30",
@@ -92,6 +93,18 @@
                 "form": []
             },
             "tests": []
+        },
+        {
+            "_id": "e6d98817-1462-4b08-8352-4afed00b88bf",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "/get-all-employee-working",
+            "url": "http://localhost:8000/human-resource-management/employee/get-all-employee-working",
+            "method": "GET",
+            "sortNum": 21250,
+            "created": "2024-04-19T16:23:44.897Z",
+            "modified": "2024-04-19T16:23:56.179Z",
+            "headers": []
         },
         {
             "_id": "1b0a10d5-3e93-4f1b-a24f-2d75e10321f5",
@@ -472,12 +485,12 @@
             "method": "POST",
             "sortNum": 140000,
             "created": "2024-03-22T02:29:30.938Z",
-            "modified": "2024-04-07T15:03:24.574Z",
+            "modified": "2024-04-07T15:56:17.981Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"employeeId\":103,\n  \"password\":12345\n}",
+                "raw": "{\n  \"employeeId\":103,\n  \"password\":\"12345\"\n}",
                 "form": []
             },
             "tests": []
@@ -679,6 +692,68 @@
             "tests": []
         },
         {
+            "_id": "a7080795-6d26-4db0-a91a-9171d95b8059",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "656ad830-c104-4010-9e82-22cb30748d5b",
+            "name": "statisticsInMonth",
+            "url": "http://localhost:8000/human-resource-management/leave-application/statistics-in-month?month=02&year=2024",
+            "method": "GET",
+            "sortNum": 285000,
+            "created": "2024-04-19T16:39:24.849Z",
+            "modified": "2024-04-19T16:40:02.258Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "month",
+                    "value": "02",
+                    "isPath": false
+                },
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "3dc052ba-14f8-4374-9841-9628dd0c3833",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "656ad830-c104-4010-9e82-22cb30748d5b",
+            "name": "statisticsIn year",
+            "url": "http://localhost:8000/human-resource-management/leave-application/statistics-in-year?year=2024",
+            "method": "GET",
+            "sortNum": 287500,
+            "created": "2024-04-19T16:44:04.590Z",
+            "modified": "2024-04-19T16:44:19.021Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "635c3a3d-e434-4a8d-987f-27e70cb5b87a",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "656ad830-c104-4010-9e82-22cb30748d5b",
+            "name": "statistics each month ",
+            "url": "http://localhost:8000/human-resource-management/leave-application/statistics-each-month?year=2024",
+            "method": "GET",
+            "sortNum": 288750,
+            "created": "2024-04-19T16:44:28.047Z",
+            "modified": "2024-04-19T16:44:53.634Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
             "_id": "ef31cfab-bf24-442a-9366-b7886144480f",
             "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
             "containerId": "656ad830-c104-4010-9e82-22cb30748d5b",
@@ -707,16 +782,16 @@
             "method": "PATCH",
             "sortNum": 300000,
             "created": "2024-03-22T09:50:12.946Z",
-            "modified": "2024-03-22T16:06:25.894Z",
+            "modified": "2024-04-07T15:54:46.225Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"leaveApplicationId\":1,\n  \"isApprove\": true,\n  \"numberOfDaysAllowed\":6\n}",
+                "raw": "{\n  \"leaveApplicationId\":3,\n  \"isApprove\": true,\n  \"numberOfDaysAllowed\":6\n}",
                 "form": []
             },
-            "reqType": "patch",
             "tests": []
         }
-    ]
+    ],
+    "ref": "Uy07DwvtOe364P1ENE0QnUiXpiIFxLceVWuct_C03Uv8kW5-fHUBga4r4nIyJfq7MgDF93YC5q1ALvJYBHHPmQ"
 }

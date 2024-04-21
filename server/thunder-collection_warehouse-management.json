@@ -1,8 +1,9 @@
 {
-    "client": "Thunder Client",
+    "clientName": "Thunder Client",
     "collectionName": "warehouse-management",
-    "dateExported": "2024-04-07T15:41:10.998Z",
-    "version": "1.1",
+    "collectionId": "839722f1-43b2-49e5-af6a-65e5380ffc15",
+    "dateExported": "2024-04-21T05:57:18.691Z",
+    "version": "1.2",
     "folders": [
         {
             "_id": "19bee4ec-55c4-4533-b08f-011a961b1c8e",
@@ -194,11 +195,11 @@
             "colId": "839722f1-43b2-49e5-af6a-65e5380ffc15",
             "containerId": "4febf5ea-2682-40f8-acbd-70568215574b",
             "name": "get by id",
-            "url": "http://localhost:8000/warehouse-management/supplier/2",
+            "url": "http://localhost:8000/warehouse-management/supplier/401",
             "method": "GET",
             "sortNum": 200000,
             "created": "2024-03-22T02:31:27.406Z",
-            "modified": "2024-03-22T02:31:27.406Z",
+            "modified": "2024-04-07T15:51:24.082Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -282,6 +283,111 @@
             "headers": [],
             "params": [],
             "tests": []
+        },
+        {
+            "_id": "9769003e-399e-4626-b07e-bd9bfa564b50",
+            "colId": "839722f1-43b2-49e5-af6a-65e5380ffc15",
+            "containerId": "0283b9da-cf2b-4212-8b12-37c930a28ce2",
+            "name": "statisticsInMonth",
+            "url": "http://localhost:8000/warehouse-management/receipt/statistics-in-month?month=2&year=2024",
+            "method": "GET",
+            "sortNum": 205000,
+            "created": "2024-04-19T15:04:00.359Z",
+            "modified": "2024-04-19T15:09:27.731Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "month",
+                    "value": "2",
+                    "isPath": false
+                },
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "adeeacad-ccd3-4845-8c52-be8719c4cf62",
+            "colId": "839722f1-43b2-49e5-af6a-65e5380ffc15",
+            "containerId": "485e58fe-b2a6-47ca-a8fb-8ec975812de7",
+            "name": "statistics-in-month",
+            "url": "http://localhost:8000/warehouse-management/cancellation-form/statistics-in-month?month=02&year=2024",
+            "method": "GET",
+            "sortNum": 205000,
+            "created": "2024-04-19T15:40:05.524Z",
+            "modified": "2024-04-19T15:45:56.125Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "month",
+                    "value": "02",
+                    "isPath": false
+                },
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "1077f865-dfbe-4cd8-9b65-fcebcf31ff18",
+            "colId": "839722f1-43b2-49e5-af6a-65e5380ffc15",
+            "containerId": "0283b9da-cf2b-4212-8b12-37c930a28ce2",
+            "name": "statistics in year",
+            "url": "http://localhost:8000/warehouse-management/receipt/statistics-in-year?year=2024",
+            "method": "GET",
+            "sortNum": 207500,
+            "created": "2024-04-19T15:30:56.316Z",
+            "modified": "2024-04-19T15:31:17.026Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "f146ae53-1248-4347-87d7-8c17c5ac4b0a",
+            "colId": "839722f1-43b2-49e5-af6a-65e5380ffc15",
+            "containerId": "485e58fe-b2a6-47ca-a8fb-8ec975812de7",
+            "name": "statistics-in-year",
+            "url": "http://localhost:8000/warehouse-management/cancellation-form/statistics-in-year?year=2024",
+            "method": "GET",
+            "sortNum": 207500,
+            "created": "2024-04-19T15:44:17.901Z",
+            "modified": "2024-04-19T15:46:03.945Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "6f52601a-dfb4-494b-9408-eee323b49b6f",
+            "colId": "839722f1-43b2-49e5-af6a-65e5380ffc15",
+            "containerId": "0283b9da-cf2b-4212-8b12-37c930a28ce2",
+            "name": "statistics each month",
+            "url": "http://localhost:8000/warehouse-management/receipt/statistics-each-month?year=2024",
+            "method": "GET",
+            "sortNum": 208750,
+            "created": "2024-04-19T15:35:27.549Z",
+            "modified": "2024-04-19T15:35:47.591Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "year",
+                    "value": "2024",
+                    "isPath": false
+                }
+            ]
         },
         {
             "_id": "ce315412-b8fd-4042-9fe3-7a830c35850b",
@@ -368,12 +474,12 @@
             "method": "POST",
             "sortNum": 210000,
             "created": "2024-03-22T02:31:27.417Z",
-            "modified": "2024-03-22T02:31:27.417Z",
+            "modified": "2024-04-10T14:13:08.214Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "  {\n    \"info\":\"abcd\",\n    \"employeeId\":100,\n    \"details\":[\n      {\n        \"ingredientId\":1,\n        \"quantity\":15\n      },\n      {\n        \"ingredientId\":2,\n        \"quantity\":10\n      }\n      ],\n    \"reasonCancellationId\": 1\n  }",
+                "raw": "  {\n    \"note\":\"abcd\",\n    \"employeeId\":100,\n    \"details\":[\n      {\n        \"ingredientId\":902,\n        \"quantity\":15\n      },\n      {\n        \"ingredientId\":903,\n        \"quantity\":10\n      }\n      ],\n    \"reasonCancellationId\": 100\n  }",
                 "form": []
             },
             "tests": []
@@ -387,12 +493,12 @@
             "method": "POST",
             "sortNum": 210000,
             "created": "2024-03-22T02:31:27.420Z",
-            "modified": "2024-03-22T02:31:27.420Z",
+            "modified": "2024-04-07T15:51:09.712Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "  {\n    \"employeeId\":100,\n    \"supplierId\": 1,\n    \"details\":[\n      {\n        \"ingredientId\":1,\n        \"quantity\":15,\n        \"pricePerUnit\":10000\n      },\n      {\n        \"ingredientId\":2,\n        \"quantity\":10,\n        \"pricePerUnit\":20000\n      }\n      ]\n  }",
+                "raw": "  {\n    \"employeeId\":100,\n    \"supplierId\": 401,\n    \"details\":[\n      {\n        \"ingredientId\":904,\n        \"quantity\":15,\n        \"pricePerUnit\":10000\n      },\n      {\n        \"ingredientId\":902,\n        \"quantity\":10,\n        \"pricePerUnit\":20000\n      }\n      ]\n  }",
                 "form": []
             },
             "tests": []
@@ -509,5 +615,6 @@
             "params": [],
             "tests": []
         }
-    ]
+    ],
+    "ref": "XYRIEfqPS6BmW75yQ3B2hrlp2OF7m7QxfkguapsoSsL-yER4zeT005M1h0RPsgezepwdTBwl5bMQ6BUDBeZ08w"
 }
