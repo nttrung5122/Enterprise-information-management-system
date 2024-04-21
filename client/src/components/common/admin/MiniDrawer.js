@@ -77,32 +77,45 @@ const handleLogout = () => {
   // Add your logout logic here
   console.log("Logged out");
 };
-
+const ADMIN_PERMISSION = 101
+const BUSINESS_MANAGE_PERMISSION = 102
+const USER_MANAGE_PERMISSION = 103
+const WAREHOUSE_MANAGE_PERMISSION = 104
 const menuItems = [
-  { text: "Danh sách chức vụ", icon: <BadgeIcon />, section: "role" },
-  { text: "Danh sách nhân viên", icon: <PeopleIcon />, section: "employees" },
+  { text: "Danh sách chức vụ", icon: <BadgeIcon />, section: "role" , permissionId:USER_MANAGE_PERMISSION},
+  { text: "Danh sách nhân viên", icon: <PeopleIcon />, section: "employees", permissionId:USER_MANAGE_PERMISSION },
   {
     text: "Danh sách tài khoản",
     icon: <AccountBoxIcon />,
     section: "accounts",
+    permissionId:USER_MANAGE_PERMISSION
   },
-  { text: "Nhà cung cấp", icon: <StoreIcon />, section: "supplier" },
-  { text: "Nguyên liệu", icon: <SetMealIcon />, section: "ingredient" },
-  { text: "Quản lý kho", icon: <InventoryIcon />, section: "inventory" },
-  { text: "Bảng lương", icon: <LocalAtmIcon />, section: "salary" },
-  { text: "Hóa đơn", icon: <ReceiptLongIcon />, section: "receipt" },
-  { text: "Mẫu hủy ", icon: <DeleteSweepIcon />, section: "cancellationForm" },
+  { text: "Nhà cung cấp", icon: <StoreIcon />, section: "supplier" , permissionId:WAREHOUSE_MANAGE_PERMISSION },
+  { text: "Nguyên liệu", icon: <SetMealIcon />, section: "ingredient",permissionId:WAREHOUSE_MANAGE_PERMISSION },
+  { text: "Quản lý kho", icon: <InventoryIcon />, section: "inventory",permissionId:WAREHOUSE_MANAGE_PERMISSION },
+  { text: "Mẫu hủy ", icon: <DeleteSweepIcon />, section: "cancellationForm",permissionId:WAREHOUSE_MANAGE_PERMISSION },
+  { text: "Bảng lương", icon: <LocalAtmIcon />, section: "salary", permissionId:USER_MANAGE_PERMISSION },
+  { text: "Hóa đơn", icon: <ReceiptLongIcon />, section: "receipt" ,permissionId:WAREHOUSE_MANAGE_PERMISSION},
   {
     text: "Bảng chấm công",
     icon: <CalendarMonthIcon />,
     section: "attendance",
+    permissionId:BUSINESS_MANAGE_PERMISSION
   },
 ];
 
 export default function MiniDrawer({ selectedSection, setSelectedSection }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const [permissionsArray, setPermissionsArray] = React.useState([]);
+  React.useEffect(() => {
+    const accountInfo = JSON.parse(localStorage.getItem("accountInfo"));
+    setPermissionsArray(
+      accountInfo.permissions.map((value) => {
+        return value.account_permission.permissionId;
+      })
+    );
+  }, []);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -132,7 +145,9 @@ export default function MiniDrawer({ selectedSection, setSelectedSection }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {menuItems.map((menuItem, index) => (
+          {menuItems.filter((item)=>{
+            return !item.permissionId || permissionsArray.includes(ADMIN_PERMISSION) || permissionsArray.includes(item.permissionId)
+          }).map((menuItem, index) => (
             <ListItem
               key={menuItem.text}
               disablePadding

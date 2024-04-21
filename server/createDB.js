@@ -97,6 +97,14 @@ const addData = async () => {
     accountId: 100,
     permissionId: ADMIN_PERMISSION,
   });
+  await AccountPermission.create({
+    accountId: 101,
+    permissionId: BUSINESS_MANAGE_PERMISSION,
+  });
+  await AccountPermission.create({
+    accountId: 101,
+    permissionId: WAREHOUSE_MANAGE_PERMISSION,
+  });
   await EmployeeStatus.create({
     employeeId: 100,
     roleId: 201,

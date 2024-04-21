@@ -28,7 +28,8 @@ function SignIn() {
       });
 
       if (res && res.id) {
-        console.log("Login success", res.id);
+        console.log("Login success", res);
+        localStorage.setItem("accountInfo", JSON.stringify(res));
         navigate("/dashboard"); // Redirect to dashboard page
       }
     } catch (error) {
