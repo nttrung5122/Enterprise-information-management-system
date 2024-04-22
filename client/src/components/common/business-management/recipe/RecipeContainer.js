@@ -40,7 +40,7 @@ export default function RecipeContainer() {
           justifyContent: "space-between",
         }}
       >
-        <RecipeContent items={items} />
+        <RecipeContent items={items} fetchRecipeData={fetchRecipeData} />
       </div>
     </ContentContainer>
   );

@@ -3,10 +3,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import DeleteRecipeModal from "./modal/DeleteRecipeModal";
 import { EditRecipeModal } from "./modal/EditRecipeModal";
 
-export default function RecipeContent({ items }) {
+export default function RecipeContent({ items, fetchRecipeData }) {
   const rows = items.map((item) => ({
     id: item.id,
     name: item.nameRecipe,
+    ingredients: item.ingredients,
   }));
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -20,7 +21,10 @@ export default function RecipeContent({ items }) {
       renderCell: (params) => (
         <div>
           <DeleteRecipeModal id={params.row.id} />
-          <EditRecipeModal recipe={params.row} />
+          <EditRecipeModal
+            recipe={params.row}
+            fetchRecipeData={fetchRecipeData}
+          />
         </div>
       ),
     },

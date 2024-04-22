@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
-
+import IngredientSelectModal from "./IngredientSelectModal";
 import { Typography } from "@mui/material";
 import { createRecipe } from "../../../../../services/BusinessService";
 
@@ -42,9 +42,9 @@ export const AddRecipeModal = ({ fetchRecipeData }) => {
     setOpen(false);
   };
 
-  const handleIngredientIdChange = (index, event) => {
+  const handleIngredientChange = (index, fieldName, value) => {
     const newIngredients = [...ingredients];
-    newIngredients[index].ingredientId = event.target.value;
+    newIngredients[index][fieldName] = value;
     setIngredients(newIngredients);
   };
 
@@ -96,17 +96,10 @@ export const AddRecipeModal = ({ fetchRecipeData }) => {
           {ingredients.map((ingredient, index) => (
             <div key={index} mt={1}>
               <Typography mt={2}>Nguyên liệu {index + 1}</Typography>
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id={`ingredientId-${index}`}
-                name={`ingredientId-${index}`}
-                label="Mã nguyên liệu"
-                fullWidth
-                variant="standard"
-                value={ingredient.ingredientId}
-                onChange={(event) => handleIngredientIdChange(index, event)}
+              <IngredientSelectModal
+                handleIngredientChange={(ingredientId) =>
+                  handleIngredientChange(index, "ingredientId", ingredientId)
+                }
               />
 
               <TextField
