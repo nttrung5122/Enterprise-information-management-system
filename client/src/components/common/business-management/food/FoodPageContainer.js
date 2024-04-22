@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
-import ProductHeader from "./ProductHeader";
-import ProductList from "./ProductList";
 
-export default function PageContainer() {
+import FoodPageHeader from "./FoodPageHeader";
+import FoodPageContent from "./FoodPageContent";
+
+export default function FoodPageContainer() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
     padding: "10px", // Add padding for better spacing
@@ -17,9 +18,9 @@ export default function PageContainer() {
 
   return (
     <ContentContainer>
-      <ProductHeader />
+      <FoodPageHeader />
 
-      <ProductList />
+      <FoodPageContent />
     </ContentContainer>
   );
 }

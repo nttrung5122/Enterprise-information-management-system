@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mui/material";
 
-const ProductList = () => {
+const FoodPageContent = () => {
   // Sample food items with placeholder image URLs
   const foodItems = [
     {
@@ -76,4 +76,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default FoodPageContent;

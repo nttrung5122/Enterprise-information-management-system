@@ -2,8 +2,8 @@ import React from "react";
 import { styled } from "@mui/system";
 
 import PageDrawer from "../common/business-management/PageDrawer";
-import PageContainer from "../common/business-management/PageContainer";
 import RecipeContainer from "../common/business-management/recipe/RecipeContainer";
+import FoodPageContainer from "../common/business-management/food/FoodPageContainer";
 
 const Container = styled("div")({
   display: "flex",
@@ -21,6 +21,7 @@ const BusinessPage = () => {
         selectedSection={selectedSection}
       />
       {selectedSection === "recipe" && <RecipeContainer />}
+      {selectedSection === "food" && <FoodPageContainer />}
     </Container>
   );
 };
