@@ -54,9 +54,9 @@ const fetchAllFood = () => {
     });
 };
 
-const deleteFood = (id) => {
+const disableFood = (id) => {
   return axios
-    .delete(`/business-management/recipe/${id}`)
+    .delete(`/business-management/food/${id}`)
     .then((response) => {
       return response.data;
     })
@@ -91,7 +91,7 @@ export {
   deleteRecipe,
   updateRecipe,
   fetchAllFood,
-  deleteFood,
+  disableFood,
   addFood,
   updateFood,
 };

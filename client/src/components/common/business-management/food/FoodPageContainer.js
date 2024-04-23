@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
 
-import FoodPageHeader from "./FoodPageHeader";
 import FoodPageContent from "./FoodPageContent";
+import { fetchAllFood } from "../../../../services/BusinessService";
+import FoodPageHeader from "./FoodPageHeader";
 
 export default function FoodPageContainer() {
   const ContentContainer = styled("div")({
@@ -16,11 +17,25 @@ export default function FoodPageContainer() {
     alignItems: "center",
   });
 
+  const [food, setFood] = useState([]);
+  const getAllFood = () => {
+    fetchAllFood()
+      .then((response) => {
+        console.log("Check food data", response);
+        setFood(response);
+      })
+      .catch((error) => {
+        console.log("Check error fetching food", error);
+      });
+  };
+  useEffect(() => {
+    getAllFood();
+  }, []);
+
   return (
     <ContentContainer>
-      <FoodPageHeader />
-
-      <FoodPageContent />
+      <FoodPageHeader getAllFood={getAllFood} />
+      <FoodPageContent food={food} getAllFood={getAllFood} />
     </ContentContainer>
   );
 }
