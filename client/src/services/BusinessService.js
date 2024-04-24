@@ -188,6 +188,68 @@ const getDetailsSection = (id) => {
       throw error.response.data;
     });
 };
+
+const getAllBill = () => {
+  return axios
+    .get(`/business-management/bill`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const createBill = (billData) => {
+  return axios
+    .post(`/business-management/bill`, billData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const setBillDone = (id) => {
+  return axios
+    .patch(`/business-management/bill/set-bill-done/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const updateBill = (id, billData) => {
+  return axios
+    .patch(`/business-management/bill/${id}`, billData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const getBill = (id) => {
+  return axios
+    .get(`/business-management/bill/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const getUndoneBill = () => {
+  return axios
+    .get(`/business-management/bill/get-bill-no-done`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   fetchAllRecipe,
   createRecipe,
@@ -207,4 +269,10 @@ export {
   updateMenuSection,
   deleteMenuSection,
   getDetailsSection,
+  getAllBill,
+  createBill,
+  setBillDone,
+  updateBill,
+  getBill,
+  getUndoneBill,
 };

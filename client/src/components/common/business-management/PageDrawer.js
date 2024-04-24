@@ -17,6 +17,7 @@ import FastfoodIcon from "@mui/icons-material/Fastfood";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ArticleIcon from "@mui/icons-material/Article";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const drawerWidth = 240;
 
@@ -77,6 +78,7 @@ const menuItems = [
   { text: "Menu", icon: <MenuBookIcon />, section: "menu" },
   { text: "Menu mục", icon: <ViewListIcon />, section: "sectionMenu" },
   { text: "Công thức", icon: <ArticleIcon />, section: "recipe" },
+  { text: "Hóa đơn", icon: <ReceiptLongIcon />, section: "bill" },
 ];
 
 export default function PageDrawer({ selectedSection, setSelectedSection }) {
