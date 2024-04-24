@@ -7,14 +7,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
 
-import { addMenuSection } from "../../../../../services/BusinessService";
 import SuccessModal from "./../../../modal/SuccessModal";
-import SelectFoodModal from "./SelectFoodModal";
+import { addMenu } from "../../../../../services/BusinessService";
+import SelectSectionModal from "./SelectSectionModal";
 
-export const AddSectionModal = ({ getAllMenuSection }) => {
+export const AddMenuModal = ({ getAllMenu }) => {
   const [open, setOpen] = React.useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [selectedFoodId, setSelectedFoodId] = useState([]);
+  const [selectedSectionId, setSelectedSectionId] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,28 +26,28 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const sectionData = {
+    const menuData = {
       name: formData.get("name"),
       info: formData.get("info"),
-      details: selectedFoodId,
+      details: selectedSectionId,
     };
 
-    addMenuSection(sectionData)
+    addMenu(menuData)
       .then(() => {
         setShowSuccessModal(true);
         setTimeout(() => {
-          getAllMenuSection();
+          getAllMenu();
         }, 3000);
       })
       .catch((error) => {
-        console.log("Check the error adding section: ", error);
-        console.log("Check the error section: ", sectionData);
+        console.log("Check the error adding Menu: ", error);
+        console.log("Check the error section: ", menuData);
       });
     setOpen(false);
   };
 
-  const handleSelectedFoodId = (selectedFoodId) => {
-    setSelectedFoodId(selectedFoodId); // Update the selected recipe ID
+  const handleSelectSection = (selectedSectionId) => {
+    setSelectedSectionId(selectedSectionId); // Update the selected recipe ID
   };
 
   const theme = createTheme();
@@ -55,7 +55,7 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
   return (
     <React.Fragment>
       <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
-        Thêm phân loại
+        Thêm Menu
       </Button>
       <Dialog
         open={open}
@@ -65,7 +65,7 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Thêm phân loại</DialogTitle>
+        <DialogTitle>Thêm Menu</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -73,7 +73,7 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
             margin="dense"
             id="name"
             name="name"
-            label="Tên mục"
+            label="Tên Menu"
             fullWidth
             variant="standard"
           />
@@ -87,12 +87,12 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
             fullWidth
             variant="standard"
           />
-          <SelectFoodModal onFoodSelect={handleSelectedFoodId} />
+          <SelectSectionModal onSectionSelect={handleSelectSection} />
         </DialogContent>
 
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
-          <Button type="submit">Thêm phân loại</Button>
+          <Button type="submit">Thêm Menu</Button>
         </DialogActions>
       </Dialog>
       {showSuccessModal && <SuccessModal message="Tạo thành công." />}

@@ -7,14 +7,15 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
 
-import { addMenuSection } from "../../../../../services/BusinessService";
-import SuccessModal from "./../../../modal/SuccessModal";
-import SelectFoodModal from "./SelectFoodModal";
+import { updateMenu } from "../../../../../services/BusinessService";
+import SuccessModal from "../../../modal/SuccessModal";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import SelectSectionModal from "./SelectSectionModal";
 
-export const AddSectionModal = ({ getAllMenuSection }) => {
+export const EditMenuModal = ({ menu, getAllMenu }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [selectedFoodId, setSelectedFoodId] = useState([]);
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control the success modal
+  const [selectedSectionId, setSelectedSectionId] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,37 +27,38 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const sectionData = {
+    const menuData = {
       name: formData.get("name"),
       info: formData.get("info"),
-      details: selectedFoodId,
+      details: selectedSectionId,
     };
 
-    addMenuSection(sectionData)
+    updateMenu(menu.id, menuData)
       .then(() => {
         setShowSuccessModal(true);
         setTimeout(() => {
-          getAllMenuSection();
+          getAllMenu();
         }, 3000);
       })
       .catch((error) => {
-        console.log("Check the error adding section: ", error);
-        console.log("Check the error section: ", sectionData);
+        console.log("Check the error updating section: ", error);
+        console.log("Check the error section: ", menuData);
       });
     setOpen(false);
   };
 
-  const handleSelectedFoodId = (selectedFoodId) => {
-    setSelectedFoodId(selectedFoodId); // Update the selected recipe ID
+  const handleSelectedSection = (selectedSectionId) => {
+    setSelectedSectionId(selectedSectionId); // Update the selected recipe ID
   };
 
   const theme = createTheme();
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
-        Thêm phân loại
+      <Button onClick={handleClickOpen}>
+        <ModeEditIcon />
       </Button>
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -65,7 +67,7 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Thêm phân loại</DialogTitle>
+        <DialogTitle>Chỉnh sửa menu</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -73,9 +75,10 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
             margin="dense"
             id="name"
             name="name"
-            label="Tên mục"
+            label="Tên menu"
             fullWidth
             variant="standard"
+            defaultValue={menu.name}
           />
           <TextField
             autoFocus
@@ -86,16 +89,17 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
             label="Chi tiết"
             fullWidth
             variant="standard"
+            defaultValue={menu.info}
           />
-          <SelectFoodModal onFoodSelect={handleSelectedFoodId} />
+          <SelectSectionModal onSectionSelect={handleSelectedSection} />
         </DialogContent>
 
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
-          <Button type="submit">Thêm phân loại</Button>
+          <Button type="submit">Xác nhận</Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Tạo thành công." />}
+      {showSuccessModal && <SuccessModal message="Thao tác thành công." />}
     </React.Fragment>
   );
 };

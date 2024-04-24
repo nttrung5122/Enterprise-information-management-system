@@ -96,7 +96,16 @@ const fetchAllMenu = () => {
       throw error.response.data;
     });
 };
-
+const getMenu = (id) => {
+  return axios
+    .get(`/business-management/menu/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 const addMenu = (menuData) => {
   return axios
     .post(`/business-management/menu`, menuData)
@@ -190,6 +199,7 @@ export {
   updateFood,
   fetchAllMenu,
   addMenu,
+  getMenu,
   updateMenu,
   deleteMenu,
   fetchAllMenuSection,

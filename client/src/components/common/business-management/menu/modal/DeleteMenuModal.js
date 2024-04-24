@@ -6,10 +6,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteMenuSection } from "../../../../../services/BusinessService";
+import { deleteMenu } from "../../../../../services/BusinessService";
 import SuccessModal from "../../../modal/SuccessModal";
 
-const DeleteSectionModal = ({ id, getAllMenuSection }) => {
+const DeleteMenuModal = ({ id, getAllMenu }) => {
   const [open, setOpen] = React.useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const handleClickOpen = () => {
@@ -21,17 +21,17 @@ const DeleteSectionModal = ({ id, getAllMenuSection }) => {
   };
 
   const handleDelete = () => {
-    deleteMenuSection(id)
+    deleteMenu(id)
       .then(() => {
         console.log("Delete successfully");
         setOpen(false);
         setShowSuccessModal(true);
         setTimeout(() => {
-          getAllMenuSection();
+          getAllMenu();
         }, 3000);
       })
       .catch((error) => {
-        console.log("Error deleting ingredient: ", error);
+        console.log("Error deleting menu: ", error);
         setOpen(false);
       });
   };
@@ -48,11 +48,11 @@ const DeleteSectionModal = ({ id, getAllMenuSection }) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" color="error">
-          {"Xóa nguyên liệu"}
+          {"Xóa Menu"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" color="">
-            Bạn có chắc muốn xóa mục này?
+            Bạn có chắc muốn xóa menu này?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -66,4 +66,4 @@ const DeleteSectionModal = ({ id, getAllMenuSection }) => {
     </React.Fragment>
   );
 };
-export default DeleteSectionModal;
+export default DeleteMenuModal;
