@@ -85,6 +85,100 @@ const updateFood = (id, foodData) => {
       throw error.response.data;
     });
 };
+
+const fetchAllMenu = () => {
+  return axios
+    .get(`/business-management/menu`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const addMenu = (menuData) => {
+  return axios
+    .post(`/business-management/menu`, menuData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const updateMenu = (id, menuData) => {
+  return axios
+    .patch(`/business-management/menu/${id}`, menuData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const deleteMenu = (id) => {
+  return axios
+    .delete(`/business-management/menu/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const fetchAllMenuSection = () => {
+  return axios
+    .get(`/business-management/section-menu`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const addMenuSection = (sectionData) => {
+  return axios
+    .post(`/business-management/section-menu`, sectionData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const updateMenuSection = (id, sectionData) => {
+  return axios
+    .patch(`/business-management/section-menu/${id}`, sectionData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const deleteMenuSection = (id) => {
+  return axios
+    .delete(`/business-management/section-menu/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const getDetailsSection = (id) => {
+  return axios
+    .get(`/business-management/section-menu/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   fetchAllRecipe,
   createRecipe,
@@ -94,4 +188,13 @@ export {
   disableFood,
   addFood,
   updateFood,
+  fetchAllMenu,
+  addMenu,
+  updateMenu,
+  deleteMenu,
+  fetchAllMenuSection,
+  addMenuSection,
+  updateMenuSection,
+  deleteMenuSection,
+  getDetailsSection,
 };

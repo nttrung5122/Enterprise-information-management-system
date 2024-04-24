@@ -2,6 +2,7 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteRecipeModal from "./modal/DeleteRecipeModal";
 import { EditRecipeModal } from "./modal/EditRecipeModal";
+import DisplayInfoModals from "./modal/DisplayInfoModal";
 
 export default function RecipeContent({ items, fetchRecipeData }) {
   const rows = items.map((item) => ({
@@ -17,14 +18,15 @@ export default function RecipeContent({ items, fetchRecipeData }) {
     {
       field: "action",
       headerName: "Hành động",
-      width: 130,
+      width: 200,
       renderCell: (params) => (
         <div>
-          <DeleteRecipeModal id={params.row.id} />
           <EditRecipeModal
             recipe={params.row}
             fetchRecipeData={fetchRecipeData}
           />
+          <DisplayInfoModals details={params.row.ingredients} />
+          <DeleteRecipeModal id={params.row.id} />
         </div>
       ),
     },
