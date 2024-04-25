@@ -1,9 +1,11 @@
 // AppRouter.js
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ReactDOM from "react-dom/client";
 import Dashboard from "./components/pages/Dashboard";
 import SignIn from "./components/pages/SignIn";
 import BusinessPage from "./components/pages/BusinessPage";
-import ReactDOM from "react-dom/client";
+
+import OrderPage from "./components/pages/OrderPage";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/business", //path for food listing
     element: <BusinessPage />,
+  },
+  {
+    path: "/order",
+    element: <OrderPage />,
   },
 ]);
 

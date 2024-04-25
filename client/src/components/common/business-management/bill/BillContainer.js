@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
 
-import { getAllBill } from "../../../../../services/BusinessService";
 import BillHeader from "./BilHeader";
 import BillContent from "./BillContent";
+import { getAllBill } from "../../../../services/BusinessService";
 
 export default function BillContainer() {
   const ContentContainer = styled("div")({
