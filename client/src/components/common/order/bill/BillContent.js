@@ -69,7 +69,7 @@ const BillContent = ({ doneBill, undoneBill, fetchAllBill }) => {
 
                       <div>
                         <Typography variant="caption" color="textSecondary">
-                          Tạo bởi: {item.employeeId}
+                          Tạo bởi mã nhân viên: {item.employeeId}
                         </Typography>
                       </div>
                       <Divider />
