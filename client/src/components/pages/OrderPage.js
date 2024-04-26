@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "@mui/system";
 import OrderDrawer from "../common/order/OrderDrawer";
 import PosContainer from "../common/order/pos/PosContainer";
+import BillContainer from "../common/order/bill/BillContainer";
 
 const Container = styled("div")({
   display: "flex",
@@ -19,6 +20,7 @@ const OrderPage = () => {
         selectedSection={selectedSection}
       />
       {selectedSection === "order" && <PosContainer />}
+      {selectedSection === "bill" && <BillContainer />}
     </Container>
   );
 };

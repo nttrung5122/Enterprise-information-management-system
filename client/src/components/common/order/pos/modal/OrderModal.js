@@ -12,12 +12,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import Stack from "@mui/material/Stack";
+import { createBill } from "../../../../../services/BusinessService";
+import SuccessModal from "./../../../modal/SuccessModal";
 
 const OrderModal = ({ order }) => {
   const [open, setOpen] = useState(false);
   const [itemQuantities, setItemQuantities] = useState({});
-  const [info, setInfo] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -45,10 +47,39 @@ const OrderModal = ({ order }) => {
   };
 
   const handleCreateBill = () => {
-    const billItems = order.filter((item) => itemQuantities[item.id] > 0);
-    setSelectedItems(billItems);
-    console.log(billItems);
-    setInfo(""); // Clear the info field
+    // Initialize an empty bill object
+    const bill = {
+      employeeId: 103, // You can set the employeeId here
+      totalPrice: 0,
+      detail: [],
+    };
+
+    // Iterate through order items to populate the bill detail
+    order.forEach((item) => {
+      const quantity = itemQuantities[item.id] || 0;
+      if (quantity > 0) {
+        const totalPrice = quantity * item.price;
+        bill.totalPrice += totalPrice; // Increment total price
+        // Add item detail to the bill
+        bill.detail.push({
+          totalPrice,
+          quantiity: quantity,
+          foodId: item.id,
+        });
+      }
+    });
+
+    // Log or handle the bill object as needed
+    console.log(bill);
+    setSelectedItems(bill.detail); // Set selected items for display if needed
+    createBill(bill)
+      .then((response) => {
+        console.log("Create bill success", response);
+        setShowSuccessModal(true);
+      })
+      .catch((error) => {
+        console.log("error when creating bill", error);
+      });
   };
 
   const initializeItemQuantities = () => {
@@ -139,6 +170,7 @@ const OrderModal = ({ order }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      {showSuccessModal && <SuccessModal message="Tạo thành công." />}
     </div>
   );
 };

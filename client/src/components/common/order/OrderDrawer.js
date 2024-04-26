@@ -14,6 +14,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const drawerWidth = 240;
 
@@ -71,6 +72,7 @@ const handleLogout = () => {
 
 const menuItems = [
   { text: "Gọi món", icon: <FastfoodIcon />, section: "order" },
+  { text: "Hóa đơn", icon: <ReceiptLongIcon />, section: "bill" },
 ];
 
 export default function OrderDrawer({ selectedSection, setSelectedSection }) {
