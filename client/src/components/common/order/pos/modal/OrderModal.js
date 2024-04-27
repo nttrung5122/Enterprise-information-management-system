@@ -15,7 +15,7 @@ import Stack from "@mui/material/Stack";
 import { createBill } from "../../../../../services/BusinessService";
 import SuccessModal from "./../../../modal/SuccessModal";
 
-const OrderModal = ({ order }) => {
+const OrderModal = ({ order, setOrder }) => {
   const [open, setOpen] = useState(false);
   const [itemQuantities, setItemQuantities] = useState({});
   const [selectedItems, setSelectedItems] = useState([]);
@@ -45,11 +45,16 @@ const OrderModal = ({ order }) => {
       });
     }
   };
-
+  const handleDelete = (itemId) => {
+    const updatedOrder = order.filter((item) => item.id !== itemId);
+    setOrder(updatedOrder);
+  };
+  const employeeId = sessionStorage.getItem("employeeId");
+  console.log("Employee ID:", employeeId);
   const handleCreateBill = () => {
     // Initialize an empty bill object
     const bill = {
-      employeeId: 103, // You can set the employeeId here
+      employeeId: employeeId,
       totalPrice: 0,
       detail: [],
     };
@@ -134,7 +139,12 @@ const OrderModal = ({ order }) => {
                     {(itemQuantities[item.id] || 1) * item.price}$
                   </TableCell>
                   <TableCell>
-                    <Button variant="contained">Xóa</Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      Xóa
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

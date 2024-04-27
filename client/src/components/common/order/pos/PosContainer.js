@@ -40,7 +40,7 @@ export default function PosContainer() {
 
   return (
     <ContentContainer>
-      <PosHeader order={order} />
+      <PosHeader order={order} setOrder={setOrder} />
       <PosContent
         food={food}
         getAllFood={getAllFood}

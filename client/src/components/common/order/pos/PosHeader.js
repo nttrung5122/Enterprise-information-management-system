@@ -8,7 +8,7 @@ import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import OrderModal from "./modal/OrderModal";
 
-export default function PosHeader({ order }) {
+export default function PosHeader({ order, setOrder }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -18,7 +18,7 @@ export default function PosHeader({ order }) {
           </Typography>
           <IconButton size="large" aria-label="show orders" color="inherit">
             <Badge badgeContent={order.length} color="error">
-              <OrderModal order={order} />
+              <OrderModal order={order} setOrder={setOrder} />
             </Badge>
           </IconButton>
         </Toolbar>

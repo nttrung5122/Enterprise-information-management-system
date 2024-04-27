@@ -28,8 +28,28 @@ function SignIn() {
       });
 
       if (res && res.id) {
-        console.log("Login success", res.id);
-        navigate("/dashboard"); // Redirect to dashboard page
+        const permissionId =
+          res.permissions[0]?.account_permission.permissionId;
+        console.log("Login success, the permission Id:", permissionId);
+        sessionStorage.setItem("employeeId", res.employeeId);
+
+        switch (permissionId) {
+          case 101:
+            navigate("/dashboard");
+            break;
+          case 102:
+            navigate("/business");
+            break;
+          case 103:
+            navigate("/dashboard");
+            break;
+          case 104:
+            navigate("/dashboard");
+            break;
+          default:
+            navigate("/order"); // Default dashboard page
+            break;
+        }
       }
     } catch (error) {
       setError("Mật khẩu không đúng hoặc tài khoản không tồn tại");
