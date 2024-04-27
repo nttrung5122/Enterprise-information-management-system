@@ -26,7 +26,6 @@ export default function BillContainer() {
   const fetchAllBill = () => {
     getAllBill()
       .then((response) => {
-        console.log("Check bill data", response);
         setBill(response);
       })
       .catch((error) => {

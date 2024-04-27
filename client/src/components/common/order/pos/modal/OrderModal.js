@@ -30,6 +30,18 @@ const OrderModal = ({ order, setOrder }) => {
     setOpen(false);
   };
 
+  const initializeItemQuantities = () => {
+    const initialQuantities = {};
+    order.forEach((item) => {
+      if (initialQuantities[item.id]) {
+        initialQuantities[item.id] += item.quantity || 1;
+      } else {
+        initialQuantities[item.id] = item.quantity || 1;
+      }
+    });
+    setItemQuantities(initialQuantities);
+  };
+
   const handleIncreaseQuantity = (itemId) => {
     setItemQuantities({
       ...itemQuantities,
@@ -45,12 +57,12 @@ const OrderModal = ({ order, setOrder }) => {
       });
     }
   };
+
   const handleDelete = (itemId) => {
     const updatedOrder = order.filter((item) => item.id !== itemId);
     setOrder(updatedOrder);
   };
   const employeeId = sessionStorage.getItem("employeeId");
-  console.log("Employee ID:", employeeId);
   const handleCreateBill = () => {
     // Initialize an empty bill object
     const bill = {
@@ -81,18 +93,13 @@ const OrderModal = ({ order, setOrder }) => {
       .then((response) => {
         console.log("Create bill success", response);
         setShowSuccessModal(true);
+        setTimeout(() => {
+          setOrder([]);
+        }, 2000);
       })
       .catch((error) => {
         console.log("error when creating bill", error);
       });
-  };
-
-  const initializeItemQuantities = () => {
-    const initialQuantities = {};
-    order.forEach((item) => {
-      initialQuantities[item.id] = 1;
-    });
-    setItemQuantities(initialQuantities);
   };
 
   return (
