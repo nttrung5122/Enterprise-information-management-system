@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
-import SearchInput from "./SearchInput";
-import FilterButtonGroup from "./FilterButtonGroup";
+import SearchInput from "../../admin/SearchInput";
+import FilterButtonGroup from "../../admin/FilterButtonGroup";
 import IngredientHeader from "./IngredientHeader";
-import { getAllIngredients } from "../../../services/UserService";
+import { getAllIngredients } from "../../../../services/UserService";
 import IngredientTable from "./IngredientTable";
 
 export default function IngredientContent() {

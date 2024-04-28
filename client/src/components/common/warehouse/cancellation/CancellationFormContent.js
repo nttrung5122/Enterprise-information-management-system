@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
-import SearchInput from "./SearchInput";
-import FilterButtonGroup from "./FilterButtonGroup";
-import ReceiptHeader from "./ReceiptHeader";
-import { fetchAllCancellationForms } from "../../../services/UserService";
-import ReceiptTable from "./ReceiptTable";
+import SearchInput from "../../admin/SearchInput";
+import FilterButtonGroup from "../../admin/FilterButtonGroup";
+import ReceiptHeader from "../receipt/ReceiptHeader";
+import { fetchAllCancellationForms } from "../../../../services/UserService";
+import ReceiptTable from "../receipt/ReceiptTable";
 import CancellationFormHeader from "./CancellationFormHeader";
 import CancellationFormTable from "./CancellationFormTable";
 

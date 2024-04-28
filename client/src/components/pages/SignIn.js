@@ -47,7 +47,7 @@ function SignIn() {
             navigate("/dashboard");
             break;
           default:
-            navigate("/order"); // Default dashboard page
+            navigate("/order"); // Default order page
             break;
         }
       }

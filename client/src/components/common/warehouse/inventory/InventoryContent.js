@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
-import SupplierHeader from "./SupplierHeader";
-import SupplierTable from "./SupplierTable";
-import { fetchAllSuppliers } from "../../../services/UserService";
-import SearchInput from "./SearchInput";
+import SearchInput from "../../admin/SearchInput";
+import FilterButtonGroup from "../../admin/FilterButtonGroup";
+import InventoryHeader from "./InventoryHeader";
+import InventoryTable from "./InventoryTable";
+import { fetchAllInventory } from "../../../../services/UserService";
 
-export default function SupplierContent() {
+export default function InventoryContent() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
     padding: "10px", // Add padding for better spacing
@@ -17,25 +18,23 @@ export default function SupplierContent() {
     alignItems: "center",
   });
 
-  const [suppliers, setSuppliers] = useState([]);
-
-  const fetchSuppliersData = () => {
-    fetchAllSuppliers()
+  const [items, setItems] = useState([]);
+  const fetchInventoryData = () => {
+    fetchAllInventory()
       .then((response) => {
-        console.log("fetch suppliers data: ", response);
-        setSuppliers(response);
+        console.log("Check warehouse: ", response);
+        setItems(response);
       })
       .catch((error) => {
-        console.log("Check error: ", error);
+        console.log("Check error");
       });
   };
-
   useEffect(() => {
-    fetchSuppliersData();
+    fetchInventoryData();
   }, []);
   return (
     <ContentContainer>
-      <SupplierHeader fetchSuppliersData={fetchSuppliersData} />
+      <InventoryHeader />
       <div
         style={{
           display: "flex",
@@ -44,10 +43,7 @@ export default function SupplierContent() {
       >
         <SearchInput />
       </div>
-      <SupplierTable
-        suppliers={suppliers}
-        fetchSuppliersData={fetchSuppliersData}
-      />
+      <InventoryTable items={items} fetchInventoryData={fetchInventoryData} />
     </ContentContainer>
   );
 }

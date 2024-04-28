@@ -3,17 +3,17 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { AddIngredientModal } from "../modal/AddIngredientModal";
+import { AddSupplierModal } from "../../modal/AddSupplierModal";
 
-export default function IngredientHeader({ fetchIngredientsData }) {
+export default function SupplierHeader({ fetchSuppliersData }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Danh sách nguyên liệu:
+            Nhà cung cấp:
           </Typography>
-          <AddIngredientModal fetchIngredientsData={fetchIngredientsData} />
+          <AddSupplierModal fetchSuppliersData={fetchSuppliersData} />
         </Toolbar>
       </AppBar>
     </Box>

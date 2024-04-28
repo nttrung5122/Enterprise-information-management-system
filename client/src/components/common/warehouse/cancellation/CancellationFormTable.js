@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import IngredientsInfoModal from "../modal/IngredientsInfoModal";
+import IngredientsInfoModal from "../../modal/IngredientsInfoModal";
 
 export default function CancellationFormTable({ cancellationForms }) {
   const rows = cancellationForms.map((item) => ({

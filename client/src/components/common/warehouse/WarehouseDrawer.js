@@ -13,16 +13,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import PeopleIcon from "@mui/icons-material/People";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import StoreIcon from "@mui/icons-material/Store";
-import LocalAtmIcon from "@mui/icons-material/LocalAtm";
-import InventoryIcon from "@mui/icons-material/Inventory";
 import SetMealIcon from "@mui/icons-material/SetMeal";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-import BadgeIcon from "@mui/icons-material/Badge";
+import InventoryIcon from "@mui/icons-material/Inventory";
 
 const drawerWidth = 240;
 
@@ -79,16 +75,12 @@ const handleLogout = () => {
 };
 
 const menuItems = [
-  { text: "Danh sách chức vụ", icon: <BadgeIcon />, section: "role" },
-  { text: "Danh sách nhân viên", icon: <PeopleIcon />, section: "employees" },
-  {
-    text: "Danh sách tài khoản",
-    icon: <AccountBoxIcon />,
-    section: "accounts",
-  },
+  { text: "Nhà cung cấp", icon: <StoreIcon />, section: "supplier" },
+  { text: "Nguyên liệu", icon: <SetMealIcon />, section: "ingredient" },
+  { text: "Quản lý kho", icon: <InventoryIcon />, section: "inventory" },
 
-  { text: "Bảng lương", icon: <LocalAtmIcon />, section: "salary" },
-
+  { text: "Hóa đơn", icon: <ReceiptLongIcon />, section: "receipt" },
+  { text: "Mẫu hủy ", icon: <DeleteSweepIcon />, section: "cancellationForm" },
   {
     text: "Bảng chấm công",
     icon: <CalendarMonthIcon />,
@@ -96,7 +88,10 @@ const menuItems = [
   },
 ];
 
-export default function MiniDrawer({ selectedSection, setSelectedSection }) {
+export default function WarehouseDrawer({
+  selectedSection,
+  setSelectedSection,
+}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 

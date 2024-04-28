@@ -4,8 +4,8 @@ import ReactDOM from "react-dom/client";
 import Dashboard from "./components/pages/Dashboard";
 import SignIn from "./components/pages/SignIn";
 import BusinessPage from "./components/pages/BusinessPage";
-
 import OrderPage from "./components/pages/OrderPage";
+import WarehousePage from "./components/pages/WarehousePage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/order",
     element: <OrderPage />,
+  },
+  {
+    path: "/warehouse",
+    element: <WarehousePage />,
   },
 ]);
 
