@@ -7,6 +7,8 @@ const {
   TimeKeeping,
   sequelize,
   LeaveApplicationDetail,
+  AccountPermission,
+  
 } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const moment = require("moment");
@@ -132,7 +134,7 @@ const EmployeeController = {
   addEmployee: async (req, res) => {
     const transaction = await sequelize.transaction();
     try {
-      const { employeeInfo, contractInfo, employeeRole } = req.body;
+      const { employeeInfo, contractInfo, employeeRole,permissions } = req.body;
 
       const checkEmployeeInfoValid = (data) => {
         if (
@@ -163,6 +165,11 @@ const EmployeeController = {
         return false;
       };
 
+      if(!permissions) {
+        await transaction.rollback();
+        return res.status(402).json("Data is invalid");
+      }
+
       if (
         !checkContractInfoValid(contractInfo) ||
         !checkRoleValid(employeeRole) ||
@@ -181,13 +188,19 @@ const EmployeeController = {
       }
 
       const employee = await Employee.create(employeeInfo);
-      await Account.create(
+      const account = await Account.create(
         {
           employeeId: employee.id,
           password: "123456",
         },
         { transaction: transaction }
       );
+      await AccountPermission.bulkCreate(permissions.map((permission) => {
+        return {
+          accountId: account.id,
+          permissionId: permission
+        }
+      }),{ transaction: transaction})
       await Contract.create(
         {
           ...contractInfo,
@@ -204,10 +217,11 @@ const EmployeeController = {
         },
         { transaction: transaction }
       );
+      await transaction.commit();
+
       const newEmployee = await Employee.findByPk(employee.id, {
         include: [Contract, { model: EmployeeStatus, include: Role }],
       });
-      await transaction.commit();
       return res.status(200).json(newEmployee);
     } catch (error) {
       console.log(error);
