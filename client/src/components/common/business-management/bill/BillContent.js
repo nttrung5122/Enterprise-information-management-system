@@ -58,7 +58,9 @@ export default function BillContent({ items, fetchAllBill }) {
       renderCell: (params) => (
         <div>
           <DisplayBillDetailModal id={params.row.id} />
-          <UpdateBillModal id={params.row.id} fetchAllBill={fetchAllBill} />
+          {params.row.isDone ? null : (
+            <UpdateBillModal id={params.row.id} fetchAllBill={fetchAllBill} />
+          )}
         </div>
       ),
     },

@@ -51,7 +51,7 @@ const StatisticContent = () => {
         <Grid item xs={6}>
           <Paper elevation={3} sx={{ padding: 2, width: 500 }}>
             <Typography variant="h5" gutterBottom>
-              Thống kê theo năm {year}
+              Lợi nhuận theo năm {year}
             </Typography>
 
             {profitInYear !== null ? (
@@ -64,9 +64,9 @@ const StatisticContent = () => {
 
         {/* Second Column: Monthly Profit Statistics */}
         <Grid item xs={6}>
-          <Paper elevation={3} sx={{ padding: 2, width: 800 }}>
+          <Paper elevation={3} sx={{ padding: 2, width: 700 }}>
             <Typography variant="h5" gutterBottom>
-              Thống kê theo tháng năm {year}
+              Lợi nhuận theo tháng năm {year}
             </Typography>
 
             {profitAllMonths !== null ? (
