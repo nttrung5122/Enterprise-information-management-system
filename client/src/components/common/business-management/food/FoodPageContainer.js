@@ -21,7 +21,6 @@ export default function FoodPageContainer() {
   const getAllFood = () => {
     fetchAllFood()
       .then((response) => {
-        console.log("Check food data", response);
         setFood(response);
       })
       .catch((error) => {

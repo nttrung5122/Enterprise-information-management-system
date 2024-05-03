@@ -7,6 +7,7 @@ import FoodPageContainer from "../common/business-management/food/FoodPageContai
 import MenuSectionContainer from "../common/business-management/menu-section/MenuSectionContainer";
 import MenuContainer from "../common/business-management/menu/MenuContainer";
 import BillContainer from "../common/business-management/bill/BillContainer";
+import StatisticContainer from "../common/statistic/StatisticContainer";
 
 const Container = styled("div")({
   display: "flex",
@@ -28,6 +29,7 @@ const BusinessPage = () => {
       {selectedSection === "sectionMenu" && <MenuSectionContainer />}
       {selectedSection === "menu" && <MenuContainer />}
       {selectedSection === "bill" && <BillContainer />}
+      {selectedSection === "statistic" && <StatisticContainer />}
     </Container>
   );
 };

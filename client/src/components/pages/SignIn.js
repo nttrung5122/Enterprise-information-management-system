@@ -31,7 +31,8 @@ function SignIn() {
         const permissionId =
           res.permissions[0]?.account_permission.permissionId;
         console.log("Login success, the permission Id:", permissionId);
-        sessionStorage.setItem("employeeId", res.employeeId);
+        console.log("Login success, check the res:", res);
+        sessionStorage.setItem("employeeId", permissionId);
 
         switch (permissionId) {
           case 101:
@@ -43,8 +44,8 @@ function SignIn() {
           case 103:
             navigate("/dashboard");
             break;
-          case 104:
-            navigate("/dashboard");
+          case 104 || 105:
+            navigate("/warehouse");
             break;
           default:
             navigate("/order"); // Default order page
