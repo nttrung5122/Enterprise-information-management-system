@@ -19,6 +19,7 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import ArticleIcon from "@mui/icons-material/Article";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 const drawerWidth = 240;
 
@@ -81,6 +82,7 @@ const menuItems = [
   { text: "Công thức", icon: <ArticleIcon />, section: "recipe" },
   { text: "Hóa đơn", icon: <ReceiptLongIcon />, section: "bill" },
   { text: "Thống kê", icon: <BarChartIcon />, section: "statistic" },
+  { text: "Doanh số", icon: <ShoppingBasketIcon />, section: "sale" },
 ];
 
 export default function PageDrawer({ selectedSection, setSelectedSection }) {

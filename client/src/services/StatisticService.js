@@ -89,7 +89,7 @@ const getFoodSoldInYear = (year) => {
     });
 };
 
-const getFoodSoldAllMonth = (year, month) => {
+const getFoodSoldAllMonth = (year) => {
   return axios
     .get(
       `/business-management/statistics/statisticsFoodSoldAllMonthInYear?year=${year}`
