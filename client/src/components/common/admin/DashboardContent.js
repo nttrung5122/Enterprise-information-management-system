@@ -23,8 +23,8 @@ export default function DashboardContent() {
   const fetchUsersData = () => {
     fetchAllUsers()
       .then((response) => {
-        console.log("Fetched users:", response.data);
-        setUsers(response.data); // Update the users state
+        console.log("Fetched users:", response);
+        setUsers(response); // Update the users state
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

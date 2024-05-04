@@ -7,43 +7,50 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import SalaryHeader from "./SalaryHeader";
 import { SalaryTable } from "./SalaryTable";
-import {
-  getUserSalaryInMonth,
-  fetchAllUsers,
-} from "../../../services/UserService";
+
 import SearchInput from "./SearchInput";
+import {
+  fetchAllUsers,
+  getUserSalaryInMonth,
+} from "../../../services/UserService";
 
 export const SalaryContent = () => {
   const [users, setUsers] = useState([]);
   const [salaries, setSalaries] = useState([]);
   const [year, setYear] = useState(2024);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      fetchAllUsers()
-        .then((userData) => {
-          console.log("User Data:", userData); // Log userData to inspect its structure
-          setUsers(userData.data);
-          // Fetch salaries for each user
-          Promise.all(
-            userData.data.map((user) => {
-              return getUserSalaryInMonth(user.id, year);
-            })
-          )
-            .then((salaryData) => {
-              setSalaries(salaryData);
-            })
-            .catch((error) => {
-              console.error("Error fetching salaries data:", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Error fetching users data:", error);
-        });
-    };
+  const getAllUsers = () => {
+    fetchAllUsers()
+      .then((response) => {
+        setUsers(response); // Check if response is an array of users
+      })
+      .catch((error) => {
+        console.log("Error when getting users data: ", error);
+      });
+  };
 
-    fetchData();
-  }, [year]);
+  const fetchUserSalaryInMonth = () => {
+    // Ensure users state is updated before fetching salaries
+    if (users.length > 0) {
+      users.forEach((user) => {
+        getUserSalaryInMonth(user.id, year)
+          .then((response) => {
+            setSalaries((prevSalaries) => [...prevSalaries, response]);
+            /*{   console.log("check salaries", salaries);} */
+          })
+          .catch((error) => {
+            console.log("Error when getting user salary", error);
+          });
+      });
+    }
+  };
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+  // Call fetchUserSalaryInMonth whenever users or year changes
+  useEffect(() => {
+    fetchUserSalaryInMonth();
+  }, [users, year]);
 
   const SalaryContainer = styled("div")({
     flexGrow: 1,
@@ -89,6 +96,7 @@ export const SalaryContent = () => {
           </Box>
         </FilterGroupContainer>
       </div>
+
       <SalaryTable users={users} year={year} salaries={salaries} />
     </SalaryContainer>
   );

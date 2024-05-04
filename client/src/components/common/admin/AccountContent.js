@@ -22,8 +22,8 @@ export default function AccountContent() {
   const fetchUsersData = () => {
     fetchAllUsers()
       .then((response) => {
-        console.log("Check data >>>>:", response.data);
-        setUsers(response.data);
+        console.log("Check data >>>>:", response);
+        setUsers(response);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
