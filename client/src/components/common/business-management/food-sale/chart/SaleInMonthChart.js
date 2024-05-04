@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { getFoodSoldAllMonth } from "../../../../../services/StatisticService";
+import { getFoodSoldAllDayInMonth } from "../../../../../services/StatisticService";
 
 // Modify the Row component to accept revenue data dynamically
 const Row = ({ month, data }) => {
@@ -66,13 +66,24 @@ const Row = ({ month, data }) => {
   );
 };
 
-const SaleAllMonthsChart = () => {
+const SaleInMonthChart = () => {
   const [data, setData] = useState(null);
   const [year, setYear] = useState(2024);
+  const [month, setMonth] = useState(4);
 
-  const fetchData = (selectedYear) => {
-    getFoodSoldAllMonth(selectedYear)
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
+  };
+
+  const handleMonthChange = (event) => {
+    setMonth(event.target.value);
+  };
+
+  const fetchData = () => {
+    console.log("Check year, month", year, month);
+    getFoodSoldAllDayInMonth(year, month)
       .then((response) => {
+        console.log("Check response: ", response);
         setData(response);
       })
       .catch((error) => {
@@ -81,34 +92,48 @@ const SaleAllMonthsChart = () => {
   };
 
   useEffect(() => {
-    fetchData(year);
-  }, [year]);
-
-  const handleYearChange = (event) => {
-    setYear(event.target.value);
-  };
+    fetchData();
+  }, [year, month]);
 
   return (
     <>
-      <FormControl>
-        <InputLabel>Year</InputLabel>
-        <Select value={year} onChange={handleYearChange}>
-          <MenuItem value={2023}>2023</MenuItem>
-          <MenuItem value={2024}>2024</MenuItem>
-          {/* Add more years as needed */}
-        </Select>
-      </FormControl>
+      <div>
+        <FormControl>
+          <InputLabel>Year</InputLabel>
+          <Select value={year} onChange={handleYearChange}>
+            <MenuItem value={2023}>2023</MenuItem>
+            <MenuItem value={2024}>2024</MenuItem>
+            {/* Add more years as needed */}
+          </Select>
+        </FormControl>
+
+        <FormControl>
+          <InputLabel>Month</InputLabel>
+          <Select value={month} onChange={handleMonthChange}>
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={4}>4</MenuItem>
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={6}>6</MenuItem>
+            <MenuItem value={7}>7</MenuItem>
+            <MenuItem value={8}>8</MenuItem>
+            <MenuItem value={9}>9</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={11}>11</MenuItem>
+            <MenuItem value={12}>12</MenuItem>
+            {/* Add more months as needed */}
+          </Select>
+        </FormControl>
+      </div>
 
       <Table>
         <TableHead></TableHead>
         <TableBody>
+          {" "}
           {data &&
-            data.map((monthData) => (
-              <Row
-                key={monthData.month}
-                month={`Tháng ${monthData.month}`}
-                data={monthData.detail}
-              />
+            Object.entries(data).map(([month, monthData]) => (
+              <Row key={month} month={month} data={monthData} />
             ))}
         </TableBody>
       </Table>
@@ -116,4 +141,4 @@ const SaleAllMonthsChart = () => {
   );
 };
 
-export default SaleAllMonthsChart;
+export default SaleInMonthChart;
