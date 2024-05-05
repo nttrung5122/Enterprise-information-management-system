@@ -100,7 +100,12 @@ const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
                       user={user}
                       fetchUsersData={fetchUsersData}
                     />
-                    <AlertDialog userId={user.id} />
+                    {user.isWorking && (
+                      <AlertDialog
+                        userId={user.id}
+                        fetchUsersData={fetchUsersData}
+                      />
+                    )}
                   </Box>
                 </TableCell>
               </TableRow>

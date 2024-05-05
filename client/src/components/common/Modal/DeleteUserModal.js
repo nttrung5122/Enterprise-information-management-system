@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import { deleteUser } from "../../../services/UserService";
 
-export default function AlertDialog({ userId }) {
+export default function AlertDialog({ userId, fetchUsersData }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -28,6 +28,7 @@ export default function AlertDialog({ userId }) {
       .then(() => {
         console.log("User deleted successfully!");
         handleClose(); // Close the dialog after successful deletion
+        fetchUsersData();
         // You may also trigger a data fetch to update the UI accordingly
       })
       .catch((error) => {
