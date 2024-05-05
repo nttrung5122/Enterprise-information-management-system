@@ -53,7 +53,7 @@ const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
               <TableCell align="center">Chức vụ</TableCell>
               <TableCell align="center">Lương căn bản</TableCell>
               <TableCell align="center">Hệ số lương</TableCell>
-              <TableCell align="center">Ngày bắt đầu</TableCell>
+              <TableCell align="center">Tháng bắt đầu</TableCell>
 
               <TableCell align="center">Điều chỉnh:</TableCell>
             </TableRow>
@@ -65,7 +65,11 @@ const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
                 <TableCell align="center">{user.fullname}</TableCell>
                 <TableCell align="center">
                   {user.employee_statuses.length > 0 &&
-                    user.employee_statuses[0].role.info}
+                    (user.employee_statuses[0].endDate === null
+                      ? user.employee_statuses[0].role.info
+                      : user.employee_statuses[
+                          user.employee_statuses.length - 1
+                        ].role.info)}
                 </TableCell>
                 <TableCell align="center">
                   {user.employee_statuses.length > 0 &&
@@ -77,7 +81,12 @@ const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
                 </TableCell>
                 <TableCell align="center">
                   {user.employee_statuses.length > 0 &&
-                    user.employee_statuses[0].startDate}
+                    new Date(
+                      user.employee_statuses[0].startDate
+                    ).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                    })}
                 </TableCell>
                 <TableCell align="center" size="small">
                   <Box display="flex" alignItems="center" width={100} mx={2}>
