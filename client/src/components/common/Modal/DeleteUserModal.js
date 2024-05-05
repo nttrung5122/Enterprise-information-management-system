@@ -20,18 +20,19 @@ export default function AlertDialog({ userId }) {
   };
 
   const handleDelete = () => {
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split("T")[0];
-
-    console.log("check user id:", userId, "on date:", formattedDate);
-    deleteUser(userId, formattedDate)
+    const employeeData = {
+      employeeId: userId,
+      date: new Date().toISOString().slice(0, 10), // Get current date in YYYY-MM-DD format
+    };
+    deleteUser(employeeData)
       .then(() => {
-        console.log("Delete successfully");
-        setOpen(false);
+        console.log("User deleted successfully!");
+        handleClose(); // Close the dialog after successful deletion
+        // You may also trigger a data fetch to update the UI accordingly
       })
       .catch((error) => {
-        console.log("Error deleting user: ", error);
-        setOpen(false);
+        console.error("Error deleting user:", error, employeeData);
+        // Handle error gracefully, e.g., display an error message
       });
   };
 

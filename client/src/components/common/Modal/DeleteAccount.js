@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import { deleteUser } from "../../../services/UserService";
 
 export default function DeleteAccount({ userId }) {
   const [open, setOpen] = React.useState(false);

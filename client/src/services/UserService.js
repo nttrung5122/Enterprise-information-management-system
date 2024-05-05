@@ -51,11 +51,10 @@ const addNewUser = (userData) => {
     });
 };
 
-const deleteUser = (employeeId, date) => {
+const deleteUser = (employeeData) => {
   return axios
-    .delete("/human-resource-management/employee/delete-employee", {
-      data: { employeeId: employeeId, date: date }, // Passing employeeId as data
-    })
+    .post("/human-resource-management/employee/delete-employee", employeeData) // Passing employeeId as data
+
     .then((response) => {
       return response.data;
     })

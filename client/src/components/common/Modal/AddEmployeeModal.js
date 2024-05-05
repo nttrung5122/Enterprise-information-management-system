@@ -21,7 +21,7 @@ export const AddEmployeeModal = ({ fetchUsersData }) => {
     // Update permissionId when roleId changes
     switch (roleId) {
       case 201:
-        setPermissionId(101);
+        setPermissionId(101); //ceo
         break;
       case 202:
         setPermissionId(101); //hr
