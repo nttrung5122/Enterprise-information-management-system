@@ -20,21 +20,24 @@ export const AddEmployeeModal = ({ fetchUsersData }) => {
   useEffect(() => {
     // Update permissionId when roleId changes
     switch (roleId) {
-      case "201":
+      case 201:
         setPermissionId(101);
         break;
-      case "202":
-        setPermissionId(102);
+      case 202:
+        setPermissionId(101); //hr
         break;
-      case "203":
-        setPermissionId(103);
+      case 203:
+        setPermissionId(103); //staff
         break;
-      case "204":
-        setPermissionId(104);
+      case 204:
+        setPermissionId(102); //manager
         break;
-      case "205":
-        setPermissionId(105);
+      case 205:
+        setPermissionId(104); //warehouse
         break;
+        {
+          /* */
+        }
       default:
         setPermissionId(103);
         break;
@@ -84,6 +87,7 @@ export const AddEmployeeModal = ({ fetchUsersData }) => {
     addNewUser(userData)
       .then(() => {
         console.log("Employee added successfully!");
+        console.log("Check employee data: ", userData);
         fetchUsersData(); // Fetch users data again after adding a new employee
       })
       .catch((error) => {
