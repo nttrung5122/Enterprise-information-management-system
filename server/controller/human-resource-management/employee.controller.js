@@ -119,7 +119,12 @@ const EmployeeController = {
       const newEmployee = await Employee.findByPk(employeeId, {
         include: {
           model: EmployeeStatus,
-          include: Role,
+          where: {
+            endDate: null,
+          },
+          include: [{
+            model:Role,
+          }],
         },
       });
       await t.commit();
