@@ -54,7 +54,7 @@ const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
               <TableCell align="center">Lương căn bản</TableCell>
               <TableCell align="center">Hệ số lương</TableCell>
               <TableCell align="center">Ngày bắt đầu</TableCell>
-              <TableCell align="center">Ngày kết thúc</TableCell>
+
               <TableCell align="center">Điều chỉnh:</TableCell>
             </TableRow>
           </TableHead>
@@ -75,9 +75,9 @@ const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
                   {user.employee_statuses.length > 0 &&
                     user.employee_statuses[0].salaryScale}
                 </TableCell>
-                <TableCell align="center">{user.hireDate}</TableCell>
                 <TableCell align="center">
-                  {user.employee_statuses[0].endDate}
+                  {user.employee_statuses.length > 0 &&
+                    user.employee_statuses[0].startDate}
                 </TableCell>
                 <TableCell align="center" size="small">
                   <Box display="flex" alignItems="center" width={100} mx={2}>

@@ -42,7 +42,7 @@ function SignIn() {
             navigate("/business");
             break;
           case 103:
-            navigate("/dashboard");
+            navigate("/order");
             break;
           case 104 || 105:
             navigate("/warehouse");

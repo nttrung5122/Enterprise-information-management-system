@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -13,8 +13,33 @@ import { addNewUser } from "../../../services/UserService";
 import RoleSelect from "./RoleSelect";
 
 export const AddEmployeeModal = ({ fetchUsersData }) => {
-  const [open, setOpen] = React.useState(false);
-  const [roleId, setRoleId] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [roleId, setRoleId] = useState("");
+  const [permissionId, setPermissionId] = useState(null);
+
+  useEffect(() => {
+    // Update permissionId when roleId changes
+    switch (roleId) {
+      case "201":
+        setPermissionId(101);
+        break;
+      case "202":
+        setPermissionId(102);
+        break;
+      case "203":
+        setPermissionId(103);
+        break;
+      case "204":
+        setPermissionId(104);
+        break;
+      case "205":
+        setPermissionId(105);
+        break;
+      default:
+        setPermissionId(103);
+        break;
+    }
+  }, [roleId]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,10 +51,10 @@ export const AddEmployeeModal = ({ fetchUsersData }) => {
   const handleRoleChange = (event) => {
     setRoleId(event.target.value); // Update roleId state
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // //Gather form data
+    // Gather form data
     const formData = new FormData(event.target);
     const employeeInfo = {
       fullname: formData.get("fullname"),
@@ -53,15 +78,18 @@ export const AddEmployeeModal = ({ fetchUsersData }) => {
       employeeInfo: employeeInfo,
       contractInfo: contractInfo,
       employeeRole: employeeRole,
+      permissions: [permissionId],
     };
+
     addNewUser(userData)
       .then(() => {
         console.log("Employee added successfully!");
         fetchUsersData(); // Fetch users data again after adding a new employee
       })
       .catch((error) => {
-        console.error("Error adding employee:", error);
+        console.error("Error adding employee:", error, userData);
       });
+
     setOpen(false);
   };
   const theme = createTheme();

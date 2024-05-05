@@ -13,7 +13,7 @@ import RoleSelect from "./RoleSelect";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { updateUserContract } from "../../../services/UserService";
 
-const UpdateContractModal = ({ selectedUser }) => {
+const UpdateContractModal = ({ selectedUser, fetchUsersData }) => {
   const [open, setOpen] = useState(false);
   const [roleId, setRoleId] = useState(
     selectedUser?.employeeRole?.roleId || ""
@@ -43,10 +43,13 @@ const UpdateContractModal = ({ selectedUser }) => {
     )
       .then((response) => {
         console.log("Contract updated successfully:", response);
+
         // Close the modal or do any further actions upon successful update
         handleClose();
+        fetchUsersData();
       })
       .catch((error) => {
+        console.log("Contract updated successfully:", updatedContractInfo);
         console.error("Error updating contract:", error);
         // Handle error
       });
@@ -111,21 +114,21 @@ const UpdateContractModal = ({ selectedUser }) => {
             sx={{ align: "center" }}
           >
             <DatePicker
-              id="hireDate"
-              name="hireDate"
+              id="startDate"
+              name="startDate"
               label="Ngày tuyển"
               fullWidth
               variant="standard"
               sx={{ mt: 3, ml: 2 }}
             />
-            <DatePicker
+            {/* <DatePicker
               id="endDate"
               name="endDate"
               label="Ngày hết hợp đồng"
               fullWidth
               variant="standard"
               sx={{ mt: 3, ml: 2 }}
-            />
+            />*/}
           </LocalizationProvider>
           {/* Role select */}
 
