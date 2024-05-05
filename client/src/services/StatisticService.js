@@ -114,6 +114,31 @@ const getFoodSoldAllDayInMonth = (year, month) => {
       throw error.response.data;
     });
 };
+const getIngredientConsumedInMonth = (year, month) => {
+  return axios
+    .get(
+      `/business-management/statistics/statisticsIngredientsConsumedInMonth?year=${year}&month=${month}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const getIngredientConsumedAllMonths = (year) => {
+  return axios
+    .get(
+      `/business-management/statistics/statisticsIngredientsConsumedAllMonthOfYear?year=${year}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
 export {
   getProfitInMonth,
   getProfitAllMonths,
@@ -124,4 +149,6 @@ export {
   getFoodSoldAllDayInMonth,
   getFoodSoldAllMonth,
   getFoodSoldInYear,
+  getIngredientConsumedInMonth,
+  getIngredientConsumedAllMonths,
 };

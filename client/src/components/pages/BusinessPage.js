@@ -9,6 +9,7 @@ import MenuContainer from "../common/business-management/menu/MenuContainer";
 import BillContainer from "../common/business-management/bill/BillContainer";
 import StatisticContainer from "../common/statistic/StatisticContainer";
 import FoodSaleContainer from "../common/business-management/food-sale/FoodSaleContainer";
+import IngredientConsumedContainer from "../common/business-management/ingredient-consumed/IngredientConsumedContainer";
 
 const Container = styled("div")({
   display: "flex",
@@ -32,6 +33,9 @@ const BusinessPage = () => {
       {selectedSection === "bill" && <BillContainer />}
       {selectedSection === "statistic" && <StatisticContainer />}
       {selectedSection === "sale" && <FoodSaleContainer />}
+      {selectedSection === "ingredientConsumed" && (
+        <IngredientConsumedContainer />
+      )}
     </Container>
   );
 };

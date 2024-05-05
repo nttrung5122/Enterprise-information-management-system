@@ -30,7 +30,14 @@ const changePasswordByAdmin = (accountData) => {
 };
 
 const fetchAllUsers = () => {
-  return axios.get("/human-resource-management/employee");
+  return axios
+    .get("/human-resource-management/employee")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
 };
 const addNewUser = (userData) => {
   return axios
@@ -94,7 +101,7 @@ const updateUserInfo = (employeeId, email, phoneNumber, address) => {
 const getUserSalaryInMonth = (employeeId, year) => {
   return axios
     .get(
-      `/human-resource-management/employee/statictis-my-salary-by-month?year=${year}&employeeId=${employeeId}`
+      `/human-resource-management/employee/statistic-my-salary-by-month?year=${year}&employeeId=${employeeId}`
     )
     .then((response) => {
       return response.data;

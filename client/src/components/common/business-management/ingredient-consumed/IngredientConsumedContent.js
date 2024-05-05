@@ -4,8 +4,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import SaleAllMonthsChart from "./chart/SaleAllMonthsChart";
-import SaleInMonthChart from "./chart/SaleInMonthChart";
+import ConsumedInMonthChart from "./chart/ConsumedInMonthChart";
+import ConsumedAllMonthsChart from "./chart/ConsumedAllMonthsChart";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -40,7 +40,7 @@ function a11yProps(index) {
   };
 }
 
-export default function FoodSaleContent() {
+export default function IngredientConsumedContent() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -60,10 +60,10 @@ export default function FoodSaleContent() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <SaleInMonthChart />
+        <ConsumedInMonthChart />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <SaleAllMonthsChart />
+        <ConsumedAllMonthsChart />
       </CustomTabPanel>
     </Box>
   );

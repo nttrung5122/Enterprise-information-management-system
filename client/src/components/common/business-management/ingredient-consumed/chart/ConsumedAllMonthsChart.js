@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { getFoodSoldAllMonth } from "../../../../../services/StatisticService";
+import { getIngredientConsumedAllMonths } from "../../../../../services/StatisticService";
 
 // Modify the Row component to accept revenue data dynamically
 const Row = ({ month, data }) => {
@@ -43,18 +43,16 @@ const Row = ({ month, data }) => {
               <TableHead>
                 <TableRow>
                   <TableCell>ID</TableCell>
-                  <TableCell>Tên món</TableCell>
-                  <TableCell>Chi tiết</TableCell>
+                  <TableCell>Tên nguyên liệu</TableCell>
                   <TableCell>Số lượng</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Object.entries(data).map(([foodId, foodData]) => (
-                  <TableRow key={foodId}>
-                    <TableCell>{foodData.foodId}</TableCell>
-                    <TableCell>{foodData.nameFood}</TableCell>
-                    <TableCell>{foodData.info}</TableCell>
-                    <TableCell>{foodData.quantity}</TableCell>
+                {Object.entries(data).map(([ingredientId, ingredient]) => (
+                  <TableRow key={ingredientId}>
+                    <TableCell>{ingredient.ingredientId}</TableCell>
+                    <TableCell>{ingredient.nameIngredient}</TableCell>
+                    <TableCell>{ingredient.quantity}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -66,17 +64,17 @@ const Row = ({ month, data }) => {
   );
 };
 
-const SaleAllMonthsChart = () => {
+const ConsumedAllMonthsChart = () => {
   const [data, setData] = useState(null);
   const [year, setYear] = useState(2024);
 
   const fetchData = (selectedYear) => {
-    getFoodSoldAllMonth(selectedYear)
+    getIngredientConsumedAllMonths(selectedYear)
       .then((response) => {
         setData(response);
       })
       .catch((error) => {
-        console.log("Check error fetching food sale data", error);
+        console.log("Check error fetching consumed data", error);
       });
   };
 
@@ -116,4 +114,4 @@ const SaleAllMonthsChart = () => {
   );
 };
 
-export default SaleAllMonthsChart;
+export default ConsumedAllMonthsChart;
