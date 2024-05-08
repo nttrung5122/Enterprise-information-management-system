@@ -32,7 +32,8 @@ function SignIn() {
           res.permissions[0]?.account_permission.permissionId;
         console.log("Login success, the permission Id:", permissionId);
         console.log("Login success, check the res:", res);
-        sessionStorage.setItem("employeeId", permissionId);
+        sessionStorage.setItem("permissionId", permissionId);
+        sessionStorage.setItem("employeeId", res.employee.id);
 
         switch (permissionId) {
           case 101:

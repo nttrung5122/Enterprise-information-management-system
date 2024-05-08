@@ -9,7 +9,10 @@ import { createTheme } from "@mui/material/styles";
 import { addCancellationForm } from "../../../services/UserService";
 import { Typography } from "@mui/material";
 
-export const AddCancellationModal = ({ fetchCancellationForms }) => {
+export const AddCancellationModal = ({
+  fetchCancellationForms,
+  employeeId,
+}) => {
   const [open, setOpen] = React.useState(false);
   const [ingredients, setIngredients] = React.useState([
     { ingredientId: "", quantity: "" },

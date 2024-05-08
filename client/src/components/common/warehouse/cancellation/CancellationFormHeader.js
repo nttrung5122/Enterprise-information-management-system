@@ -5,7 +5,10 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { AddCancellationModal } from "../../modal/AddCancellationModal";
 
-export default function CancellationFormHeader({ fetchCancellationForms }) {
+export default function CancellationFormHeader({
+  fetchCancellationForms,
+  employeeId,
+}) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -15,6 +18,7 @@ export default function CancellationFormHeader({ fetchCancellationForms }) {
           </Typography>
           <AddCancellationModal
             fetchCancellationForms={fetchCancellationForms}
+            employeeId={employeeId}
           />
         </Toolbar>
       </AppBar>

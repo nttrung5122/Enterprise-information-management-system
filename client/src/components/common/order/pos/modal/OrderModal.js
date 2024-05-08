@@ -15,7 +15,7 @@ import Stack from "@mui/material/Stack";
 import { createBill } from "../../../../../services/BusinessService";
 import SuccessModal from "./../../../modal/SuccessModal";
 
-const OrderModal = ({ order, setOrder }) => {
+const OrderModal = ({ order, setOrder, employeeId }) => {
   const [open, setOpen] = useState(false);
   const [itemQuantities, setItemQuantities] = useState({});
   const [selectedItems, setSelectedItems] = useState([]);
@@ -62,7 +62,7 @@ const OrderModal = ({ order, setOrder }) => {
     const updatedOrder = order.filter((item) => item.id !== itemId);
     setOrder(updatedOrder);
   };
-  const employeeId = sessionStorage.getItem("employeeId");
+  //const employeeId = sessionStorage.getItem("employeeId");
   const handleCreateBill = () => {
     // Initialize an empty bill object
     const bill = {

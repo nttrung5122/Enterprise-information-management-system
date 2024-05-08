@@ -8,7 +8,7 @@ import ReceiptTable from "../receipt/ReceiptTable";
 import CancellationFormHeader from "./CancellationFormHeader";
 import CancellationFormTable from "./CancellationFormTable";
 
-export default function CancellationFormContent() {
+export default function CancellationFormContent({ employeeId }) {
   const ContentContainer = styled("div")({
     flexGrow: 1,
     padding: "10px",
@@ -36,7 +36,10 @@ export default function CancellationFormContent() {
   }, []);
   return (
     <ContentContainer>
-      <CancellationFormHeader fetchCancellationForms={fetchCancellationForms} />
+      <CancellationFormHeader
+        fetchCancellationForms={fetchCancellationForms}
+        employeeId={employeeId}
+      />
       <div
         style={{
           display: "flex",

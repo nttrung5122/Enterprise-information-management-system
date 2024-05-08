@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/system";
 import OrderDrawer from "../common/order/OrderDrawer";
 import PosContainer from "../common/order/pos/PosContainer";
@@ -9,7 +9,14 @@ const Container = styled("div")({
 });
 const OrderPage = () => {
   const [selectedSection, setSelectedSection] = React.useState("order");
-
+  const [employeeId, setEmployeeId] = React.useState(null);
+  useEffect(() => {
+    // Retrieve employeeId from sessionStorage when the component mounts
+    const storedEmployeeId = sessionStorage.getItem("employeeId");
+    if (storedEmployeeId) {
+      setEmployeeId(storedEmployeeId);
+    }
+  }, []);
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
@@ -20,8 +27,8 @@ const OrderPage = () => {
         setSelectedSection={setSelectedSection}
         selectedSection={selectedSection}
       />
-      {selectedSection === "order" && <PosContainer />}
-      {selectedSection === "bill" && <BillContainer />}
+      {selectedSection === "order" && <PosContainer employeeId={employeeId} />}
+      {selectedSection === "bill" && <BillContainer employeeId={employeeId} />}
     </Container>
   );
 };

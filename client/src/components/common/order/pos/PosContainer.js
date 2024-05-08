@@ -5,7 +5,7 @@ import PosHeader from "./PosHeader";
 import PosContent from "./PosContent";
 import { fetchAllFood } from "../../../../services/BusinessService";
 
-export default function PosContainer() {
+export default function PosContainer({ employeeId }) {
   const ContentContainer = styled("div")({
     flexGrow: 1,
     padding: "10px", // Add padding for better spacing
@@ -60,7 +60,7 @@ export default function PosContainer() {
 
   return (
     <ContentContainer>
-      <PosHeader order={order} setOrder={setOrder} />
+      <PosHeader order={order} setOrder={setOrder} employeeId={employeeId} />
       <PosContent
         food={food}
         getAllFood={getAllFood}

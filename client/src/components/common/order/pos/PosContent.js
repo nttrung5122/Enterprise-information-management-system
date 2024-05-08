@@ -15,7 +15,7 @@ import PosMenu from "./menu/PosMenu";
 import PosMenuSection from "./menu/PosMenuSection";
 import { getMenu } from "../../../../services/BusinessService";
 
-const PosContent = ({ food, handleAddOrder }) => {
+const PosContent = ({ food, handleAddOrder, employeeId }) => {
   const placeholderImageUrl = "https://via.placeholder.com/300";
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(6); // Number of items to display per page

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/system";
 import MiniDrawer from "../common/admin/MiniDrawer";
 
@@ -16,7 +16,14 @@ const Container = styled("div")({
 
 const WarehousePage = () => {
   const [selectedSection, setSelectedSection] = React.useState("employees");
-
+  const [employeeId, setEmployeeId] = React.useState(null);
+  useEffect(() => {
+    // Retrieve employeeId from sessionStorage when the component mounts
+    const storedEmployeeId = sessionStorage.getItem("employeeId");
+    if (storedEmployeeId) {
+      setEmployeeId(storedEmployeeId);
+    }
+  }, []);
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
@@ -32,7 +39,9 @@ const WarehousePage = () => {
       {selectedSection === "inventory" && <InventoryContent />}
       {selectedSection === "supplier" && <SupplierContent />}
       {selectedSection === "receipt" && <ReceiptContent />}
-      {selectedSection === "cancellationForm" && <CancellationFormContent />}
+      {selectedSection === "cancellationForm" && (
+        <CancellationFormContent employeeId={employeeId} />
+      )}
       {selectedSection === "attendance" && <TimeKeepingContent />}
     </Container>
   );
