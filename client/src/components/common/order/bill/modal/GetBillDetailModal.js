@@ -22,6 +22,7 @@ const GetBillDetailModal = ({ id }) => {
     getBill(id)
       .then((response) => {
         setBillDetail(response);
+        console.log("check bill", response);
         setOpen(true); // Open the modal after fetching the details
       })
       .catch((error) => {
@@ -62,7 +63,10 @@ const GetBillDetailModal = ({ id }) => {
                       </TableCell>
                       <TableCell>{item.price}$</TableCell>
                       <TableCell>
-                        <Typography>{item.bill_detail.quantity}</Typography>
+                        <Typography>
+                          {item.bill_detail.quantity ||
+                            item.bill_detail.quantiity}
+                        </Typography>
                       </TableCell>
                       <TableCell>{item.bill_detail.totalPrice}$</TableCell>
                     </TableRow>

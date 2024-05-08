@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
 
 import PageDrawer from "../common/business-management/PageDrawer";
@@ -15,7 +15,15 @@ const Container = styled("div")({
   display: "flex",
 });
 const BusinessPage = () => {
-  const [selectedSection, setSelectedSection] = React.useState("food");
+  const [selectedSection, setSelectedSection] = useState("food");
+  const [employeeId, setEmployeeId] = useState(null);
+  useEffect(() => {
+    // Retrieve employeeId from sessionStorage when the component mounts
+    const storedEmployeeId = sessionStorage.getItem("employeeId");
+    if (storedEmployeeId) {
+      setEmployeeId(storedEmployeeId);
+    }
+  }, []);
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
@@ -25,6 +33,7 @@ const BusinessPage = () => {
         onMenuClick={handleMenuClick}
         setSelectedSection={setSelectedSection}
         selectedSection={selectedSection}
+        employeeId={employeeId}
       />
       {selectedSection === "recipe" && <RecipeContainer />}
       {selectedSection === "food" && <FoodPageContainer />}

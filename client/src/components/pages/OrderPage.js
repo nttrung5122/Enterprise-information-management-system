@@ -26,6 +26,7 @@ const OrderPage = () => {
         onMenuClick={handleMenuClick}
         setSelectedSection={setSelectedSection}
         selectedSection={selectedSection}
+        employeeId={employeeId}
       />
       {selectedSection === "order" && <PosContainer employeeId={employeeId} />}
       {selectedSection === "bill" && <BillContainer employeeId={employeeId} />}

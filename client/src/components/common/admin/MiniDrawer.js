@@ -96,7 +96,11 @@ const menuItems = [
   },
 ];
 
-export default function MiniDrawer({ selectedSection, setSelectedSection }) {
+export default function MiniDrawer({
+  selectedSection,
+  setSelectedSection,
+  employeeId,
+}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -181,6 +185,9 @@ export default function MiniDrawer({ selectedSection, setSelectedSection }) {
           ))}
         </List>
         <Box sx={{ flexGrow: 3 }} /> <Divider />
+        <List>
+          <ListItem>Xin chào người dùng {employeeId}</ListItem>
+        </List>
         <List>
           <ListItem button onClick={handleLogout}>
             <ListItemIcon>

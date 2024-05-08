@@ -91,7 +91,11 @@ const menuItems = [
   },
 ];
 
-export default function PageDrawer({ selectedSection, setSelectedSection }) {
+export default function PageDrawer({
+  selectedSection,
+  setSelectedSection,
+  employeeId,
+}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -176,6 +180,9 @@ export default function PageDrawer({ selectedSection, setSelectedSection }) {
           ))}
         </List>
         <Box sx={{ flexGrow: 3 }} /> <Divider />
+        <List>
+          <ListItem>Mã id: {employeeId}</ListItem>
+        </List>
         <List>
           <ListItem button onClick={handleLogout}>
             <ListItemIcon>

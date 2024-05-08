@@ -33,6 +33,7 @@ const WarehousePage = () => {
         onMenuClick={handleMenuClick}
         setSelectedSection={setSelectedSection}
         selectedSection={selectedSection}
+        employeeId={employeeId}
       />
 
       {selectedSection === "ingredient" && <IngredientContent />}

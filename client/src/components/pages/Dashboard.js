@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/system";
 import MiniDrawer from "../common/admin/MiniDrawer";
 
@@ -18,8 +18,15 @@ const Container = styled("div")({
 });
 
 const Dashboard = () => {
-  const [selectedSection, setSelectedSection] = React.useState("employees");
-
+  const [selectedSection, setSelectedSection] = useState("employees");
+  const [employeeId, setEmployeeId] = useState(null);
+  useEffect(() => {
+    // Retrieve employeeId from sessionStorage when the component mounts
+    const storedEmployeeId = sessionStorage.getItem("employeeId");
+    if (storedEmployeeId) {
+      setEmployeeId(storedEmployeeId);
+    }
+  }, []);
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
@@ -29,6 +36,7 @@ const Dashboard = () => {
         onMenuClick={handleMenuClick}
         setSelectedSection={setSelectedSection}
         selectedSection={selectedSection}
+        employeeId={employeeId}
       />
       {selectedSection === "role" && <RoleContent />}
       {selectedSection === "accounts" && <AccountContent />}
