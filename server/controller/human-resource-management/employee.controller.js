@@ -323,6 +323,66 @@ const EmployeeController = {
       res.status(500).json("You have already checked in");
     }
   },
+  updateCheckIn: async (req,res)=>{
+    try {
+      const {employeeId,date, haveWorking} = req.body;
+      if(!employeeId || !date){
+        return res.status(401).json("Data is invalid");
+      }
+      const checkIn = await TimeKeeping.findAll({
+        where: {
+          employeeId,
+          date
+        }
+      });
+      if(checkIn.length === 0){
+        const checkInNew = await TimeKeeping.create({
+          employeeId,
+          date,
+          haveWorking
+        })
+        return res.status(200).json("updated successfully");
+      }
+      const checkInUpdate = await checkIn[0].update({
+        haveWorking
+      })
+      await checkIn[0].reload();
+      return res.status(200).json("updated successfully");
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+  getCheckInMonth: async (req, res) => {
+    try {
+      const {employeeId, month,year} = req.query;
+      const firstDay = moment({
+        y: year,
+        M: month,
+      })
+        .startOf("month")
+        .format("YYYY-MM-DD");
+      const lastDay = moment({
+        y: year,
+        M: month,
+      })
+        .endOf("month")
+        .format("YYYY-MM-DD");
+      const listCheckIn = await TimeKeeping.findAll({
+        where:{
+          employeeId,
+          date: {
+            [Op.between]: [firstDay, lastDay]
+          }
+
+        }
+      })
+      return res.status(200).json(listCheckIn)
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
   // self check in for none normal staff
   checkInDaily: async (req, res) => {
     try {

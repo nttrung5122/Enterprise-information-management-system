@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "human-resource-management",
     "collectionId": "3d967237-f782-4c6e-863d-9a4c34146677",
-    "dateExported": "2024-04-21T05:57:09.583Z",
+    "dateExported": "2024-05-10T16:30:17.433Z",
     "version": "1.2",
     "folders": [
         {
@@ -51,15 +51,13 @@
             "method": "POST",
             "sortNum": 10000,
             "created": "2024-03-22T02:29:30.924Z",
-            "modified": "2024-04-07T15:25:15.019Z",
+            "modified": "2024-04-29T13:51:37.316Z",
             "headers": [],
-            "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"user\": 103,\n  \"password\": \"44\"\n}",
+                "raw": "{\n  \"user\": 106,\n  \"password\": \"123456\"\n}",
                 "form": []
-            },
-            "tests": []
+            }
         },
         {
             "_id": "2839dfc0-dc93-4243-bc0f-2ffc88bdc676",
@@ -144,15 +142,13 @@
             "method": "POST",
             "sortNum": 55000,
             "created": "2024-03-22T02:29:30.928Z",
-            "modified": "2024-03-22T02:29:30.928Z",
+            "modified": "2024-04-29T13:51:02.460Z",
             "headers": [],
-            "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"employeeInfo\": {\n    \"fullname\": \"Nguyễn Thành Trung 1\",\n    \"idCode\":\"3242549043543\",\n    \"email\": \"\",\n    \"phoneNumber\": \"\",\n    \"address\": \"\",\n    \"hireDate\": \"2023-12-28\"\n  },\n  \"contractInfo\": {\n    \"endDate\": \"2026-03-07\"\n  },\n  \"employeeRole\": {\n    \"roleId\": \"203\",\n    \"salaryScale\": 1.1\n  }\n}",
+                "raw": "{\n  \"employeeInfo\": {\n    \"fullname\": \"Nguyễn Thành Trung 1\",\n    \"idCode\":\"3242549043543\",\n    \"email\": \"\",\n    \"phoneNumber\": \"\",\n    \"address\": \"\",\n    \"hireDate\": \"2023-12-28\"\n  },\n  \"contractInfo\": {\n    \"endDate\": \"2026-03-07\"\n  },\n  \"employeeRole\": {\n    \"roleId\": \"203\",\n    \"salaryScale\": 1.1\n  },\n  \"permissions\":[101,102]\n}",
                 "form": []
-            },
-            "tests": []
+            }
         },
         {
             "_id": "c74e17eb-7098-47f7-accc-8a6e0de5537b",
@@ -248,6 +244,52 @@
                 "form": []
             },
             "tests": []
+        },
+        {
+            "_id": "860fe8bc-be31-4b41-8664-bc4b744fdcca",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "updateCheckIn",
+            "url": "http://localhost:8000/human-resource-management/employee/updateCheckIn",
+            "method": "POST",
+            "sortNum": 110000,
+            "created": "2024-05-10T15:46:30.248Z",
+            "modified": "2024-05-10T16:04:45.055Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n      \"employeeId\": 102,\n      \"date\": \"2025/1/1\",\n      \"haveWorking\": false\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "76160c60-63f0-4439-a300-2732930cc4da",
+            "colId": "3d967237-f782-4c6e-863d-9a4c34146677",
+            "containerId": "ee07da1d-2c78-4073-9cfc-194134e14b30",
+            "name": "getCheckInMonth",
+            "url": "http://localhost:8000/human-resource-management/employee/getCheckInMonth/?month=11&year=2023&employeeId=104",
+            "method": "GET",
+            "sortNum": 115000,
+            "created": "2024-05-10T16:24:36.367Z",
+            "modified": "2024-05-10T16:24:57.889Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "month",
+                    "value": "11",
+                    "isPath": false
+                },
+                {
+                    "name": "year",
+                    "value": "2023",
+                    "isPath": false
+                },
+                {
+                    "name": "employeeId",
+                    "value": "104",
+                    "isPath": false
+                }
+            ]
         },
         {
             "_id": "52e03962-d5a0-44bb-b6c9-9dd2a0daa478",
@@ -793,5 +835,5 @@
             "tests": []
         }
     ],
-    "ref": "Uy07DwvtOe364P1ENE0QnUiXpiIFxLceVWuct_C03Uv8kW5-fHUBga4r4nIyJfq7MgDF93YC5q1ALvJYBHHPmQ"
+    "ref": "Uy07DwvtOe364P1ENE0QnZSahA7B-5GkB_zFBAcNo3Z8g182FdqxV7lXPv1nTLdVbLd1nWd_W2Tvm9M5CA_8Hw"
 }
