@@ -1,5 +1,6 @@
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
+import { useNavigate, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -69,11 +70,6 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const handleLogout = () => {
-  // Add your logout logic here
-  console.log("Logged out");
-};
-
 const menuItems = [
   { text: "Nhà cung cấp", icon: <StoreIcon />, section: "supplier" },
   { text: "Nguyên liệu", icon: <SetMealIcon />, section: "ingredient" },
@@ -95,7 +91,15 @@ export default function WarehouseDrawer({
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const navigate = useNavigate(); // Use useNavigate hook
+  const location = useLocation(); // Use useLocation hook
+  const handleLogout = () => {
+    console.log("logout");
+    // Check if the current location is already "/" to prevent redundant redirects
+    if (location.pathname !== "/") {
+      navigate("/"); // Redirect to "/" after logout
+    }
+  };
   const handleDrawerOpen = () => {
     setOpen(true);
   };

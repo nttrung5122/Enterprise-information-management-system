@@ -10,7 +10,7 @@ import WarehousePage from "./components/pages/WarehousePage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <SignIn />, // Render Dashboard at root
+    element: <SignIn />, //
   },
   {
     path: "/dashboard", // Path for SignIn

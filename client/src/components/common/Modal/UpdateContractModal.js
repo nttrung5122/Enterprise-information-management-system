@@ -82,7 +82,7 @@ const UpdateContractModal = ({ selectedUser, fetchUsersData }) => {
         }}
       >
         <DialogTitle sx={{ textAlign: "center" }}>
-          Cập nhật hợp đồng nhân viên
+          Cập nhật chức vụ nhân viên
         </DialogTitle>
         <DialogContent>
           <TextField

@@ -311,6 +311,7 @@ const deleteRole = (roleId) => {
       throw error.response.data;
     });
 };
+const checkIn = () => {};
 
 export {
   loginApi,

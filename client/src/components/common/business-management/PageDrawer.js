@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -71,11 +72,6 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const handleLogout = () => {
-  // Add your logout logic here
-  console.log("Logged out");
-};
-
 const menuItems = [
   { text: "Món ăn", icon: <FastfoodIcon />, section: "food" },
   { text: "Menu", icon: <MenuBookIcon />, section: "menu" },
@@ -98,6 +94,15 @@ export default function PageDrawer({
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate(); // Use useNavigate hook
+  const location = useLocation(); // Use useLocation hook
+  const handleLogout = () => {
+    console.log("logout");
+    // Check if the current location is already "/" to prevent redundant redirects
+    if (location.pathname !== "/") {
+      navigate("/"); // Redirect to "/" after logout
+    }
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
