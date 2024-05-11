@@ -311,8 +311,50 @@ const deleteRole = (roleId) => {
       throw error.response.data;
     });
 };
-const checkIn = () => {};
 
+const checkDateCheckIn = (month, year, employeeId) => {
+  return axios
+    .get(
+      `/human-resource-management/employee/getCheckInMonth/?month=${month}&year=${year}&employeeId=${employeeId}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
+const updateCheckIn = (data) => {
+  return axios
+    .post(`/human-resource-management/employee/updateCheckIn`, data)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const checkIn = () => {
+  return axios
+    .post(`human-resource-management/employee/check-in-daily`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+const checkInByManager = (data) => {
+  return axios
+    .post(`/human-resource-management/employee/timekeeping`, data)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
 export {
   loginApi,
   changePasswordByAdmin,
@@ -340,4 +382,8 @@ export {
   addRole,
   updateRole,
   deleteRole,
+  checkDateCheckIn,
+  updateCheckIn,
+  checkIn,
+  checkInByManager,
 };

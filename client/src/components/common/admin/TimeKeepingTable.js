@@ -1,31 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
-
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-
-const ThreeColumnDiv = styled("div")({
-  display: "flex",
-  width: "80%",
-  margin: "0 auto",
-});
-
-const Column = styled("div")({
-  flex: 1,
-  padding: 15,
-  border: "1px solid #ccc",
-  borderRadius: "15px",
-  marginLeft: 30,
-  marginRight: 30,
-  height: "auto",
-  maxWidth: "auto",
-});
-
-const CalendarContainer = styled("div")({
-  display: "flex",
-  width: "80%",
-  margin: "0 auto",
-});
+import CheckInTable from "./checkIn/CheckInTable";
+import { fetchAllUsers } from "../../../services/UserService";
+import { CheckInCalendar } from "./checkIn/CheckInCalendar";
 
 const StyledCalendar = styled(Calendar)({
   width: "100%", // Adjust the width as needed
@@ -33,25 +15,42 @@ const StyledCalendar = styled(Calendar)({
 });
 
 export default function TimeKeepingTable() {
+  const [value, setValue] = useState(0);
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+
+  const getAllUsers = () => {
+    fetchAllUsers()
+      .then((response) => {
+        setUsers(response);
+      })
+      .catch((error) => {
+        console.log("Error when fetching users data:", error);
+      });
+  };
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <div>
-      <ThreeColumnDiv sx={{ mt: 3, mb: 3 }}>
-        <Column>
-          <h2>Số ngày làm việc: </h2>
-          {/* Your content for "Ngày làm việc" column goes here */}
-        </Column>
-        <Column>
-          <h2>Số ngày nghỉ: </h2>
-          {/* Your content for "Ngày nghỉ" column goes here */}
-        </Column>
-        <Column>
-          <h2>Số ngày nghỉ có phép: </h2>
-          {/* Your content for "Ngày nghỉ có phép" column goes here */}
-        </Column>
-      </ThreeColumnDiv>
-      <CalendarContainer>
-        <StyledCalendar />
-      </CalendarContainer>
-    </div>
+    <Box>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Tab label="Chấm công nhân viên" />
+          <Tab label="Kiểm tra chấm công" />
+        </Tabs>
+      </Box>
+      {/* Content corresponding to each tab */}
+      <Box p={3}>
+        {value === 0 && <CheckInTable users={users} />}
+        {value === 1 && <CheckInCalendar users={users} />}
+      </Box>
+    </Box>
   );
 }
