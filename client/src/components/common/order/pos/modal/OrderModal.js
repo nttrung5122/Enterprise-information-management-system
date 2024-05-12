@@ -80,7 +80,7 @@ const OrderModal = ({ order, setOrder, employeeId }) => {
         // Add item detail to the bill
         bill.detail.push({
           totalPrice,
-          quantiity: quantity,
+          quantity: quantity,
           foodId: item.id,
         });
       }
