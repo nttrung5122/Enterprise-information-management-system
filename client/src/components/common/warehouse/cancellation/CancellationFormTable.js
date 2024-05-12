@@ -39,6 +39,7 @@ export default function CancellationFormTable({ cancellationForms }) {
         pageSize={5}
         checkboxSelection
         pagination
+        sx={{ mt: 2 }}
       />
     </div>
   );

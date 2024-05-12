@@ -73,10 +73,11 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const menuItems = [
-  { text: "Món ăn", icon: <FastfoodIcon />, section: "food" },
-  { text: "Menu", icon: <MenuBookIcon />, section: "menu" },
-  { text: "Menu mục", icon: <ViewListIcon />, section: "sectionMenu" },
   { text: "Công thức", icon: <ArticleIcon />, section: "recipe" },
+  { text: "Món ăn", icon: <FastfoodIcon />, section: "food" },
+  { text: "Menu mục", icon: <ViewListIcon />, section: "sectionMenu" },
+  { text: "Menu", icon: <MenuBookIcon />, section: "menu" },
+
   { text: "Hóa đơn", icon: <ReceiptLongIcon />, section: "bill" },
   { text: "Thống kê", icon: <BarChartIcon />, section: "statistic" },
   { text: "Doanh số", icon: <ShoppingBasketIcon />, section: "sale" },

@@ -40,12 +40,7 @@ export default function IngredientContent() {
           display: "flex",
           justifyContent: "space-between",
         }}
-      >
-        <SearchInput />
-        <FilterGroupContainer>
-          <FilterButtonGroup style={{ border: "1px groove grey" }} />
-        </FilterGroupContainer>
-      </div>
+      ></div>
       <IngredientTable
         ingredients={ingredients}
         setIngredients={setIngredients}

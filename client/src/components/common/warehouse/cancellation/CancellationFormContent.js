@@ -45,12 +45,7 @@ export default function CancellationFormContent({ employeeId }) {
           display: "flex",
           justifyContent: "space-between",
         }}
-      >
-        <SearchInput />
-        <FilterGroupContainer>
-          <FilterButtonGroup style={{ border: "1px groove grey" }} />
-        </FilterGroupContainer>
-      </div>
+      ></div>
       <CancellationFormTable cancellationForms={cancellationForms} />
     </ContentContainer>
   );

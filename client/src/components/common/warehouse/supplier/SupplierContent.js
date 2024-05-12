@@ -41,9 +41,7 @@ export default function SupplierContent() {
           display: "flex",
           justifyContent: "space-between",
         }}
-      >
-        <SearchInput />
-      </div>
+      ></div>
       <SupplierTable
         suppliers={suppliers}
         fetchSuppliersData={fetchSuppliersData}

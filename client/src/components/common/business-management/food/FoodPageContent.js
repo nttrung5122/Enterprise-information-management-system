@@ -96,7 +96,7 @@ const FoodPageContent = ({ food, getAllFood }) => {
       </Grid>
 
       {/* Pagination */}
-      <Stack display="flex" spacing={2} justifyContent="center" mt={3}>
+      <Stack display="flex" spacing={2} justifyContent="center" mt={2} mb={6}>
         <Pagination
           count={Math.ceil(filteredItems.length / itemsPerPage)} // Adjust count based on filtered items
           page={currentPage}

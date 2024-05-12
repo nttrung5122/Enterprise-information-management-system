@@ -40,12 +40,7 @@ export default function ReceiptContent() {
           display: "flex",
           justifyContent: "space-between",
         }}
-      >
-        <SearchInput />
-        <FilterGroupContainer>
-          <FilterButtonGroup style={{ border: "1px groove grey" }} />
-        </FilterGroupContainer>
-      </div>
+      ></div>
       <ReceiptTable
         receipts={receipts}
         setReceipts={setReceipts}

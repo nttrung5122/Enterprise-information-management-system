@@ -40,9 +40,7 @@ export default function InventoryContent() {
           display: "flex",
           justifyContent: "space-between",
         }}
-      >
-        <SearchInput />
-      </div>
+      ></div>
       <InventoryTable items={items} fetchInventoryData={fetchInventoryData} />
     </ContentContainer>
   );

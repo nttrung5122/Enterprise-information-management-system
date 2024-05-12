@@ -37,6 +37,7 @@ export default function ReceiptTable({ receipts }) {
         pageSize={5} // Set the default page size
         checkboxSelection
         pagination
+        sx={{ mt: 2 }}
       />
     </div>
   );
