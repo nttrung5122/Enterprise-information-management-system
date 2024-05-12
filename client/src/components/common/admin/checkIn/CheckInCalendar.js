@@ -6,6 +6,7 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import { checkDateCheckIn } from "../../../../services/UserService";
 import { WorkCalendar } from "./WorkCalendar";
+import UpdateCheckInModal from "./modal/UpdateCheckInModal";
 
 export const CheckInCalendar = ({ users }) => {
   const [id, setId] = useState("");
@@ -116,11 +117,12 @@ export const CheckInCalendar = ({ users }) => {
             ))}
           </Select>
         </FormControl>
+        <UpdateCheckInModal users={users} />
       </Stack>
 
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
-      <WorkCalendar sx={{ mt: 2 }} checkInData={checkInData} />
+      <WorkCalendar checkInData={checkInData} />
     </div>
   );
 };

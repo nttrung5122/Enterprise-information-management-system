@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import UpdateCheckInModal from "./modal/UpdateCheckInModal";
 
 export const WorkCalendar = ({ checkInData }) => {
   const totalWorkedDate = checkInData.filter((data) => data.haveWorking).length;

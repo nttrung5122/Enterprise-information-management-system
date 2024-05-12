@@ -355,6 +355,19 @@ const checkInByManager = (data) => {
       throw error.response.data;
     });
 };
+const currentDateCheckIn = (day, month, year) => {
+  return axios
+    .get(
+      `/human-resource-management/employee/getCheckedInByDay/?month=${month}&year=${year}&day=${day}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error.response.data;
+    });
+};
+
 export {
   loginApi,
   changePasswordByAdmin,
@@ -386,4 +399,5 @@ export {
   updateCheckIn,
   checkIn,
   checkInByManager,
+  currentDateCheckIn,
 };
