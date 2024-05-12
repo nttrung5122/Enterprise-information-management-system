@@ -3,6 +3,7 @@ import { styled } from "@mui/system";
 import OrderDrawer from "../common/order/OrderDrawer";
 import PosContainer from "../common/order/pos/PosContainer";
 import BillContainer from "../common/order/bill/BillContainer";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
   display: "flex",
@@ -10,6 +11,8 @@ const Container = styled("div")({
 const OrderPage = () => {
   const [selectedSection, setSelectedSection] = React.useState("order");
   const [employeeId, setEmployeeId] = React.useState(null);
+  const navigate = useNavigate(); // useNavigate should be called at the top level
+
   useEffect(() => {
     // Retrieve employeeId from sessionStorage when the component mounts
     const storedEmployeeId = sessionStorage.getItem("employeeId");
@@ -20,6 +23,22 @@ const OrderPage = () => {
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
+  useEffect(()=>{
+    const permissionId = sessionStorage.getItem("permissionId")
+    console.log("permissionId: ", permissionId)
+    if(permissionId !== "101" && permissionId !== "103")
+    switch (permissionId) {
+      case "102":
+        navigate("/business");
+        break;
+      case "104" || "105":
+        navigate("/warehouse");
+        break;
+      default:
+        navigate("/"); // Default order page
+        break;
+    }
+  },[])
   return (
     <Container>
       <OrderDrawer

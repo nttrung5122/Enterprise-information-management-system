@@ -9,6 +9,7 @@ import ReceiptContent from "../common/warehouse/receipt/ReceiptContent";
 import CancellationFormContent from "../common/warehouse/cancellation/CancellationFormContent";
 import TimeKeepingContent from "../common/admin/TimeKeepingContent";
 import WarehouseDrawer from "../common/warehouse/WarehouseDrawer";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
   display: "flex",
@@ -17,6 +18,8 @@ const Container = styled("div")({
 const WarehousePage = () => {
   const [selectedSection, setSelectedSection] = React.useState("employees");
   const [employeeId, setEmployeeId] = React.useState(null);
+  const navigate = useNavigate(); // useNavigate should be called at the top level
+
   useEffect(() => {
     // Retrieve employeeId from sessionStorage when the component mounts
     const storedEmployeeId = sessionStorage.getItem("employeeId");
@@ -27,6 +30,22 @@ const WarehousePage = () => {
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
+  useEffect(()=>{
+    const permissionId = sessionStorage.getItem("permissionId")
+    console.log("permissionId: ", permissionId)
+    if(permissionId !== "104" && permissionId !== "101")
+    switch (permissionId) {
+      case "102":
+        navigate("/business");
+        break;
+      case "103":
+        navigate("/order");
+        break;
+      default:
+        navigate("/"); // Default order page
+        break;
+    }
+  },[])
   return (
     <Container>
       <WarehouseDrawer
