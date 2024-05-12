@@ -21,10 +21,13 @@ export default function CheckInTable({ users }) {
       console.log("No rows selected for check-in");
       return; // Exit the function if no rows are selected
     }
-    const checkInData = selectedRows.map((id) => ({
-      employeeId: id,
-      date: new Date().toISOString().split("T")[0], //mm-dd formate
-      haveWorking: true,
+    const checkInData = users.map((user) => ({
+      employeeId: user.id,
+      //mm-dd formate
+      //date: new Date().toISOString().split("T")[0],
+      date: "2023-6-22",
+
+      haveWorking: selectedRows.includes(user.id),
     }));
 
     checkInByManager({ data: checkInData })

@@ -8,6 +8,7 @@ import "react-calendar/dist/Calendar.css";
 import CheckInTable from "./checkIn/CheckInTable";
 import { fetchAllUsers } from "../../../services/UserService";
 import { CheckInCalendar } from "./checkIn/CheckInCalendar";
+import { UpdateCheckIn } from "./checkIn/UpdateCheckIn";
 
 const StyledCalendar = styled(Calendar)({
   width: "100%", // Adjust the width as needed
