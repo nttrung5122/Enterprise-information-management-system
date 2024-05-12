@@ -4,6 +4,7 @@ import OrderDrawer from "../common/order/OrderDrawer";
 import PosContainer from "../common/order/pos/PosContainer";
 import BillContainer from "../common/order/bill/BillContainer";
 import { useNavigate } from "react-router-dom";
+import NavigationPages from "../common/BottomNavigation";
 
 const Container = styled("div")({
   display: "flex",
@@ -23,22 +24,22 @@ const OrderPage = () => {
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
-  useEffect(()=>{
-    const permissionId = sessionStorage.getItem("permissionId")
-    console.log("permissionId: ", permissionId)
-    if(permissionId !== "101" && permissionId !== "103")
-    switch (permissionId) {
-      case "102":
-        navigate("/business");
-        break;
-      case "104" || "105":
-        navigate("/warehouse");
-        break;
-      default:
-        navigate("/"); // Default order page
-        break;
-    }
-  },[])
+  const permissionId = sessionStorage.getItem("permissionId");
+  useEffect(() => {
+    console.log("permissionId: ", permissionId);
+    if (permissionId !== "101" && permissionId !== "103")
+      switch (permissionId) {
+        case "102":
+          navigate("/business");
+          break;
+        case "104" || "105":
+          navigate("/warehouse");
+          break;
+        default:
+          navigate("/"); // Default order page
+          break;
+      }
+  }, []);
   return (
     <Container>
       <OrderDrawer
@@ -49,6 +50,7 @@ const OrderPage = () => {
       />
       {selectedSection === "order" && <PosContainer employeeId={employeeId} />}
       {selectedSection === "bill" && <BillContainer employeeId={employeeId} />}
+      <NavigationPages navigate={navigate} permissionId={permissionId} />
     </Container>
   );
 };

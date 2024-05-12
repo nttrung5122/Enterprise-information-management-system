@@ -18,12 +18,9 @@ import ListItemText from "@mui/material/ListItemText";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PeopleIcon from "@mui/icons-material/People";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import StoreIcon from "@mui/icons-material/Store";
+
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import SetMealIcon from "@mui/icons-material/SetMeal";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import ShortcutIcon from "@mui/icons-material/Shortcut";
 import BadgeIcon from "@mui/icons-material/Badge";
 
 const drawerWidth = 240;

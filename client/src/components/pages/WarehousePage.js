@@ -10,13 +10,14 @@ import CancellationFormContent from "../common/warehouse/cancellation/Cancellati
 import TimeKeepingContent from "../common/admin/TimeKeepingContent";
 import WarehouseDrawer from "../common/warehouse/WarehouseDrawer";
 import { useNavigate } from "react-router-dom";
+import NavigationPages from "../common/BottomNavigation";
 
 const Container = styled("div")({
   display: "flex",
 });
 
 const WarehousePage = () => {
-  const [selectedSection, setSelectedSection] = React.useState("employees");
+  const [selectedSection, setSelectedSection] = React.useState("ingredient");
   const [employeeId, setEmployeeId] = React.useState(null);
   const navigate = useNavigate(); // useNavigate should be called at the top level
 
@@ -30,22 +31,22 @@ const WarehousePage = () => {
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
-  useEffect(()=>{
-    const permissionId = sessionStorage.getItem("permissionId")
-    console.log("permissionId: ", permissionId)
-    if(permissionId !== "104" && permissionId !== "101")
-    switch (permissionId) {
-      case "102":
-        navigate("/business");
-        break;
-      case "103":
-        navigate("/order");
-        break;
-      default:
-        navigate("/"); // Default order page
-        break;
-    }
-  },[])
+  const permissionId = sessionStorage.getItem("permissionId");
+  useEffect(() => {
+    console.log("permissionId: ", permissionId);
+    if (permissionId !== "104" && permissionId !== "101")
+      switch (permissionId) {
+        case "102":
+          navigate("/business");
+          break;
+        case "103":
+          navigate("/order");
+          break;
+        default:
+          navigate("/"); // Default order page
+          break;
+      }
+  }, []);
   return (
     <Container>
       <WarehouseDrawer
@@ -63,6 +64,7 @@ const WarehousePage = () => {
         <CancellationFormContent employeeId={employeeId} />
       )}
       {selectedSection === "attendance" && <TimeKeepingContent />}
+      <NavigationPages navigate={navigate} permissionId={permissionId} />
     </Container>
   );
 };
