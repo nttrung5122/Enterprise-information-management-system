@@ -358,13 +358,13 @@ const EmployeeController = {
       const {employeeId, month,year} = req.query;
       const firstDay = moment({
         y: year,
-        M: month,
+        M: Number(month),
       })
         .startOf("month")
         .format("YYYY-MM-DD");
       const lastDay = moment({
         y: year,
-        M: month,
+        M: Number(month),
       })
         .endOf("month")
         .format("YYYY-MM-DD");
@@ -401,10 +401,29 @@ const EmployeeController = {
       res.status(500).json("You have already checked in");
     }
   },
+  getCheckedInByDay: async  (req, res)=>{
+    try {
+      const {day, month,year} = req.query;
+      const Date = moment({
+        d:day,
+        y: year,
+        M: Number(month),
+      }).format("YYYY-MM-DD");
+      const checkInList = await TimeKeeping.findAll({
+        where:{
+          date: Date
+        }
+      })
+      res.status(200).json(checkInList);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
   calSalaryInMonth: async (year, month, employeeId, employeeName) => {
     const date = moment({
       y: year,
-      M: month,
+      M: Number(month),
       day: 15,
     }).format("YYYY-MM-DD");
     const employeeStatus = await EmployeeStatus.findOne({
@@ -437,13 +456,13 @@ const EmployeeController = {
 
     const firstDay = moment({
       y: year,
-      M: month,
+      M: Number(month),
     })
       .startOf("month")
       .format("YYYY-MM-DD");
     const lastDay = moment({
       y: year,
-      M: month,
+      M: Number(month),
     })
       .endOf("month")
       .format("YYYY-MM-DD");
