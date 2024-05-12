@@ -12,6 +12,7 @@ import CancellationFormContent from "../common/warehouse/cancellation/Cancellati
 import { SalaryContent } from "../common/admin/SalaryContent";
 import TimeKeepingContent from "../common/admin/TimeKeepingContent";
 import RoleContent from "../common/admin/RoleContent";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
   display: "flex",
@@ -20,6 +21,7 @@ const Container = styled("div")({
 const Dashboard = () => {
   const [selectedSection, setSelectedSection] = useState("employees");
   const [employeeId, setEmployeeId] = useState(null);
+  const navigate = useNavigate(); // useNavigate should be called at the top level
   useEffect(() => {
     // Retrieve employeeId from sessionStorage when the component mounts
     const storedEmployeeId = sessionStorage.getItem("employeeId");
@@ -30,6 +32,25 @@ const Dashboard = () => {
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
+  useEffect(()=>{
+    const permissionId = sessionStorage.getItem("permissionId")
+    console.log("permissionId: ", permissionId)
+    if(permissionId !== "101")
+    switch (permissionId) {
+      case "102":
+        navigate("/business");
+        break;
+      case "103":
+        navigate("/order");
+        break;
+      case "104" || "105":
+        navigate("/warehouse");
+        break;
+      default:
+        navigate("/"); // Default order page
+        break;
+    }
+  },[])
   return (
     <Container>
       <MiniDrawer

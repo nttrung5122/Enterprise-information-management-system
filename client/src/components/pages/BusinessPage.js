@@ -10,6 +10,7 @@ import BillContainer from "../common/business-management/bill/BillContainer";
 import StatisticContainer from "../common/statistic/StatisticContainer";
 import FoodSaleContainer from "../common/business-management/food-sale/FoodSaleContainer";
 import IngredientConsumedContainer from "../common/business-management/ingredient-consumed/IngredientConsumedContainer";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
   display: "flex",
@@ -17,6 +18,8 @@ const Container = styled("div")({
 const BusinessPage = () => {
   const [selectedSection, setSelectedSection] = useState("food");
   const [employeeId, setEmployeeId] = useState(null);
+  const navigate = useNavigate(); // useNavigate should be called at the top level
+
   useEffect(() => {
     // Retrieve employeeId from sessionStorage when the component mounts
     const storedEmployeeId = sessionStorage.getItem("employeeId");
@@ -27,6 +30,23 @@ const BusinessPage = () => {
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
+  useEffect(()=>{
+    const permissionId = sessionStorage.getItem("permissionId")
+    console.log("permissionId: ", permissionId)
+    console.log("permissionId: ", typeof permissionId)
+    if(permissionId !== "102" && permissionId !== "101") 
+    switch (permissionId) {
+      case "103":
+        navigate("/order");
+        break;
+      case "104" || "105":
+        navigate("/warehouse");
+        break;
+      default:
+        navigate("/"); // Default order page
+        break;
+    }
+  },[])
   return (
     <Container>
       <PageDrawer
