@@ -28,13 +28,14 @@ export default function RoleTable({ role, fetchAllRole }) {
     },
   ];
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <div sx={{ height: 400, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
         pageSize={5} // Set the default page size
         checkboxSelection
         pagination
+        sx={{ mt: 2 }}
       />
     </div>
   );

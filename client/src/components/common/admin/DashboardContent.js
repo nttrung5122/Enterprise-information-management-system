@@ -41,12 +41,7 @@ export default function DashboardContent() {
           display: "flex",
           justifyContent: "space-between",
         }}
-      >
-        <SearchInput />
-        <FilterGroupContainer>
-          <FilterButtonGroup style={{ border: "1px groove grey" }} />
-        </FilterGroupContainer>
-      </div>
+      ></div>
       <DashboardTable users={users} fetchUsersData={fetchUsersData} />
     </ContentContainer>
   );

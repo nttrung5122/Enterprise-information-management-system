@@ -16,9 +16,12 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
   const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedTab, setSelectedTab] = useState(0);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -42,8 +45,28 @@ const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
   const startIndex = (page - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  const handleChangeTab = (event, newValue) => {
+    setSelectedTab(newValue);
+    // Reset the pagination when changing tabs
+    setPage(1);
+  };
+
+  // Filtering logic based on the selected tab
+  const filteredUsers = users.filter((user) => {
+    if (selectedTab === 0) return true; // All users
+    if (selectedTab === 1) return user.isWorking; // Active users
+    if (selectedTab === 2) return !user.isWorking; // Non-active users
+  });
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "80%" }}>
+    <Box
+      sx={{ display: "flex", flexDirection: "column", height: "80%", mt: 2 }}
+    >
+      <Tabs value={selectedTab} onChange={handleChangeTab}>
+        <Tab label="Tất cả" />
+        <Tab label="Hoạt động" />
+        <Tab label="Không hoạt động" />
+      </Tabs>
       <TableContainer component={Paper} sx={{ flex: 1 }}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
@@ -54,39 +77,41 @@ const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
               <TableCell align="center">Lương căn bản</TableCell>
               <TableCell align="center">Hệ số lương</TableCell>
               <TableCell align="center">Tháng bắt đầu</TableCell>
-
               <TableCell align="center">Điều chỉnh:</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.slice(startIndex, endIndex).map((user) => (
+            {filteredUsers.slice(startIndex, endIndex).map((user) => (
               <TableRow key={user.id}>
                 <TableCell align="center">{user.id}</TableCell>
                 <TableCell align="center">{user.fullname}</TableCell>
                 <TableCell align="center">
                   {user.employee_statuses.length > 0 &&
-                    (user.employee_statuses[0].endDate === null
-                      ? user.employee_statuses[0].role.info
-                      : user.employee_statuses[
-                          user.employee_statuses.length - 1
-                        ].role.info)}
+                    user.employee_statuses
+                      .filter((status) => status.endDate === null) // Filter by endDate === null
+                      .map((status) => status.role.info)
+                      .join(", ")}
                 </TableCell>
                 <TableCell align="center">
                   {user.employee_statuses.length > 0 &&
-                    user.employee_statuses[0].role.baseSalary}
+                    user.employee_statuses
+                      .filter((status) => status.endDate === null) // Filter by endDate === null
+                      .map((status) => status.role.baseSalary)
+                      .join(", ")}
                 </TableCell>
                 <TableCell align="center">
                   {user.employee_statuses.length > 0 &&
-                    user.employee_statuses[0].salaryScale}
+                    user.employee_statuses
+                      .filter((status) => status.endDate === null) // Filter by endDate === null
+                      .map((status) => status.salaryScale)
+                      .join(", ")}
                 </TableCell>
                 <TableCell align="center">
                   {user.employee_statuses.length > 0 &&
-                    new Date(
-                      user.employee_statuses[0].startDate
-                    ).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                    })}
+                    user.employee_statuses
+                      .filter((status) => status.endDate === null) // Filter by endDate === null
+                      .map((status) => status.startDate)
+                      .join(", ")}
                 </TableCell>
                 <TableCell align="center" size="small">
                   <Box display="flex" alignItems="center" width={100} mx={2}>
@@ -128,7 +153,7 @@ const TableUsers = ({ users, updateUserData, fetchUsersData }) => {
           </Select>
         </FormControl>
         <Pagination
-          count={Math.ceil(users.length / rowsPerPage)}
+          count={Math.ceil(filteredUsers.length / rowsPerPage)}
           page={page}
           onChange={handleChangePage}
           sx={{ ml: 2, mt: 2 }}

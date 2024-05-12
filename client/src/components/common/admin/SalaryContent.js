@@ -76,9 +76,8 @@ export const SalaryContent = () => {
           justifyContent: "space-between",
         }}
       >
-        <SearchInput />
         <FilterGroupContainer>
-          <Box sx={{ minWidth: 120, ml: 2 }}>
+          <Box sx={{ minWidth: 120, mt: 2 }}>
             <FormControl>
               <InputLabel id="demo-simple-select-label">Năm</InputLabel>
               <Select

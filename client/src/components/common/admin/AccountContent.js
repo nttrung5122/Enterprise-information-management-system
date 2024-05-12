@@ -52,12 +52,7 @@ export default function AccountContent() {
           display: "flex",
           justifyContent: "space-between",
         }}
-      >
-        <SearchInput />
-        <FilterGroupContainer>
-          <FilterButtonGroup style={{ border: "1px groove grey" }} />
-        </FilterGroupContainer>
-      </div>
+      ></div>
 
       <AccountsTable users={users} />
     </ContentContainer>

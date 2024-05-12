@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import  {ChangePasswordModal}  from "../modal/ChangePasswordModal";
+import { ChangePasswordModal } from "../modal/ChangePasswordModal";
 
 const AccountsTable = ({ users }) => {
   const handleDelete = (employeeId) => {
@@ -16,7 +16,7 @@ const AccountsTable = ({ users }) => {
   };
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ mt: 2 }}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
