@@ -116,7 +116,7 @@ const UpdateContractModal = ({ selectedUser, fetchUsersData }) => {
             <DatePicker
               id="startDate"
               name="startDate"
-              label="Ngày tuyển"
+              label="Ngày thay đổi"
               fullWidth
               variant="standard"
               sx={{ mt: 3, ml: 2 }}

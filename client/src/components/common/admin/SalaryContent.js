@@ -8,7 +8,6 @@ import Select from "@mui/material/Select";
 import SalaryHeader from "./SalaryHeader";
 import { SalaryTable } from "./SalaryTable";
 
-import SearchInput from "./SearchInput";
 import {
   fetchAllUsers,
   getUserSalaryInMonth,
@@ -17,7 +16,7 @@ import {
 export const SalaryContent = () => {
   const [users, setUsers] = useState([]);
   const [salaries, setSalaries] = useState([]);
-  const [year, setYear] = useState(2024);
+  const [year, setYear] = useState(2023);
 
   const getAllUsers = () => {
     fetchAllUsers()
@@ -35,7 +34,9 @@ export const SalaryContent = () => {
       users.forEach((user) => {
         getUserSalaryInMonth(user.id, year)
           .then((response) => {
-            setSalaries((prevSalaries) => [...prevSalaries, response]);
+            console.log("res: ", [response]);
+            setSalaries((prevSalaries) => [response, ...prevSalaries]);
+            // setSalaries([...response]);
             /*{   console.log("check salaries", salaries);} */
           })
           .catch((error) => {
@@ -96,7 +97,12 @@ export const SalaryContent = () => {
         </FilterGroupContainer>
       </div>
 
-      <SalaryTable users={users} year={year} salaries={salaries} />
+      <SalaryTable
+        users={users}
+        year={year}
+        salaries={salaries}
+        fetchUserSalaryInMonth={fetchUserSalaryInMonth}
+      />
     </SalaryContainer>
   );
 };
