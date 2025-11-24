@@ -12,6 +12,7 @@ import { createTheme } from "@mui/material/styles";
 import RoleSelect from "./RoleSelect";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { updateUserContract } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
 const UpdateContractModal = ({ selectedUser, fetchUsersData }) => {
   const [open, setOpen] = useState(false);
@@ -43,7 +44,7 @@ const UpdateContractModal = ({ selectedUser, fetchUsersData }) => {
     )
       .then((response) => {
         console.log("Contract updated successfully:", response);
-
+        toast.success("Cập nhật chức vụ nhân viên thành công.");
         // Close the modal or do any further actions upon successful update
         handleClose();
         fetchUsersData();
@@ -51,6 +52,8 @@ const UpdateContractModal = ({ selectedUser, fetchUsersData }) => {
       .catch((error) => {
         console.log("Contract updated successfully:", updatedContractInfo);
         console.error("Error updating contract:", error);
+        console.log("Check the contract: ", updatedContractInfo);
+        toast.error("Cập nhật chức vụ nhân viên thất bại.");
         // Handle error
       });
 

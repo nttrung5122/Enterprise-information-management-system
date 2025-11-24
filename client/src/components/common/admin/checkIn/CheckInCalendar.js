@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -14,11 +14,14 @@ export const CheckInCalendar = ({ users }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Initialize with current date
+  const currentDate = new Date();
+  const [month, setMonth] = useState(currentDate.getMonth());
+  const [year, setYear] = useState(currentDate.getFullYear());
+
   const handleChange = (event) => {
     setId(event.target.value);
   };
-  const [month, setMonth] = useState(5);
-  const [year, setYear] = useState(2023);
 
   const handleChangeMonth = (event) => {
     setMonth(event.target.value);
@@ -29,15 +32,17 @@ export const CheckInCalendar = ({ users }) => {
   };
 
   const fetchCheckInData = () => {
+    if (!id) return; // Don't fetch if no employee selected
+
     setLoading(true);
     setError(null);
     checkDateCheckIn(month, year, id)
       .then((response) => {
         setCheckInData(response);
-        console.log("Check in data: ", response);
       })
       .catch((error) => {
         setError(error);
+        console.error("Error fetching check-in data:", error);
       })
       .finally(() => {
         setLoading(false);
@@ -48,37 +53,37 @@ export const CheckInCalendar = ({ users }) => {
     fetchCheckInData();
   }, [id, month, year]);
 
-  const months = [
-    { value: 0, label: "1" },
-    { value: 1, label: "2" },
-    { value: 2, label: "3" },
-    { value: 3, label: "4" },
-    { value: 4, label: "5" },
-    { value: 5, label: "6" },
-    { value: 6, label: "7" },
-    { value: 7, label: "8" },
-    { value: 8, label: "9" },
-    { value: 9, label: "10" },
-    { value: 10, label: "11" },
-    { value: 11, label: "12" },
-  ];
+  // Generate months array
+  const months = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => ({
+      value: i,
+      label: `${i + 1}`,
+    }));
+  }, []);
 
-  const years = [2023, 2024];
+  // Generate years dynamically (10 years back, 5 years forward from current year)
+  const years = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - 10;
+    const endYear = currentYear + 5;
+    return Array.from(
+      { length: endYear - startYear + 1 },
+      (_, i) => startYear + i
+    );
+  }, []);
 
   return (
     <div>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
         <FormControl sx={{ m: 1, minWidth: 150 }}>
-          <InputLabel id="demo-simple-select-autowidth-label">
-            Mã nhân viên
-          </InputLabel>
+          <InputLabel id="employee-select-label">Mã nhân viên</InputLabel>
           <Select
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
+            labelId="employee-select-label"
+            id="employee-select"
             value={id}
             onChange={handleChange}
             autoWidth
-            label=" Mã nhân viên"
+            label="Mã nhân viên"
           >
             {users.map((data) => (
               <MenuItem key={data.id} value={data.id}>
@@ -86,7 +91,7 @@ export const CheckInCalendar = ({ users }) => {
               </MenuItem>
             ))}
           </Select>
-        </FormControl>{" "}
+        </FormControl>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="month-label">Tháng</InputLabel>
           <Select
@@ -94,14 +99,15 @@ export const CheckInCalendar = ({ users }) => {
             id="month-select"
             value={month}
             onChange={handleChangeMonth}
+            label="Tháng"
           >
-            {months.map((month) => (
-              <MenuItem key={month.value} value={month.value}>
-                {month.label}
+            {months.map((monthOption) => (
+              <MenuItem key={monthOption.value} value={monthOption.value}>
+                {monthOption.label}
               </MenuItem>
             ))}
           </Select>
-        </FormControl>{" "}
+        </FormControl>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="year-label">Năm</InputLabel>
           <Select
@@ -109,20 +115,25 @@ export const CheckInCalendar = ({ users }) => {
             id="year-select"
             value={year}
             onChange={handleChangeYear}
+            label="Năm"
           >
-            {years.map((year) => (
-              <MenuItem key={year} value={year}>
-                {year}
+            {years.map((yearOption) => (
+              <MenuItem key={yearOption} value={yearOption}>
+                {yearOption}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
-        <UpdateCheckInModal users={users} />
+        <UpdateCheckInModal users={users} onUpdate={fetchCheckInData} />
       </Stack>
 
-      {loading && <div>Loading...</div>}
-      {error && <div>Error: {error.message}</div>}
-      <WorkCalendar checkInData={checkInData} />
+      {loading && <div>Đang tải...</div>}
+      {error && (
+        <div style={{ color: "red" }}>
+          Lỗi: {error.message || "Không thể tải dữ liệu"}
+        </div>
+      )}
+      {!loading && !error && <WorkCalendar checkInData={checkInData} />}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
 import { updateUserInfo } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
 const EditEmployeeInfoModal = ({
   selectedUser,
@@ -37,11 +38,14 @@ const EditEmployeeInfoModal = ({
       .then((response) => {
         console.log("Employee info updated successfully:", response);
         // Close the modal or do any further actions upon successful update
+        toast.success("Cập nhật thông tin nhân viên thành công.");
         fetchUsersData();
         handleClose();
       })
       .catch((error) => {
         console.error("Error updating employee info:", error);
+        console.log("Check the employee info: ", updatedEmployeeInfo);
+        toast.error("Cập nhật thông tin nhân viên thất bại.");
         // Handle error
       });
   };
@@ -54,8 +58,6 @@ const EditEmployeeInfoModal = ({
   const handleClose = () => {
     setOpen(false);
   };
-
-  const theme = createTheme();
 
   return (
     <React.Fragment>

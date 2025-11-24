@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { styled } from "@mui/system";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -16,12 +16,14 @@ import {
 export const SalaryContent = () => {
   const [users, setUsers] = useState([]);
   const [salaries, setSalaries] = useState([]);
-  const [year, setYear] = useState(2023);
+  // Initialize with current year
+  const currentYear = new Date().getFullYear();
+  const [year, setYear] = useState(currentYear);
 
   const getAllUsers = () => {
     fetchAllUsers()
       .then((response) => {
-        setUsers(response); // Check if response is an array of users
+        setUsers(response);
       })
       .catch((error) => {
         console.log("Error when getting users data: ", error);
@@ -29,26 +31,27 @@ export const SalaryContent = () => {
   };
 
   const fetchUserSalaryInMonth = () => {
-    // Ensure users state is updated before fetching salaries
     if (users.length > 0) {
-      users.forEach((user) => {
+      setSalaries([]); // Reset salaries before fetching
+      const salaryPromises = users.map((user) =>
         getUserSalaryInMonth(user.id, year)
-          .then((response) => {
-            console.log("res: ", [response]);
-            setSalaries((prevSalaries) => [response, ...prevSalaries]);
-            // setSalaries([...response]);
-            /*{   console.log("check salaries", salaries);} */
-          })
+          .then((response) => response)
           .catch((error) => {
             console.log("Error when getting user salary", error);
-          });
+            return null;
+          })
+      );
+
+      Promise.all(salaryPromises).then((responses) => {
+        setSalaries(responses.filter((r) => r !== null));
       });
     }
   };
+
   useEffect(() => {
     getAllUsers();
   }, []);
-  // Call fetchUserSalaryInMonth whenever users or year changes
+
   useEffect(() => {
     fetchUserSalaryInMonth();
   }, [users, year]);
@@ -68,6 +71,16 @@ export const SalaryContent = () => {
     setYear(event.target.value);
   };
 
+  // Generate years dynamically (10 years back, 5 years forward from current year)
+  const years = useMemo(() => {
+    const startYear = currentYear - 10;
+    const endYear = currentYear + 5;
+    return Array.from(
+      { length: endYear - startYear + 1 },
+      (_, i) => startYear + i
+    );
+  }, [currentYear]);
+
   return (
     <SalaryContainer>
       <SalaryHeader />
@@ -80,17 +93,19 @@ export const SalaryContent = () => {
         <FilterGroupContainer>
           <Box sx={{ minWidth: 120, mt: 2 }}>
             <FormControl>
-              <InputLabel id="demo-simple-select-label">Năm</InputLabel>
+              <InputLabel id="year-select-label">Năm</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="year-select-label"
+                id="year-select"
                 value={year}
-                label="Age"
+                label="Năm"
                 onChange={handleChangeYear}
               >
-                <MenuItem value={2022}>2022</MenuItem>
-                <MenuItem value={2023}>2023</MenuItem>
-                <MenuItem value={2024}>2024</MenuItem>
+                {years.map((yearOption) => (
+                  <MenuItem key={yearOption} value={yearOption}>
+                    {yearOption}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>

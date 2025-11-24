@@ -6,14 +6,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
-
 import { addFood } from "../../../../../services/BusinessService";
-import SuccessModal from "../../../modal/SuccessModal";
+import { toast } from "react-toastify";
 import RecipeSelectModal from "./RecipeSelectModal";
 
 export const AddFoodModal = ({ getAllFood }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control the success modal
   const [selectedRecipeId, setSelectedRecipeId] = useState("");
 
   const handleClickOpen = () => {
@@ -35,14 +33,12 @@ export const AddFoodModal = ({ getAllFood }) => {
 
     addFood(foodData)
       .then(() => {
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          getAllFood();
-        }, 3000);
+        toast.success("Thêm món ăn thành công.");
       })
       .catch((error) => {
         console.log("Check the error adding food: ", error);
         console.log("Check the error food: ", foodData);
+        toast.error("Thêm món ăn thất bại.");
       });
     setOpen(false);
   };
@@ -107,7 +103,6 @@ export const AddFoodModal = ({ getAllFood }) => {
           <Button type="submit">Thêm món ăn</Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Tạo thành công." />}
     </React.Fragment>
   );
 };

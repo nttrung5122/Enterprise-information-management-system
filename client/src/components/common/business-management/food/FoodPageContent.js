@@ -19,6 +19,8 @@ const FoodPageContent = ({ food, getAllFood }) => {
   const [itemsPerPage] = useState(6); // Number of items to display per page
   const [filter, setFilter] = useState("all"); // Filter state: "all", "active", or "disabled"
   const [filteredItems, setFilteredItems] = useState([]);
+  const placeholderImageUrl =
+    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&h=200&fit=crop";
 
   // Function to filter food items based on the filter state
   useEffect(() => {
@@ -45,21 +47,21 @@ const FoodPageContent = ({ food, getAllFood }) => {
           color="primary"
           onClick={() => setFilter("all")}
         >
-          All
+          Tất cả
         </Button>
         <Button
           variant={filter === "active" ? "contained" : "outlined"}
           color="primary"
           onClick={() => setFilter("active")}
         >
-          Active
+          Đang hoạt động
         </Button>
         <Button
           variant={filter === "disabled" ? "contained" : "outlined"}
           color="primary"
           onClick={() => setFilter("disabled")}
         >
-          Disabled
+          Không hoạt động
         </Button>
       </Stack>
 
@@ -73,8 +75,8 @@ const FoodPageContent = ({ food, getAllFood }) => {
                 <CardMedia
                   component="img"
                   height="140"
-                  image="alt"
-                  alt={item.id}
+                  image={placeholderImageUrl}
+                  alt={item.nameFood}
                 />
                 <CardContent>
                   <Typography gutterBottom>{item.nameFood}</Typography>
@@ -85,7 +87,7 @@ const FoodPageContent = ({ food, getAllFood }) => {
                     ${item.price.toFixed(2)}
                   </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ justifyContent: "flex-end" }}>
                   <EditFoodModal food={item} getAllFood={getAllFood} />
 
                   <DisableFoodModal food={item} getAllFood={getAllFood} />

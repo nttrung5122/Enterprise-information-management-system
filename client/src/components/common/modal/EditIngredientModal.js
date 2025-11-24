@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { createTheme } from "@mui/material/styles";
 import { updateIngredient } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
 export const EditIngredientModal = ({ ingredient, fetchIngredientsData }) => {
   const [open, setOpen] = React.useState(false);
@@ -31,11 +32,14 @@ export const EditIngredientModal = ({ ingredient, fetchIngredientsData }) => {
     updateIngredient(ingredient.id, ingredientData)
       .then(() => {
         console.log("update successfully");
+        toast.success("Cập nhật nguyên liệu thành công.");
         handleClose(); // Call handleClose as a function
         fetchIngredientsData();
       })
       .catch((error) => {
         console.log("Check updated error: ", error);
+        console.log("Check the ingredient: ", ingredientData);
+        toast.error("Cập nhật nguyên liệu thất bại.");
       });
   };
 

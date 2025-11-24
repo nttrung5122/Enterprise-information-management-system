@@ -18,11 +18,7 @@ function CustomTabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ py: 2 }}>{children}</Box>}
     </div>
   );
 }
@@ -49,11 +45,19 @@ export default function FoodSaleContent() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label="basic tabs example"
+          aria-label="product sales tabs"
+          sx={{
+            "& .MuiTab-root": {
+              fontSize: "1rem",
+              fontWeight: 500,
+              textTransform: "none",
+              minHeight: 48,
+            },
+          }}
         >
           <Tab label="Trong tháng" {...a11yProps(0)} />
           <Tab label="Trong năm" {...a11yProps(1)} />

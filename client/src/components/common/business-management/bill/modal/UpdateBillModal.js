@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,12 +6,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import SuccessModal from "../../../modal/SuccessModal";
 import { setBillDone } from "../../../../../services/BusinessService";
+import { toast } from "react-toastify";
 
 const UpdateBillModal = ({ id, fetchAllBill }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -25,13 +25,12 @@ const UpdateBillModal = ({ id, fetchAllBill }) => {
       .then(() => {
         console.log("update status successfully");
         setOpen(false);
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          fetchAllBill();
-        }, 3000);
+        toast.success("Cập nhật trạng thái hóa đơn thành công.");
+        fetchAllBill();
       })
       .catch((error) => {
         console.log("Error deleting ingredient: ", error);
+        toast.error("Cập nhật trạng thái hóa đơn thất bại.");
         setOpen(false);
       });
   };
@@ -62,7 +61,6 @@ const UpdateBillModal = ({ id, fetchAllBill }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Thao tác thành công." />}
     </React.Fragment>
   );
 };

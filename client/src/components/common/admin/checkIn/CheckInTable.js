@@ -5,11 +5,10 @@ import {
   currentDateCheckIn,
 } from "../../../../services/UserService";
 import Button from "@mui/material/Button";
-import SuccessModal from "../../modal/SuccessModal";
+import { toast } from "react-toastify";
 
 export default function CheckInTable({ users }) {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const [statusData, setStatusData] = useState([]);
 
   const columns = [
@@ -56,11 +55,12 @@ export default function CheckInTable({ users }) {
 
     checkInByManager({ data: checkInData })
       .then((response) => {
-        setShowSuccessModal(true);
+        toast.success("Chấm công thành công.");
         getCurrentDayCheckIn(); // Refresh status data after check-in
       })
       .catch((error) => {
         console.log("Error checking in by manager:", error);
+        toast.error("Chấm công thất bại.");
       });
   };
 
@@ -99,7 +99,6 @@ export default function CheckInTable({ users }) {
       >
         Chấm công
       </Button>
-      {showSuccessModal && <SuccessModal message="Thao tác thành công." />}
     </div>
   );
 }

@@ -5,15 +5,12 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { createTheme } from "@mui/material/styles";
-
-import SuccessModal from "./../../../modal/SuccessModal";
 import { addMenu } from "../../../../../services/BusinessService";
 import SelectSectionModal from "./SelectSectionModal";
+import { toast } from "react-toastify";
 
 export const AddMenuModal = ({ getAllMenu }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selectedSectionId, setSelectedSectionId] = useState([]);
 
   const handleClickOpen = () => {
@@ -34,14 +31,12 @@ export const AddMenuModal = ({ getAllMenu }) => {
 
     addMenu(menuData)
       .then(() => {
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          getAllMenu();
-        }, 3000);
+        toast.success("Thêm Menu thành công.");
       })
       .catch((error) => {
         console.log("Check the error adding Menu: ", error);
         console.log("Check the error section: ", menuData);
+        toast.error("Thêm Menu thất bại.");
       });
     setOpen(false);
   };
@@ -49,8 +44,6 @@ export const AddMenuModal = ({ getAllMenu }) => {
   const handleSelectSection = (selectedSectionId) => {
     setSelectedSectionId(selectedSectionId); // Update the selected recipe ID
   };
-
-  const theme = createTheme();
 
   return (
     <React.Fragment>
@@ -95,7 +88,6 @@ export const AddMenuModal = ({ getAllMenu }) => {
           <Button type="submit">Thêm Menu</Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Tạo thành công." />}
     </React.Fragment>
   );
 };

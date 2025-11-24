@@ -1,6 +1,7 @@
-// AppRouter.js
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ReactDOM from "react-dom/client";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "./components/pages/Dashboard";
 import SignIn from "./components/pages/SignIn";
 import BusinessPage from "./components/pages/BusinessPage";
@@ -31,5 +32,8 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <>
+    <RouterProvider router={router} />
+    <ToastContainer position="bottom-right" />
+  </>
 );

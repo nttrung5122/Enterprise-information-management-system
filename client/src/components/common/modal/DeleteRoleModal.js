@@ -5,10 +5,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import { deleteUser } from "../../../services/UserService";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteRole } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
-export default function AlertDialog({ userId, fetchUsersData }) {
+const DeleteRoleModal = ({ id, fetchAllRole }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -20,27 +21,23 @@ export default function AlertDialog({ userId, fetchUsersData }) {
   };
 
   const handleDelete = () => {
-    const employeeData = {
-      employeeId: userId,
-      date: new Date().toISOString().slice(0, 10), // Get current date in YYYY-MM-DD format
-    };
-    deleteUser(employeeData)
+    deleteRole(id)
       .then(() => {
-        console.log("User deleted successfully!");
-        handleClose(); // Close the dialog after successful deletion
-        fetchUsersData();
-        // You may also trigger a data fetch to update the UI accordingly
+        toast.success("Xóa chức vụ thành công.");
+        handleClose();
+        fetchAllRole();
       })
       .catch((error) => {
-        console.error("Error deleting user:", error, employeeData);
-        // Handle error gracefully, e.g., display an error message
+        console.log("Error deleting role: ", error);
+        toast.error("Xóa chức vụ thất bại.");
+        setOpen(false);
       });
   };
 
   return (
     <React.Fragment>
       <Button color="error" onClick={handleClickOpen}>
-        <PersonRemoveIcon />
+        <DeleteIcon />
       </Button>
       <Dialog
         open={open}
@@ -49,11 +46,11 @@ export default function AlertDialog({ userId, fetchUsersData }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" color="error">
-          {"Xóa thành viên"}
+          {"Xóa nguyên liệu"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" color="">
-            Bạn có chắc muốn xóa thành viên này?
+            Bạn có chắc muốn xóa chức vụ này?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -65,4 +62,5 @@ export default function AlertDialog({ userId, fetchUsersData }) {
       </Dialog>
     </React.Fragment>
   );
-}
+};
+export default DeleteRoleModal;

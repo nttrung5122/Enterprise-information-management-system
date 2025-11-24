@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
@@ -6,9 +6,21 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import StoreIcon from "@mui/icons-material/Store";
 import LiquorIcon from "@mui/icons-material/Liquor";
 import PeopleIcon from "@mui/icons-material/People";
+import { useLocation } from "react-router-dom";
 
 const NavigationPages = ({ navigate, permissionId }) => {
   const [value, setValue] = useState(0);
+  const location = useLocation();
+
+  useEffect(() => {
+    setValue(location.pathname);
+  }, [location.pathname]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    navigate(newValue);
+  };
+
   return (
     <Box
       sx={{
@@ -20,7 +32,7 @@ const NavigationPages = ({ navigate, permissionId }) => {
         backgroundColor: "#fff", // Optional: Set background color
       }}
     >
-      <BottomNavigation showLabels>
+      <BottomNavigation showLabels value={value} onChange={handleChange}>
         {permissionId === "101" && (
           <BottomNavigationAction
             label="Quản lý nhân sự"

@@ -6,12 +6,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
-import { addRole } from "../../../services/UserService";
-import SuccessModal from "./SuccessModal";
+import { updateInventory } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
-export const AddRoleModal = ({ role, fetchAllRole }) => {
+export const UpdateInventoryModal = ({ ingredient, fetchInventoryData }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = React.useState(false); // State to control the success modal
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -22,32 +22,31 @@ export const AddRoleModal = ({ role, fetchAllRole }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const roleData = {
-      id: role.id,
-      info: formData.get("info"),
-      baseSalary: formData.get("baseSalary"),
+    const inventoryData = {
+      quantity: formData.get("quantity"),
     };
 
-    addRole(roleData)
+    updateInventory(ingredient.id, inventoryData)
       .then(() => {
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          fetchAllRole();
-        }, 2000);
+        console.log("Update ingredient successfully ");
+        toast.success("Cập nhật số lượng nguyên liệu thành công.");
+        fetchInventoryData();
+        handleClose();
       })
       .catch((error) => {
-        console.log("Check the error adding role: ", error);
-        console.log("Check the role: ", roleData);
+        console.log("Check updated error: ", error);
+        console.log("Check the inventory: ", inventoryData);
+        toast.error("Cập nhật số lượng nguyên liệu thất bại.");
       });
+
     setOpen(false);
   };
   const theme = createTheme();
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
-        Thêm chức vụ:
-      </Button>
+      <Button onClick={handleClickOpen}>Cập nhật</Button>
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -56,36 +55,26 @@ export const AddRoleModal = ({ role, fetchAllRole }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Thêm chức vụ</DialogTitle>
+        <DialogTitle>Cập nhật số lượng nguyên liệu</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            id="info"
-            name="info"
-            label="Tên chức vụ"
+            id="quantity"
+            name="quantity"
+            label="Cập nhật số lượng"
             fullWidth
             variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="baseSalary"
-            name="baseSalary"
-            label="Lương cơ bản"
-            fullWidth
-            variant="standard"
+            defaultValue={ingredient.quantity}
           />
         </DialogContent>
 
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
-          <Button type="submit">Thêm chức vụ</Button>
+          <Button type="submit">Xác nhận</Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Thêm thành công." />}
     </React.Fragment>
   );
 };

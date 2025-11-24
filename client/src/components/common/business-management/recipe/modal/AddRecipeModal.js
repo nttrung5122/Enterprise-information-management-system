@@ -7,39 +7,81 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
 import IngredientSelectModal from "./IngredientSelectModal";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { createRecipe } from "../../../../../services/BusinessService";
+import { toast } from "react-toastify";
 
 export const AddRecipeModal = ({ fetchRecipeData }) => {
   const [open, setOpen] = React.useState(false);
   const [ingredients, setIngredients] = React.useState([
-    { ingredientId: "", quantity: "", pricePerUnit: "" },
+    { ingredientId: "", quantity: "" },
   ]);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    // Reset form when closing
+    setIngredients([{ ingredientId: "", quantity: "" }]);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+    const recipeName = formData.get("name");
+
+    // Validate recipe name
+    if (!recipeName || recipeName.trim() === "") {
+      toast.error("Vui lòng nhập tên công thức.");
+      return;
+    }
+
+    // Validate ingredients
+    const validIngredients = ingredients.filter(
+      (ing) => ing.ingredientId && ing.quantity && ing.quantity.trim() !== ""
+    );
+
+    if (validIngredients.length === 0) {
+      toast.error("Vui lòng thêm ít nhất một nguyên liệu.");
+      return;
+    }
+
+    // Check if any ingredient is missing required fields
+    const hasInvalidIngredient = ingredients.some(
+      (ing) =>
+        (ing.ingredientId && !ing.quantity) ||
+        (!ing.ingredientId && ing.quantity)
+    );
+
+    if (hasInvalidIngredient) {
+      toast.error("Vui lòng điền đầy đủ thông tin cho tất cả nguyên liệu.");
+      return;
+    }
+
     const recipeData = {
-      name: formData.get("name"),
-      details: ingredients,
+      name: recipeName,
+      details: validIngredients.map((ing) => ({
+        ingredientId: parseInt(ing.ingredientId),
+        quantity: parseFloat(ing.quantity),
+      })),
     };
 
     createRecipe(recipeData)
       .then(() => {
-        console.log("Recipe added successfully.");
+        toast.success("Tạo công thức thành công.");
+        handleClose();
         fetchRecipeData();
       })
       .catch((error) => {
-        console.log("Check the error adding recipe: ", error);
-        console.log(recipeData);
+        console.error("Error adding recipe:", error);
+        const errorMessage =
+          typeof error === "string"
+            ? error
+            : error.message || "Có lỗi xảy ra khi tạo công thức.";
+        toast.error(errorMessage);
       });
-    setOpen(false);
   };
 
   const handleIngredientChange = (index, fieldName, value) => {
@@ -55,16 +97,19 @@ export const AddRecipeModal = ({ fetchRecipeData }) => {
   };
 
   const handleAddIngredient = () => {
-    setIngredients([
-      ...ingredients,
-      { ingredientId: "", quantity: "", pricePerUnit: "" },
-    ]);
+    setIngredients([...ingredients, { ingredientId: "", quantity: "" }]);
   };
+
   const handleDeleteIngredient = (index) => {
-    const newIngredients = [...ingredients];
-    newIngredients.splice(index, 1);
-    setIngredients(newIngredients);
+    if (ingredients.length > 1) {
+      const newIngredients = [...ingredients];
+      newIngredients.splice(index, 1);
+      setIngredients(newIngredients);
+    } else {
+      toast.error("Công thức phải có ít nhất một nguyên liệu.");
+    }
   };
+
   const theme = createTheme();
 
   return (
@@ -79,6 +124,8 @@ export const AddRecipeModal = ({ fetchRecipeData }) => {
           component: "form",
           onSubmit: handleSubmit,
         }}
+        maxWidth="sm"
+        fullWidth
       >
         <DialogTitle>Tạo công thức mới</DialogTitle>
         <DialogContent>
@@ -94,37 +141,46 @@ export const AddRecipeModal = ({ fetchRecipeData }) => {
           />
 
           {ingredients.map((ingredient, index) => (
-            <div key={index} mt={1}>
-              <Typography mt={2}>Nguyên liệu {index + 1}</Typography>
+            <Box key={index} sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                Nguyên liệu {index + 1}
+              </Typography>
               <IngredientSelectModal
                 handleIngredientChange={(ingredientId) =>
                   handleIngredientChange(index, "ingredientId", ingredientId)
                 }
+                defaultValue={ingredient.ingredientId}
               />
 
               <TextField
-                autoFocus
                 required
                 margin="dense"
                 id={`quantity-${index}`}
                 name={`quantity-${index}`}
                 label="Số lượng"
+                type="number"
+                inputProps={{ min: 0, step: 0.01 }}
                 fullWidth
                 variant="standard"
                 value={ingredient.quantity}
                 onChange={(event) => handleQuantityChange(index, event)}
               />
 
-              <Button onClick={() => handleDeleteIngredient(index)}>
+              <Button
+                onClick={() => handleDeleteIngredient(index)}
+                color="error"
+                size="small"
+                sx={{ mt: 1 }}
+              >
                 Xóa nguyên liệu
               </Button>
-            </div>
+            </Box>
           ))}
           {/* Button to add a new ingredient */}
           <Button
             onClick={handleAddIngredient}
             variant="outlined"
-            sx={{ mt: 1, float: "right" }} // Adjust the position to the right of the dialog content
+            sx={{ mt: 2 }}
           >
             Thêm nguyên liệu
           </Button>

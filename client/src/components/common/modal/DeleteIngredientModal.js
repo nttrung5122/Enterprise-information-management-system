@@ -6,13 +6,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteIngredient } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
-import { deleteRole } from "../../../services/UserService";
-import SuccessModal from "./SuccessModal";
-
-const DeleteRoleModal = ({ id, fetchAllRole }) => {
+const DeleteIngredientModal = ({ id }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -22,16 +20,16 @@ const DeleteRoleModal = ({ id, fetchAllRole }) => {
   };
 
   const handleDelete = () => {
-    deleteRole(id)
+    deleteIngredient(id)
       .then(() => {
-        setShowSuccessModal(true);
-        handleClose();
-        setTimeout(() => {
-          fetchAllRole();
-        }, 2000);
+        console.log("Delete successfully");
+        setOpen(false);
+        toast.success("Xóa nguyên liệu thành công.");
       })
       .catch((error) => {
-        console.log("Error deleting role: ", error);
+        console.log("Error deleting ingredient: ", error);
+        console.log("Check the ingredient: ", id);
+        toast.error("Xóa nguyên liệu thất bại.");
         setOpen(false);
       });
   };
@@ -52,7 +50,7 @@ const DeleteRoleModal = ({ id, fetchAllRole }) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" color="">
-            Bạn có chắc muốn xóa chức vụ này?
+            Bạn có chắc muốn xóa nguyên liệu này?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -62,8 +60,7 @@ const DeleteRoleModal = ({ id, fetchAllRole }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Xóa thành công." />}
     </React.Fragment>
   );
 };
-export default DeleteRoleModal;
+export default DeleteIngredientModal;

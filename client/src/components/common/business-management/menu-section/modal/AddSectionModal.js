@@ -5,15 +5,12 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { createTheme } from "@mui/material/styles";
-
 import { addMenuSection } from "../../../../../services/BusinessService";
-import SuccessModal from "./../../../modal/SuccessModal";
 import SelectFoodModal from "./SelectFoodModal";
+import { toast } from "react-toastify";
 
 export const AddSectionModal = ({ getAllMenuSection }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selectedFoodId, setSelectedFoodId] = useState([]);
 
   const handleClickOpen = () => {
@@ -34,14 +31,13 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
 
     addMenuSection(sectionData)
       .then(() => {
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          getAllMenuSection();
-        }, 3000);
+        toast.success("Thêm phân loại thành công.");
+        getAllMenuSection();
       })
       .catch((error) => {
         console.log("Check the error adding section: ", error);
         console.log("Check the error section: ", sectionData);
+        toast.error("Thêm phân loại thất bại.");
       });
     setOpen(false);
   };
@@ -49,8 +45,6 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
   const handleSelectedFoodId = (selectedFoodId) => {
     setSelectedFoodId(selectedFoodId); // Update the selected recipe ID
   };
-
-  const theme = createTheme();
 
   return (
     <React.Fragment>
@@ -95,7 +89,6 @@ export const AddSectionModal = ({ getAllMenuSection }) => {
           <Button type="submit">Thêm phân loại</Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Tạo thành công." />}
     </React.Fragment>
   );
 };

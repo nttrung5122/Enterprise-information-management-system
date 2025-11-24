@@ -7,21 +7,20 @@ import {
   CardContent,
   CardActions,
   Button,
-  CardMedia,
   Divider,
 } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { setBillDone } from "../../../../services/BusinessService";
-import SuccessModal from "../../modal/SuccessModal";
+import { toast } from "react-toastify";
 import Chip from "@mui/material/Chip";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import GetBillDetailModal from "./modal/GetBillDetailModal";
 
 const BillContent = ({ doneBill, undoneBill, fetchAllBill }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6); // Number of items to display per page
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [itemsPerPage] = useState(6);
+
   const [selectedStatus, setSelectedStatus] = useState("undone");
   // Change page
   const handlePageChange = (event, value) => {
@@ -86,16 +85,15 @@ const BillContent = ({ doneBill, undoneBill, fetchAllBill }) => {
                             setBillDone(item.id)
                               .then(() => {
                                 console.log("Complete the bill", item.id);
-                                setShowSuccessModal(true);
-                                setTimeout(() => {
-                                  fetchAllBill();
-                                }, 3000);
+                                toast.success("Thanh toán hóa đơn thành công.");
+                                fetchAllBill();
                               })
                               .catch((error) => {
                                 console.log(
                                   "ERROR when changing the bill status: ",
                                   error
                                 );
+                                toast.error("Thanh toán hóa đơn thất bại.");
                               });
                           }}
                         >
@@ -140,7 +138,6 @@ const BillContent = ({ doneBill, undoneBill, fetchAllBill }) => {
           />
         </Stack>
       </Grid>
-      {showSuccessModal && <SuccessModal message="Thao tác thành công." />}
     </Grid>
   );
 };

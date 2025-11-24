@@ -6,13 +6,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import { createTheme } from "@mui/material/styles";
-import { updateRole } from "../../../services/UserService";
-import SuccessModal from "./SuccessModal";
+import { updateSupplier } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
-export const EditRoleModal = ({ fetchAllRole, role }) => {
+export const EditSupplierModal = ({ supplier, fetchSuppliersData }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,32 +19,30 @@ export const EditRoleModal = ({ fetchAllRole, role }) => {
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const roleData = {
-      roleId: role.id,
-      info: formData.get("info"),
-      baseSalary: formData.get("baseSalary"),
+    const supplierData = {
+      name: formData.get("name"),
+      phoneNumber: formData.get("phoneNumber"),
+      email: formData.get("email"),
     };
 
-    updateRole(roleData)
+    updateSupplier(supplier.id, supplierData)
       .then(() => {
-        console.log("update successfully");
+        console.log("Update supplier successfully ");
+        toast.success("Cập nhật nhà cung cấp thành công.");
         handleClose();
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          fetchAllRole();
-        }, 2000);
+        fetchSuppliersData();
       })
       .catch((error) => {
         console.log("Check updated error: ", error);
-        console.log("Check data: ", roleData);
+        console.log("Check the supplier: ", supplierData);
+        toast.error("Cập nhật nhà cung cấp thất bại.");
       });
-  };
 
-  const theme = createTheme();
+    setOpen(false);
+  };
 
   return (
     <React.Fragment>
@@ -62,40 +58,40 @@ export const EditRoleModal = ({ fetchAllRole, role }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Sửa thông tin chức vụ</DialogTitle>
+        <DialogTitle>Sửa thông tin nhà cung cấp</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            id="id"
-            name="id"
-            label="ID"
+            id="name"
+            name="name"
+            label="Tên nhà cung cấp"
             fullWidth
-            disabled
-            defaultValue={role.id}
+            variant="standard"
+            defaultValue={supplier.name}
           />
           <TextField
             autoFocus
             required
             margin="dense"
-            id="info"
-            name="info"
-            label="Tên chức vụ"
+            id="phoneNumber"
+            name="phoneNumber"
+            label="Đơn vị"
             fullWidth
             variant="standard"
-            defaultValue={role.info}
+            defaultValue={supplier.phoneNumber}
           />
           <TextField
             autoFocus
             required
             margin="dense"
-            id="baseSalary"
-            name="baseSalary"
-            label="Lương cơ bản"
+            id="email"
+            name="email"
+            label="Email"
             fullWidth
             variant="standard"
-            defaultValue={role.baseSalary}
+            defaultValue={supplier.email}
           />
         </DialogContent>
 
@@ -104,8 +100,6 @@ export const EditRoleModal = ({ fetchAllRole, role }) => {
           <Button type="submit">Xác nhận</Button>
         </DialogActions>
       </Dialog>
-
-      {showSuccessModal && <SuccessModal message="Cập nhật thành công." />}
     </React.Fragment>
   );
 };

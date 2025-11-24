@@ -5,11 +5,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteSupplier } from "../../../services/UserService";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import { deleteUser } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
-const DeleteSupplierModal = ({ id, fetchSuppliersData }) => {
+export default function AlertDialog({ userId, fetchUsersData }) {
   const [open, setOpen] = React.useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -19,22 +21,29 @@ const DeleteSupplierModal = ({ id, fetchSuppliersData }) => {
   };
 
   const handleDelete = () => {
-    deleteSupplier(id)
+    const employeeData = {
+      employeeId: userId,
+      date: new Date().toISOString().slice(0, 10), // Get current date in YYYY-MM-DD format
+    };
+    deleteUser(employeeData)
       .then(() => {
-        console.log("Delete successfully");
-        setOpen(false);
-        fetchSuppliersData();
+        console.log("User deleted successfully!");
+        toast.success("Xóa thành viên thành công.");
+        handleClose(); // Close the dialog after successful deletion
+        fetchUsersData();
+        // You may also trigger a data fetch to update the UI accordingly
       })
       .catch((error) => {
-        console.log("Error deleting supplier: ", error);
-        setOpen(false);
+        console.error("Error deleting user:", error, employeeData);
+        toast.error("Lỗi khi xóa thành viên: ", error);
+        // Handle error gracefully, e.g., display an error message
       });
   };
 
   return (
     <React.Fragment>
       <Button color="error" onClick={handleClickOpen}>
-        <DeleteIcon />
+        <PersonRemoveIcon />
       </Button>
       <Dialog
         open={open}
@@ -43,11 +52,11 @@ const DeleteSupplierModal = ({ id, fetchSuppliersData }) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" color="error">
-          {"Xóa nguyên liệu"}
+          {"Xóa thành viên"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" color="">
-            Bạn có chắc muốn xóa nhà cung cấp này?
+            Bạn có chắc muốn xóa thành viên này?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -59,5 +68,4 @@ const DeleteSupplierModal = ({ id, fetchSuppliersData }) => {
       </Dialog>
     </React.Fragment>
   );
-};
-export default DeleteSupplierModal;
+}

@@ -6,12 +6,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
-import { addIngredient } from "../../../services/UserService";
-import SuccessModal from "./SuccessModal";
+import { addSupplier } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
-export const AddIngredientModal = ({ fetchIngredientsData }) => {
+export const AddSupplierModal = ({ fetchSuppliersData }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = React.useState(false); // State to control the success modal
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -22,21 +22,22 @@ export const AddIngredientModal = ({ fetchIngredientsData }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const ingredientData = {
-      nameIngredient: formData.get("nameIngredient"),
-      unitCal: formData.get("unitCal"),
+    const supplierInfo = {
+      name: formData.get("name"),
+      phoneNumber: formData.get("phoneNumber"),
+      email: formData.get("email"),
     };
 
-    addIngredient(ingredientData)
+    addSupplier(supplierInfo)
       .then(() => {
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          fetchIngredientsData();
-        }, 3000);
+        console.log("Supplier added successfully.");
+        toast.success("Thêm nhà cung cấp thành công.");
+        fetchSuppliersData();
       })
       .catch((error) => {
-        console.log("Check the error adding ingredient: ", error);
-        console.log("Check the ingredient: ", ingredientData);
+        console.log("Check the error adding supplier: ", error);
+        console.log("Check the supplier: ", supplierInfo);
+        toast.error("Thêm nhà cung cấp thất bại.");
       });
     setOpen(false);
   };
@@ -45,7 +46,7 @@ export const AddIngredientModal = ({ fetchIngredientsData }) => {
   return (
     <React.Fragment>
       <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
-        Thêm nguyên liệu
+        Thêm nhà cung cấp
       </Button>
       <Dialog
         open={open}
@@ -55,15 +56,15 @@ export const AddIngredientModal = ({ fetchIngredientsData }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Thêm nguyên liệu</DialogTitle>
+        <DialogTitle>Thêm nhà cung cấp</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            id="nameIngredient"
-            name="nameIngredient"
-            label="Tên nguyên liệu"
+            id="name"
+            name="name"
+            label="Tên nhà cung cấp"
             fullWidth
             variant="standard"
           />
@@ -71,9 +72,19 @@ export const AddIngredientModal = ({ fetchIngredientsData }) => {
             autoFocus
             required
             margin="dense"
-            id="unitCal"
-            name="unitCal"
-            label="Đơn vị"
+            id="phoneNumber"
+            name="phoneNumber"
+            label="Số điện thoại"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="email"
+            name="email"
+            label="Email"
             fullWidth
             variant="standard"
           />
@@ -81,10 +92,9 @@ export const AddIngredientModal = ({ fetchIngredientsData }) => {
 
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
-          <Button type="submit">Thêm nguyên liệu</Button>
+          <Button type="submit">Thêm nhà cung cấp</Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Tạo thành công." />}
     </React.Fragment>
   );
 };

@@ -7,9 +7,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { createTheme } from "@mui/material/styles";
-import { updateSupplier } from "../../../services/UserService";
+import { updateRole } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
-export const EditSupplierModal = ({ supplier, fetchSuppliersData }) => {
+export const EditRoleModal = ({ fetchAllRole, role }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -19,28 +20,29 @@ export const EditSupplierModal = ({ supplier, fetchSuppliersData }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const supplierData = {
-      name: formData.get("name"),
-      phoneNumber: formData.get("phoneNumber"),
-      email: formData.get("email"),
+    const roleData = {
+      roleId: role.id,
+      info: formData.get("info"),
+      baseSalary: formData.get("baseSalary"),
     };
 
-    updateSupplier(supplier.id, supplierData)
+    updateRole(roleData)
       .then(() => {
-        console.log("Update supplier successfully ");
+        console.log("update successfully");
         handleClose();
-        fetchSuppliersData();
+        toast.success("Cập nhật chức vụ thành công.");
+        fetchAllRole();
       })
       .catch((error) => {
         console.log("Check updated error: ", error);
+        console.log("Check data: ", roleData);
+        toast.error("Cập nhật chức vụ thất bại.");
       });
-
-    setOpen(false);
   };
-  const theme = createTheme();
 
   return (
     <React.Fragment>
@@ -56,40 +58,40 @@ export const EditSupplierModal = ({ supplier, fetchSuppliersData }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Sửa thông tin nhà cung cấp</DialogTitle>
+        <DialogTitle>Sửa thông tin chức vụ</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            id="name"
-            name="name"
-            label="Tên nhà cung cấp"
+            id="id"
+            name="id"
+            label="ID"
             fullWidth
-            variant="standard"
-            defaultValue={supplier.name}
+            disabled
+            defaultValue={role.id}
           />
           <TextField
             autoFocus
             required
             margin="dense"
-            id="phoneNumber"
-            name="phoneNumber"
-            label="Đơn vị"
+            id="info"
+            name="info"
+            label="Tên chức vụ"
             fullWidth
             variant="standard"
-            defaultValue={supplier.phoneNumber}
+            defaultValue={role.info}
           />
           <TextField
             autoFocus
             required
             margin="dense"
-            id="email"
-            name="email"
-            label="Email"
+            id="baseSalary"
+            name="baseSalary"
+            label="Lương cơ bản"
             fullWidth
             variant="standard"
-            defaultValue={supplier.email}
+            defaultValue={role.baseSalary}
           />
         </DialogContent>
 

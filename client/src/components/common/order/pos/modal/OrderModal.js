@@ -13,13 +13,12 @@ import TableRow from "@mui/material/TableRow";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import Stack from "@mui/material/Stack";
 import { createBill } from "../../../../../services/BusinessService";
-import SuccessModal from "./../../../modal/SuccessModal";
+import { toast } from "react-toastify";
 
 const OrderModal = ({ order, setOrder, employeeId }) => {
   const [open, setOpen] = useState(false);
   const [itemQuantities, setItemQuantities] = useState({});
   const [selectedItems, setSelectedItems] = useState([]);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -92,13 +91,13 @@ const OrderModal = ({ order, setOrder, employeeId }) => {
     createBill(bill)
       .then((response) => {
         console.log("Create bill success", response);
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          setOrder([]);
-        }, 2000);
+        toast.success("Tạo hóa đơn thành công.");
+        setOrder([]);
+        handleClose();
       })
       .catch((error) => {
         console.log("error when creating bill", error);
+        toast.error("Lỗi khi tạo hóa đơn: ", error);
       });
   };
 
@@ -187,7 +186,6 @@ const OrderModal = ({ order, setOrder, employeeId }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Tạo thành công." />}
     </div>
   );
 };

@@ -6,11 +6,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
-import { updateInventory } from "../../../services/UserService";
+import { addIngredient } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
-export const UpdateInventoryModal = ({ ingredient, fetchInventoryData }) => {
+export const AddIngredientModal = ({ fetchIngredientsData }) => {
   const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -21,28 +21,30 @@ export const UpdateInventoryModal = ({ ingredient, fetchInventoryData }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const inventoryData = {
-      quantity: formData.get("quantity"),
+    const ingredientData = {
+      nameIngredient: formData.get("nameIngredient"),
+      unitCal: formData.get("unitCal"),
     };
 
-    updateInventory(ingredient.id, inventoryData)
+    addIngredient(ingredientData)
       .then(() => {
-        console.log("Update ingredient successfully ");
-        fetchInventoryData();
-        handleClose();
+        toast.success("Thêm nguyên liệu thành công.");
+        fetchIngredientsData();
       })
       .catch((error) => {
-        console.log("Check updated error: ", error);
+        console.log("Check the error adding ingredient: ", error);
+        console.log("Check the ingredient: ", ingredientData);
+        toast.error("Thêm nguyên liệu thất bại.");
       });
-
     setOpen(false);
   };
   const theme = createTheme();
 
   return (
     <React.Fragment>
-      <Button onClick={handleClickOpen}>Cập nhật</Button>
-
+      <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
+        Thêm nguyên liệu
+      </Button>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -51,24 +53,33 @@ export const UpdateInventoryModal = ({ ingredient, fetchInventoryData }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Cập nhật số lượng nguyên liệu</DialogTitle>
+        <DialogTitle>Thêm nguyên liệu</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            id="quantity"
-            name="quantity"
-            label="Cập nhật số lượng"
+            id="nameIngredient"
+            name="nameIngredient"
+            label="Tên nguyên liệu"
             fullWidth
             variant="standard"
-            defaultValue={ingredient.quantity}
+          />
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="unitCal"
+            name="unitCal"
+            label="Đơn vị"
+            fullWidth
+            variant="standard"
           />
         </DialogContent>
 
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
-          <Button type="submit">Xác nhận</Button>
+          <Button type="submit">Thêm nguyên liệu</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

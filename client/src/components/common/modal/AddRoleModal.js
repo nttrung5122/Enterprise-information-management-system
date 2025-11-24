@@ -5,12 +5,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { createTheme } from "@mui/material/styles";
-import { addSupplier } from "../../../services/UserService";
+import { addRole } from "../../../services/UserService";
+import { toast } from "react-toastify";
 
-export const AddSupplierModal = ({ fetchSuppliersData }) => {
+export const AddRoleModal = ({ role, fetchAllRole }) => {
   const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -21,29 +20,28 @@ export const AddSupplierModal = ({ fetchSuppliersData }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const supplierInfo = {
-      name: formData.get("name"),
-      phoneNumber: formData.get("phoneNumber"),
-      email: formData.get("email"),
+    const roleData = {
+      info: formData.get("info"),
+      baseSalary: formData.get("baseSalary"),
     };
 
-    addSupplier(supplierInfo)
+    addRole(roleData)
       .then(() => {
-        console.log("Supplier added successfully.");
-        fetchSuppliersData();
+        toast.success("Thêm chức vụ thành công.");
+        fetchAllRole();
       })
       .catch((error) => {
-        console.log("Check the error adding supplier: ", error);
-        console.log("Check the supplier: ", supplierInfo);
+        console.log("Check the error adding role: ", error);
+        console.log("Check the role: ", roleData);
+        toast.error("Thêm chức vụ thất bại.");
       });
     setOpen(false);
   };
-  const theme = createTheme();
 
   return (
     <React.Fragment>
       <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
-        Thêm nhà cung cấp
+        Thêm chức vụ:
       </Button>
       <Dialog
         open={open}
@@ -53,15 +51,15 @@ export const AddSupplierModal = ({ fetchSuppliersData }) => {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>Thêm nhà cung cấp</DialogTitle>
+        <DialogTitle>Thêm chức vụ</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            id="name"
-            name="name"
-            label="Tên nhà cung cấp"
+            id="info"
+            name="info"
+            label="Tên chức vụ"
             fullWidth
             variant="standard"
           />
@@ -69,19 +67,9 @@ export const AddSupplierModal = ({ fetchSuppliersData }) => {
             autoFocus
             required
             margin="dense"
-            id="phoneNumber"
-            name="phoneNumber"
-            label="Số điện thoại"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="email"
-            name="email"
-            label="Email"
+            id="baseSalary"
+            name="baseSalary"
+            label="Lương cơ bản"
             fullWidth
             variant="standard"
           />
@@ -89,7 +77,7 @@ export const AddSupplierModal = ({ fetchSuppliersData }) => {
 
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
-          <Button type="submit">Thêm nhà cung cấp</Button>
+          <Button type="submit">Thêm chức vụ</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

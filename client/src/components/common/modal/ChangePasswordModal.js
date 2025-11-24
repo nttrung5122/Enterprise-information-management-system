@@ -7,13 +7,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
 import { changePasswordByAdmin } from "../../../services/UserService";
-import SuccessModal from "./SuccessModal";
+import { toast } from "react-toastify";
 
 export const ChangePasswordModal = ({ id }) => {
   const [open, setOpen] = React.useState(false);
   const [password, setPassword] = React.useState("");
-
-  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [passwordMatch, setPasswordMatch] = React.useState(true); // State to track if passwords match
 
@@ -39,13 +37,13 @@ export const ChangePasswordModal = ({ id }) => {
       changePasswordByAdmin(accountData)
         .then(() => {
           console.log("update successfully");
-
-          handleClose(); // Call handleClose as a function
-          setShowSuccessModal(true);
+          toast.success("Cập nhật mật khẩu thành công.");
+          handleClose();
         })
         .catch((error) => {
           console.log("Check updated error: ", error);
           console.log(accountData);
+          toast.error("Cập nhật mật khẩu thất bại.");
         });
     } else {
       // If passwords don't match, set passwordMatch state to false
@@ -111,8 +109,6 @@ export const ChangePasswordModal = ({ id }) => {
           <Button type="submit">Xác nhận</Button>
         </DialogActions>
       </Dialog>
-
-      {showSuccessModal && <SuccessModal message="Cập nhật thành công." />}
     </React.Fragment>
   );
 };

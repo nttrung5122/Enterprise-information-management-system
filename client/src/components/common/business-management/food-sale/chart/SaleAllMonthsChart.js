@@ -11,6 +11,12 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Paper,
+  Box,
+  Typography,
+  Container,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -23,7 +29,12 @@ const Row = ({ month, data }) => {
   return (
     <React.Fragment>
       {/* Row for month */}
-      <TableRow>
+      <TableRow
+        sx={{
+          "&:hover": { backgroundColor: "#f5f5f5" },
+          cursor: "pointer",
+        }}
+      >
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -33,32 +44,62 @@ const Row = ({ month, data }) => {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{month}</TableCell>
+        <TableCell>
+          <Typography variant="subtitle1" fontWeight="medium">
+            {month}
+          </Typography>
+        </TableCell>
+        <TableCell>
+          <Typography variant="body2" color="text.secondary">
+            {Object.keys(data).length} món ăn
+          </Typography>
+        </TableCell>
       </TableRow>
       {/* Collapsible row for dates and revenues */}
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Table size="small" aria-label="purchases">
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Tên món</TableCell>
-                  <TableCell>Chi tiết</TableCell>
-                  <TableCell>Số lượng</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {Object.entries(data).map(([foodId, foodData]) => (
-                  <TableRow key={foodId}>
-                    <TableCell>{foodData.foodId}</TableCell>
-                    <TableCell>{foodData.nameFood}</TableCell>
-                    <TableCell>{foodData.info}</TableCell>
-                    <TableCell>{foodData.quantity}</TableCell>
+            <Box sx={{ margin: 2 }}>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow sx={{ backgroundColor: "#e3f2fd" }}>
+                    <TableCell sx={{ fontWeight: "bold" }}>ID</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Tên món</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Chi tiết</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }} align="right">
+                      Số lượng
+                    </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {Object.entries(data).map(([foodId, foodData]) => (
+                    <TableRow
+                      key={foodId}
+                      sx={{
+                        "&:nth-of-type(odd)": { backgroundColor: "#fafafa" },
+                      }}
+                    >
+                      <TableCell>{foodData.foodId}</TableCell>
+                      <TableCell>
+                        <Typography variant="body2" fontWeight="medium">
+                          {foodData.nameFood}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body2" color="text.secondary">
+                          {foodData.info || "-"}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography variant="body2" fontWeight="medium">
+                          {foodData.quantity}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
           </Collapse>
         </TableCell>
       </TableRow>
@@ -69,14 +110,22 @@ const Row = ({ month, data }) => {
 const SaleAllMonthsChart = () => {
   const [data, setData] = useState(null);
   const [year, setYear] = useState(2024);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchData = (selectedYear) => {
+    setLoading(true);
+    setError(null);
     getFoodSoldAllMonth(selectedYear)
       .then((response) => {
         setData(response);
       })
       .catch((error) => {
         console.log("Check error fetching food sale data", error);
+        setError("Không thể tải dữ liệu. Vui lòng thử lại.");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -89,30 +138,67 @@ const SaleAllMonthsChart = () => {
   };
 
   return (
-    <>
-      <FormControl>
-        <InputLabel>Year</InputLabel>
-        <Select value={year} onChange={handleYearChange}>
-          <MenuItem value={2023}>2023</MenuItem>
-          <MenuItem value={2024}>2024</MenuItem>
-          {/* Add more years as needed */}
-        </Select>
-      </FormControl>
+    <Container maxWidth={false} sx={{ py: 3, px: 2 }}>
+      <Paper elevation={3} sx={{ p: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 3,
+          }}
+        >
+          <Typography variant="h5" fontWeight="bold" color="primary">
+            Doanh số sản phẩm theo năm
+          </Typography>
+          <FormControl sx={{ minWidth: 150 }}>
+            <InputLabel>Năm</InputLabel>
+            <Select value={year} onChange={handleYearChange} label="Năm">
+              <MenuItem value={2023}>2023</MenuItem>
+              <MenuItem value={2024}>2024</MenuItem>
+              <MenuItem value={2025}>2025</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
 
-      <Table>
-        <TableHead></TableHead>
-        <TableBody>
-          {data &&
-            data.map((monthData) => (
-              <Row
-                key={monthData.month}
-                month={`Tháng ${monthData.month}`}
-                data={monthData.detail}
-              />
-            ))}
-        </TableBody>
-      </Table>
-    </>
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", py: 5 }}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        ) : !data || data.length === 0 ? (
+          <Alert severity="info">Không có dữ liệu cho năm {year}</Alert>
+        ) : (
+          <Table sx={{ width: "100%" }}>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                <TableCell
+                  sx={{ fontWeight: "bold", color: "white" }}
+                ></TableCell>
+                <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                  Tháng
+                </TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                  Số lượng món
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((monthData) => (
+                <Row
+                  key={monthData.month}
+                  month={`Tháng ${monthData.month}`}
+                  data={monthData.detail}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </Paper>
+    </Container>
   );
 };
 

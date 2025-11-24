@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -13,29 +12,32 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import DialogTitle from "@mui/material/DialogTitle";
+import Box from "@mui/material/Box";
 import {
   updateCheckIn,
   currentDateCheckIn,
 } from "../../../../../services/UserService";
-import SuccessModal from "../../../modal/SuccessModal";
+import { toast } from "react-toastify";
 
-export default function UpdateCheckInModal({ users }) {
+export default function UpdateCheckInModal({ users, onUpdate }) {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState([]);
   const [workingStatus, setWorkingStatus] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
 
   const handleChange = (event) => {
     setId(event.target.value);
-    // Reset workingStatus when employee is changed
     setWorkingStatus(false);
   };
 
   const handleClickOpen = () => {
     setOpen(true);
+    // Reset to current date when opening
+    setSelectedDate(dayjs());
+    setId("");
+    setWorkingStatus(false);
   };
 
   const handleClose = () => {
@@ -43,119 +45,140 @@ export default function UpdateCheckInModal({ users }) {
   };
 
   const handleDateChange = (newValue) => {
-    const formattedDate = dayjs(newValue).format("YYYY/MM/DD");
-    setSelectedDate(formattedDate);
-    // Reset workingStatus when date is changed
-    setWorkingStatus(false);
+    if (newValue && newValue.isValid()) {
+      setSelectedDate(newValue);
+      setWorkingStatus(false);
+    }
   };
 
   const getCurrentDateStatus = () => {
-    const currentDate = dayjs(selectedDate);
-    const day = currentDate.format("DD");
-    const month = currentDate.month();
-    const year = currentDate.format("YYYY");
+    if (!selectedDate || !selectedDate.isValid() || !id) return;
 
+    const day = selectedDate.date();
+    const month = selectedDate.month();
+    const year = selectedDate.year();
+
+    setLoading(true);
     currentDateCheckIn(day, month, year)
       .then((response) => {
         setUserData(response);
-        // Find the haveWorking status for selected employee and date
         const userDataItem = response.find((item) => item.employeeId === id);
         if (userDataItem) {
           setWorkingStatus(userDataItem.haveWorking);
         } else {
-          // If not found, set default value
           setWorkingStatus(false);
         }
       })
       .catch((error) => {
-        console.log("error when getting status data: ", error);
+        console.error("Error when getting status data:", error);
+        toast.error("Không thể tải dữ liệu chấm công.");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   const handleSave = () => {
+    if (!id) {
+      toast.error("Vui lòng chọn nhân viên.");
+      return;
+    }
+    if (!selectedDate || !selectedDate.isValid()) {
+      toast.error("Vui lòng chọn ngày hợp lệ.");
+      return;
+    }
+
     const checkInData = {
       employeeId: id,
-      date: selectedDate,
+      date: selectedDate.format("YYYY/MM/DD"),
       haveWorking: workingStatus,
     };
+
     updateCheckIn(checkInData)
       .then(() => {
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          handleClose();
-        }, 2000);
+        toast.success("Cập nhật chấm công thành công.");
+        handleClose();
+        onUpdate();
       })
       .catch((error) => {
-        console.log("error when updating status: ", error);
+        console.error("Error when updating status:", error);
+        const errorMessage =
+          typeof error === "string"
+            ? error
+            : error.message || "Cập nhật chấm công thất bại.";
+        toast.error(errorMessage);
       });
   };
 
   useEffect(() => {
-    getCurrentDateStatus();
-  }, [selectedDate, id]);
+    if (open && id && selectedDate && selectedDate.isValid()) {
+      getCurrentDateStatus();
+    }
+  }, [selectedDate, id, open]);
 
   return (
     <React.Fragment>
       <Button variant="contained" onClick={handleClickOpen}>
         Cập nhật
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title" color="error">
-          {"Cập nhật chấm công"}
-        </DialogTitle>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+        <DialogTitle>Cập nhật chấm công</DialogTitle>
         <DialogContent>
-          <FormControl sx={{ minWidth: 150 }}>
-            <InputLabel id="demo-simple-select-autowidth-label">
-              Mã nhân viên
-            </InputLabel>
-            <Select
-              id="demo-simple-select-autowidth"
-              value={id}
-              onChange={handleChange}
-              autoWidth
-              label=" Mã nhân viên"
-            >
-              {users.map((data) => (
-                <MenuItem key={data.id} value={data.id}>
-                  {data.id}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePicker"]}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
+            <FormControl fullWidth>
+              <InputLabel id="employee-select-label">Mã nhân viên</InputLabel>
+              <Select
+                labelId="employee-select-label"
+                id="employee-select"
+                value={id}
+                onChange={handleChange}
+                label="Mã nhân viên"
+              >
+                {users.map((data) => (
+                  <MenuItem key={data.id} value={data.id}>
+                    {data.id}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Chọn ngày"
-                selectedDate={selectedDate}
+                value={selectedDate}
                 onChange={handleDateChange}
+                format="DD/MM/YYYY"
+                minDate={dayjs("2020-01-01")}
+                maxDate={dayjs().add(1, "year")}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                  },
+                }}
               />
-            </DemoContainer>
-          </LocalizationProvider>
-          <FormControl fullWidth sx={{ mt: 1 }}>
-            <InputLabel>Có đi làm</InputLabel>
-            <Select
-              value={workingStatus}
-              label="Có đi làm"
-              onChange={(event) => setWorkingStatus(event.target.value)}
-            >
-              <MenuItem value={true}>Có</MenuItem>
-              <MenuItem value={false}>Không</MenuItem>
-            </Select>
-          </FormControl>
+            </LocalizationProvider>
+
+            <FormControl fullWidth>
+              <InputLabel>Có đi làm</InputLabel>
+              <Select
+                value={workingStatus}
+                label="Có đi làm"
+                onChange={(event) => setWorkingStatus(event.target.value)}
+                disabled={loading}
+              >
+                <MenuItem value={true}>Có</MenuItem>
+                <MenuItem value={false}>Không</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Không</Button>
-          <Button onClick={handleSave} autoFocus>
-            Có
+          <Button onClick={handleClose}>Hủy</Button>
+          <Button onClick={handleSave} autoFocus disabled={loading}>
+            Lưu
           </Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Cập nhật thành công." />}
     </React.Fragment>
   );
 }

@@ -1,29 +1,30 @@
 import React from "react";
 import Switch from "@mui/material/Switch";
+import { toast } from "react-toastify";
 import { disableFood } from "../../../../../services/BusinessService";
 
 const DisableFoodModal = ({ food, getAllFood }) => {
   const label = { inputProps: { "aria-label": "Switch disable food" } };
+
   const handleToggle = () => {
-    disableFood(food.id) // Call API to update the disable status
+    disableFood(food.id)
       .then(() => {
-        console.log("Food item disable status updated successfully.");
-        setTimeout(() => {
-          getAllFood();
-        }, 1000);
+        toast.success("Cập nhật món ăn thành công.");
+        getAllFood();
       })
       .catch((error) => {
         console.log("Error updating food item:", error);
+        const errorMessage =
+          typeof error === "string"
+            ? error
+            : error.message || "An error occurred";
+        toast.error(errorMessage);
       });
   };
 
   return (
     <div>
-      <Switch
-        {...label}
-        checked={!food.disable} // Set checked based on the disable status
-        onChange={handleToggle}
-      />
+      <Switch {...label} checked={!food.disable} onChange={handleToggle} />
     </div>
   );
 };

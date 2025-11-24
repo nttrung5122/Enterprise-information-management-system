@@ -7,11 +7,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteMenuSection } from "../../../../../services/BusinessService";
-import SuccessModal from "../../../modal/SuccessModal";
+import { toast } from "react-toastify";
 
 const DeleteSectionModal = ({ id, getAllMenuSection }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -25,13 +24,12 @@ const DeleteSectionModal = ({ id, getAllMenuSection }) => {
       .then(() => {
         console.log("Delete successfully");
         setOpen(false);
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          getAllMenuSection();
-        }, 3000);
+        toast.success("Xóa phân loại thành công.");
+        getAllMenuSection();
       })
       .catch((error) => {
         console.log("Error deleting ingredient: ", error);
+        toast.error("Xóa phân loại thất bại.");
         setOpen(false);
       });
   };
@@ -62,7 +60,6 @@ const DeleteSectionModal = ({ id, getAllMenuSection }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Thao tác thành công." />}
     </React.Fragment>
   );
 };

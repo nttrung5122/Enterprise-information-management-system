@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -6,15 +6,14 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme } from "@mui/material/styles";
-
 import { updateMenuSection } from "../../../../../services/BusinessService";
-import SuccessModal from "../../../modal/SuccessModal";
 import SelectFoodModal from "./SelectFoodModal";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { toast } from "react-toastify";
 
 export const EditSectionModal = ({ section, getAllMenuSection }) => {
   const [open, setOpen] = React.useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control the success modal
+
   const [selectedFoodId, setSelectedFoodId] = useState([]);
 
   const handleClickOpen = () => {
@@ -35,10 +34,8 @@ export const EditSectionModal = ({ section, getAllMenuSection }) => {
 
     updateMenuSection(section.id, sectionData)
       .then(() => {
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          getAllMenuSection();
-        }, 3000);
+        toast.success("Cập nhật phân loại thành công.");
+        getAllMenuSection();
       })
       .catch((error) => {
         console.log("Check the error updating section: ", error);
@@ -50,8 +47,6 @@ export const EditSectionModal = ({ section, getAllMenuSection }) => {
   const handleSelectedFoodId = (selectedFoodId) => {
     setSelectedFoodId(selectedFoodId); // Update the selected recipe ID
   };
-
-  const theme = createTheme();
 
   return (
     <React.Fragment>
@@ -99,7 +94,6 @@ export const EditSectionModal = ({ section, getAllMenuSection }) => {
           <Button type="submit">Xác nhận</Button>
         </DialogActions>
       </Dialog>
-      {showSuccessModal && <SuccessModal message="Thao tác thành công." />}
     </React.Fragment>
   );
 };
