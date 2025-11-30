@@ -27,15 +27,49 @@ function SignIn() {
         password: data.get("password"),
       });
 
-      if (res && res.id) {
-        const permissionId =
-          res.permissions[0]?.account_permission.permissionId;
-        console.log("Login success, the permission Id:", permissionId);
-        console.log("Login success, check the res:", res);
-        sessionStorage.setItem("permissionId", permissionId);
-        sessionStorage.setItem("employeeId", res.employee.id);
+      console.log("Full login response:", res);
+      console.log("Permissions:", res.permissions);
 
-        switch (permissionId) {
+      if (res && res.id) {
+        // Extract permissionId - handle different possible structures
+        let permissionId = null;
+
+        // Try to get permission from permissions array
+        if (res.permissions && res.permissions.length > 0) {
+          permissionId =
+            res.permissions[0]?.account_permission?.permissionId ||
+            res.permissions[0]?.id ||
+            res.permissions[0]?.permissionId;
+        }
+
+        // If no permissions found, assign default based on account or use a default
+        if (!permissionId) {
+          console.warn("No permissions found for account, assigning default");
+          // Default to order management (103) if no permission found
+          // You can change this to 101 (admin) if needed for testing
+          permissionId = 103; // Default to order management
+        }
+
+        // Get employeeId - handle both lowercase and uppercase
+        const employeeId =
+          res.employee?.id || res.Employee?.id || res.employeeId;
+
+        if (!employeeId) {
+          setError("Không tìm thấy thông tin nhân viên");
+          return;
+        }
+
+        // Ensure permissionId is a valid number/string before storing
+        const permissionIdStr = String(permissionId);
+
+        console.log("Setting permissionId:", permissionIdStr);
+        console.log("Setting employeeId:", employeeId);
+
+        sessionStorage.setItem("permissionId", permissionIdStr);
+        sessionStorage.setItem("employeeId", String(employeeId));
+
+        // Navigate based on permission
+        switch (Number(permissionId)) {
           case 101:
             navigate("/dashboard");
             break;
@@ -45,15 +79,19 @@ function SignIn() {
           case 103:
             navigate("/order");
             break;
-          case 104 || 105:
+          case 104:
+          case 105:
             navigate("/warehouse");
             break;
           default:
-            navigate("/order"); // Default order page
+            navigate("/order");
             break;
         }
+      } else {
+        setError("Đăng nhập thất bại. Vui lòng thử lại.");
       }
     } catch (error) {
+      console.error("Login error:", error);
       setError("Mật khẩu không đúng hoặc tài khoản không tồn tại");
     }
   };
@@ -118,9 +156,6 @@ function SignIn() {
               Đăng nhập
             </Button>
           </Box>
-          <Link href="#" underline="hover">
-            Quên mật khẩu?
-          </Link>
         </Box>
       </Container>
     </ThemeProvider>

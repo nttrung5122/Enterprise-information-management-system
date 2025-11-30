@@ -6,17 +6,13 @@ import StatisticContent from "./StatisticContent";
 export default function StatisticContainer() {
   const ContentContainer = styled("div")({
     flexGrow: 1,
-    padding: "10px", // Add padding for better spacing
-    marginLeft: "-60px", // Adjust the margin to offset the sidebar width
-  });
-
-  const FilterGroupContainer = styled("div")({
-    display: "flex",
-    alignItems: "center",
+    padding: "10px",
+    marginLeft: "-60px",
+    paddingBottom: "80px", // Add padding to prevent cutoff from bottom navigation
   });
 
   return (
-    <ContentContainer>
+    <ContentContainer sx={{ p: 3, mb: 3, pb: 10 }}>
       <StatisticHeader />
       <StatisticContent />
     </ContentContainer>

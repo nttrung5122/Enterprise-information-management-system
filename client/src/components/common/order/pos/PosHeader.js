@@ -1,14 +1,13 @@
-import React from "react";
+import React, { memo } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import MailIcon from "@mui/icons-material/Mail";
 import OrderModal from "./modal/OrderModal";
 
-export default function PosHeader({ order, setOrder, employeeId }) {
+const PosHeader = ({ order, setOrder, employeeId }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -29,4 +28,6 @@ export default function PosHeader({ order, setOrder, employeeId }) {
       </AppBar>
     </Box>
   );
-}
+};
+
+export default memo(PosHeader);

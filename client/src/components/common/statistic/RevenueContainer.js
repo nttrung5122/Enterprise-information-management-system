@@ -44,12 +44,15 @@ const RevenueContainer = () => {
   };
 
   return (
-    <Container sx={{ mt: 2 }}>
+    <Container maxWidth={false} sx={{ mt: 2, px: 2 }}>
       <YearSelectFilter onYearChange={handleYearChange} />
-      <Grid container spacing={1} sx={{ mt: 2 }}>
-        {/* First Column: Yearly Profit Statistics */}
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        {/* First Column: Yearly Revenue Statistics */}
         <Grid item xs={12}>
-          <Paper elevation={3} sx={{ padding: 2, width: 700 }}>
+          <Paper
+            elevation={3}
+            sx={{ padding: 2, width: "100%", overflow: "auto" }}
+          >
             <Typography variant="h5" gutterBottom>
               Doanh thu trong năm {year}
             </Typography>
@@ -62,9 +65,12 @@ const RevenueContainer = () => {
           </Paper>
         </Grid>
 
-        {/* Second Column: Monthly Profit Statistics */}
+        {/* Second Column: Monthly Revenue Statistics */}
         <Grid item xs={12} sx={{ mt: 2 }}>
-          <Paper elevation={3} sx={{ padding: 2, width: 800 }}>
+          <Paper
+            elevation={3}
+            sx={{ padding: 2, width: "100%", overflow: "auto" }}
+          >
             <Typography variant="h5" gutterBottom>
               Doanh thu trong tháng của năm {year}
             </Typography>

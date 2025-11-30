@@ -117,56 +117,67 @@ export default function OrderDrawer({
         </DrawerHeader>
         <Divider />
         <List>
-          {menuItems.map((menuItem, index) => (
-            <ListItem
-              key={menuItem.text}
-              disablePadding
-              sx={{ display: "block" }}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                  bgcolor:
-                    selectedSection === menuItem
-                      ? theme.palette.primary.dark // Change to your desired color for the selected section
-                      : "transparent",
-                  "&:hover": {
-                    backgroundColor: theme.palette.action.hover,
-                  },
-                }}
-                selected={selectedSection === menuItem.section}
-                onClick={() => {
-                  handleItemClick(menuItem.section);
-                }}
+          {menuItems.map((menuItem, index) => {
+            const isSelected = selectedSection === menuItem.section;
+            return (
+              <ListItem
+                key={menuItem.text}
+                disablePadding
+                sx={{ display: "block" }}
               >
-                <ListItemIcon
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color:
-                      selectedSection === menuItem.section
-                        ? theme.palette.action.primary
-                        : theme.palette.text.secondary,
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                    backgroundColor: isSelected
+                      ? "#1976d2" // Darker blue for better contrast
+                      : "transparent",
+                    color: isSelected ? "#ffffff" : "inherit", // White text when selected
+                    "&:hover": {
+                      backgroundColor: isSelected
+                        ? "#1565c0" // Darker blue on hover
+                        : theme.palette.action.hover,
+                    },
+                    "&.Mui-selected": {
+                      backgroundColor: "#1976d2",
+                      color: "#ffffff",
+                      "&:hover": {
+                        backgroundColor: "#1565c0",
+                      },
+                    },
+                  }}
+                  selected={isSelected}
+                  onClick={() => {
+                    handleItemClick(menuItem.section);
                   }}
                 >
-                  {menuItem.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={menuItem.text}
-                  sx={{
-                    opacity: open ? 1 : 0,
-                    color:
-                      selectedSection === menuItem.section
-                        ? theme.palette.action.selected
-                        : theme.palette.text.secondary,
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: isSelected
+                        ? "#ffffff"
+                        : theme.palette.text.secondary, // White icon when selected
+                    }}
+                  >
+                    {menuItem.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={menuItem.text}
+                    sx={{
+                      opacity: open ? 1 : 0,
+                      color: isSelected
+                        ? "#ffffff"
+                        : theme.palette.text.secondary, // White text when selected
+                      fontWeight: isSelected ? 600 : 400,
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
         <Box sx={{ flexGrow: 3 }} /> <Divider />
         <List>

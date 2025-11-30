@@ -20,6 +20,12 @@ const OrderModal = ({ order, setOrder, employeeId }) => {
   const [itemQuantities, setItemQuantities] = useState({});
   const [selectedItems, setSelectedItems] = useState([]);
 
+  // Format price with Vietnamese thousand separators (dots)
+  const formatPrice = (price) => {
+    if (!price && price !== 0) return "0₫";
+    return new Intl.NumberFormat("vi-VN").format(price) + "₫";
+  };
+
   const handleOpen = () => {
     setOpen(true);
     initializeItemQuantities();
@@ -61,7 +67,7 @@ const OrderModal = ({ order, setOrder, employeeId }) => {
     const updatedOrder = order.filter((item) => item.id !== itemId);
     setOrder(updatedOrder);
   };
-  //const employeeId = sessionStorage.getItem("employeeId");
+
   const handleCreateBill = () => {
     // Initialize an empty bill object
     const bill = {
@@ -123,7 +129,7 @@ const OrderModal = ({ order, setOrder, employeeId }) => {
                   <TableCell>
                     <Typography>{item.nameFood}</Typography>
                   </TableCell>
-                  <TableCell>{item.price}$</TableCell>
+                  <TableCell>{formatPrice(item.price)}</TableCell>
                   <TableCell>
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <Button
@@ -142,7 +148,7 @@ const OrderModal = ({ order, setOrder, employeeId }) => {
                     </Stack>
                   </TableCell>
                   <TableCell>
-                    {(itemQuantities[item.id] || 1) * item.price}$
+                    {formatPrice((itemQuantities[item.id] || 1) * item.price)}
                   </TableCell>
                   <TableCell>
                     <Button
@@ -160,12 +166,13 @@ const OrderModal = ({ order, setOrder, employeeId }) => {
             <Typography variant="h5" sx={{ mt: 2 }}>
               Tổng:{" "}
               <span className="price text-success">
-                {order.reduce(
-                  (total, item) =>
-                    total + (itemQuantities[item.id] || 1) * item.price,
-                  0
+                {formatPrice(
+                  order.reduce(
+                    (total, item) =>
+                      total + (itemQuantities[item.id] || 1) * item.price,
+                    0
+                  )
                 )}
-                $
               </span>
             </Typography>
           </div>

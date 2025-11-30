@@ -134,56 +134,69 @@ export default function PageDrawer({
         </DrawerHeader>
         <Divider />
         <List>
-          {menuItems.map((menuItem, index) => (
-            <ListItem
-              key={menuItem.text}
-              disablePadding
-              sx={{ display: "block" }}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                  bgcolor:
-                    selectedSection === menuItem
-                      ? theme.palette.primary.dark // Change to your desired color for the selected section
-                      : "transparent",
-                  "&:hover": {
-                    backgroundColor: theme.palette.action.hover,
-                  },
-                }}
-                selected={selectedSection === menuItem.section}
-                onClick={() => {
-                  handleItemClick(menuItem.section);
-                }}
+          {menuItems.map((menuItem, index) => {
+            const isSelected = selectedSection === menuItem.section;
+            return (
+              <ListItem
+                key={menuItem.text}
+                disablePadding
+                sx={{ display: "block" }}
               >
-                <ListItemIcon
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color:
-                      selectedSection === menuItem.section
-                        ? theme.palette.action.primary
-                        : theme.palette.text.secondary,
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                    backgroundColor: isSelected
+                      ? theme.palette.primary.main
+                      : "transparent",
+                    color: isSelected
+                      ? theme.palette.primary.contrastText
+                      : theme.palette.text.primary,
+                    "&:hover": {
+                      backgroundColor: isSelected
+                        ? theme.palette.primary.dark
+                        : theme.palette.action.hover,
+                    },
+                    "&.Mui-selected": {
+                      backgroundColor: theme.palette.primary.main,
+                      color: theme.palette.primary.contrastText,
+                      "&:hover": {
+                        backgroundColor: theme.palette.primary.dark,
+                      },
+                    },
+                  }}
+                  selected={isSelected}
+                  onClick={() => {
+                    handleItemClick(menuItem.section);
                   }}
                 >
-                  {menuItem.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={menuItem.text}
-                  sx={{
-                    opacity: open ? 1 : 0,
-                    color:
-                      selectedSection === menuItem.section
-                        ? theme.palette.action.selected
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: isSelected
+                        ? theme.palette.primary.contrastText
                         : theme.palette.text.secondary,
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                    }}
+                  >
+                    {menuItem.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={menuItem.text}
+                    sx={{
+                      opacity: open ? 1 : 0,
+                      color: isSelected
+                        ? theme.palette.primary.contrastText
+                        : theme.palette.text.secondary,
+                      fontWeight: isSelected ? 600 : 400,
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
         <Box sx={{ flexGrow: 3 }} /> <Divider />
         <List>

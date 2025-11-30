@@ -24,22 +24,38 @@ const OrderPage = () => {
   const handleMenuClick = (section) => {
     setSelectedSection(section);
   };
-  const permissionId = sessionStorage.getItem("permissionId");
   useEffect(() => {
+    const permissionId = sessionStorage.getItem("permissionId");
     console.log("permissionId: ", permissionId);
-    if (permissionId !== "101" && permissionId !== "103")
+
+    // Check if permissionId exists and is valid
+    if (
+      !permissionId ||
+      permissionId === "undefined" ||
+      permissionId === "null" ||
+      permissionId.trim() === ""
+    ) {
+      console.warn("No valid permissionId found, redirecting to login");
+      navigate("/");
+      return;
+    }
+
+    // Only redirect if permission is not allowed for order page (101 or 103)
+    if (permissionId !== "101" && permissionId !== "103") {
       switch (permissionId) {
         case "102":
           navigate("/business");
           break;
-        case "104" || "105":
+        case "104":
+        case "105":
           navigate("/warehouse");
           break;
         default:
-          navigate("/"); // Default order page
+          navigate("/"); // Redirect to login if invalid
           break;
       }
-  }, []);
+    }
+  }, [navigate]);
   return (
     <Container>
       <OrderDrawer
@@ -50,7 +66,10 @@ const OrderPage = () => {
       />
       {selectedSection === "order" && <PosContainer employeeId={employeeId} />}
       {selectedSection === "bill" && <BillContainer employeeId={employeeId} />}
-      <NavigationPages navigate={navigate} permissionId={permissionId} />
+      <NavigationPages
+        navigate={navigate}
+        permissionId={sessionStorage.getItem("permissionId")}
+      />
     </Container>
   );
 };

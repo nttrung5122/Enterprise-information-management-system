@@ -5,8 +5,9 @@ const loginApi = ({ user, password }) => {
     .post("/auth/login", { user, password })
     .then((response) => {
       // Handle successful login response
-      const userData = response.data;
-      if (!userData.role) return response.data; // Assuming the server returns some data on successful login
+      // const userData = response.data;
+      // if (!userData.role) return response.data; // Assuming the server returns some data on successful login
+      return response.data;
     })
     .catch((error) => {
       // Handle login error
